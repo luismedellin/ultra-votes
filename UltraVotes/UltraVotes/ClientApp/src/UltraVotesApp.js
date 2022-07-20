@@ -1,6 +1,8 @@
 import { useEffect } from 'react';
+import { AppRouter } from './router/AppRouter';
+import { Navbar } from './ui';
 
-export const App = () => {
+export const UltraVotesApp = () => {
 
     const populateWeatherData = async () => {
         const response = await fetch('weatherforecast');
@@ -14,7 +16,8 @@ export const App = () => {
 
     return (
         <>
-            <h1>Ultra Air</h1>
+            <Navbar />
+            <AppRouter />
         </>
     )
   
