@@ -31,13 +31,16 @@ namespace UltraVotes.Controllers
                 Summary = Summaries[Random.Shared.Next(Summaries.Length)]
             })
             .ToArray();
-
+            var watch = System.Diagnostics.Stopwatch.StartNew();
             var users = await _unitOfWork.Users.GetUsers();
+            watch.Stop();
+            var elapsedMs = watch.ElapsedMilliseconds;
 
             return Ok(new
             {
                 data,
-                users
+                users,
+                time = elapsedMs
             });
         }
     }
