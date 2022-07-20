@@ -1,22 +1,21 @@
-import React, { Component } from 'react';
-import { Route } from 'react-router';
-import { Layout } from './components/Layout';
-import { Home } from './components/Home';
-import { FetchData } from './components/FetchData';
-import { Counter } from './components/Counter';
+import { useEffect } from 'react';
 
-import './custom.css'
+export const App = () => {
 
-export default class App extends Component {
-  static displayName = App.name;
+    const populateWeatherData = async () => {
+        const response = await fetch('weatherforecast');
+        const data = await response.json();
+        console.log(data);
+    }
 
-  render () {
+    useEffect(() => {
+        populateWeatherData();
+    }, [])
+
     return (
-      <Layout>
-        <Route exact path='/' component={Home} />
-        <Route path='/counter' component={Counter} />
-        <Route path='/fetch-data' component={FetchData} />
-      </Layout>
-    );
-  }
+        <>
+            <h1>Ultra Air</h1>
+        </>
+    )
+  
 }
