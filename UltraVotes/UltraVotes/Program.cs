@@ -1,7 +1,17 @@
+using UltraVotes.Data;
+using UltraVotes.Data.Repositories;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
+#region Libraries Configuration
+builder.Services.AddSingleton<DapperContext>();
+#endregion
+#region My Services
+builder.Services.AddTransient<IUnitOfWork, UnitOfWork>();
+builder.Services.AddTransient<IUserRepository, UserRepository>();
+#endregion
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
