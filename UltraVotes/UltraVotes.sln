@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UltraVotes", "UltraVotes\Ul
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UltraVotes.Tests", "UltraVotes.Tests\UltraVotes.Tests.csproj", "{730D859F-F8D4-4268-8F97-40AED2F454FF}"
 EndProject
+Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "UltraVotes.DB", "UltraVotes.DB\UltraVotes.DB.sqlproj", "{F1B0B416-BAC5-479E-ADA7-DAD960BFEB66}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,12 @@ Global
 		{730D859F-F8D4-4268-8F97-40AED2F454FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{730D859F-F8D4-4268-8F97-40AED2F454FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{730D859F-F8D4-4268-8F97-40AED2F454FF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F1B0B416-BAC5-479E-ADA7-DAD960BFEB66}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F1B0B416-BAC5-479E-ADA7-DAD960BFEB66}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F1B0B416-BAC5-479E-ADA7-DAD960BFEB66}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{F1B0B416-BAC5-479E-ADA7-DAD960BFEB66}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F1B0B416-BAC5-479E-ADA7-DAD960BFEB66}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F1B0B416-BAC5-479E-ADA7-DAD960BFEB66}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
