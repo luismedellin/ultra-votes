@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.1.32210.238
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UltraVotes", "UltraVotes\UltraVotes.csproj", "{EAA3177E-804F-4946-B8B6-839185659631}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UltraVotes", "UltraVotes\UltraVotes.csproj", "{EAA3177E-804F-4946-B8B6-839185659631}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UltraVotes.Tests", "UltraVotes.Tests\UltraVotes.Tests.csproj", "{730D859F-F8D4-4268-8F97-40AED2F454FF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{EAA3177E-804F-4946-B8B6-839185659631}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EAA3177E-804F-4946-B8B6-839185659631}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EAA3177E-804F-4946-B8B6-839185659631}.Release|Any CPU.Build.0 = Release|Any CPU
+		{730D859F-F8D4-4268-8F97-40AED2F454FF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{730D859F-F8D4-4268-8F97-40AED2F454FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{730D859F-F8D4-4268-8F97-40AED2F454FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{730D859F-F8D4-4268-8F97-40AED2F454FF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
