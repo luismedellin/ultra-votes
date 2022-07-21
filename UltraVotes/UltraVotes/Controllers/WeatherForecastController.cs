@@ -26,8 +26,8 @@ namespace UltraVotes.Controllers
 
             return Ok(new
             {
+                time = elapsedMs,
                 users,
-                time = elapsedMs
             });
         }
     }

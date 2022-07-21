@@ -1,3 +1,4 @@
+using UltraVotes.Core.Services;
 using UltraVotes.Data;
 using UltraVotes.Data.Repositories;
 
@@ -13,7 +14,7 @@ builder.Services.AddTransient<IUnitOfWork, UnitOfWork>();
 builder.Services.AddTransient<IMasterVoteRepository, MasterVoteRepository>();
 builder.Services.AddTransient<IUserRepository, UserRepository>();
 
-builder.Services.AddTransient<IMasterVoteService, MasterVoteRepository>();
+builder.Services.AddTransient<IMasterVoteService, MasterVoteService>();
 #endregion
 builder.Services.AddControllersWithViews();
 
