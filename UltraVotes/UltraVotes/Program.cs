@@ -10,7 +10,10 @@ builder.Services.AddSingleton<DapperContext>();
 #endregion
 #region My Services
 builder.Services.AddTransient<IUnitOfWork, UnitOfWork>();
+builder.Services.AddTransient<IMasterVoteRepository, MasterVoteRepository>();
 builder.Services.AddTransient<IUserRepository, UserRepository>();
+
+builder.Services.AddTransient<IMasterVoteService, MasterVoteRepository>();
 #endregion
 builder.Services.AddControllersWithViews();
 

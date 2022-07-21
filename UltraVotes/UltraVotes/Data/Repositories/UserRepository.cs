@@ -16,8 +16,7 @@ namespace UltraVotes.Data.Repositories
         {
             var query = "SELECT * FROM votes.Users";
             using var connection = _context.CreateConnection();
-            var user = await connection.QueryAsync<UserModel>(query);
-            return user.ToList();
+            return (await connection.QueryAsync<UserModel>(query)).ToList();
         }
     }
 }
