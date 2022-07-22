@@ -63,5 +63,11 @@
   <ItemGroup>
     <Build Include="votes\Tables\Users.sql" />
     <Build Include="Security\votes.sql" />
+    <Build Include="votes\Tables\MasterVote.sql" />
+    <Build Include="votes\Tables\Status.sql" />
+    <Build Include="votes\Tables\MasterVoteCategory.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Script1.sql" />
   </ItemGroup>
 </Project>
