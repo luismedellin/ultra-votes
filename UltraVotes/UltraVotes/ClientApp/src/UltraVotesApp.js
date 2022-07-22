@@ -1,5 +1,7 @@
 import { useEffect } from 'react';
+import { Provider } from 'react-redux';
 import { AppRouter } from './router/AppRouter';
+import { store } from './store';
 import { Navbar } from './ui';
 
 export const UltraVotesApp = () => {
@@ -15,10 +17,10 @@ export const UltraVotesApp = () => {
     }, [])
 
     return (
-        <>
+        <Provider store={ store }>
             <Navbar />
             <AppRouter />
-        </>
+        </Provider>
     )
   
 }
