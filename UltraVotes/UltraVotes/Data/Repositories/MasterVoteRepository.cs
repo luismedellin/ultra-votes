@@ -1,4 +1,5 @@
 ﻿using Dapper;
+using UltraVotes.Core.ViewModels;
 using UltraVotes.Data.Models;
 
 namespace UltraVotes.Data.Repositories
@@ -12,24 +13,26 @@ namespace UltraVotes.Data.Repositories
             _context = context;
         }
 
-        public async Task<List<MasterVoteModel>> GetAllVotes()
+        public async Task<List<MasterVoteVM>> GetAllVotes()
         {
             var query = @"SELECT	MasterVoteId, 
-		                        MasterVoteCategoryId, 
-		                        Name, 
-		                        Status, 
-		                        FromDate, 
-		                        ToDate, 
-		                        Points, 
-		                        CreatedDate, 
-		                        CreatedBy, 
-		                        UpdatedDate, 
-		                        UpdatedBy
-                        FROM	votes.MasterVote
-                        ORDER BY MasterVoteId DESC";
+		                            MasterVoteCategoryId, 
+		                            (SELECT Description FROM votes.MasterVoteCategory c WHERE c.MasterVoteCategoryId = mv.MasterVoteCategoryId)Category,
+		                            Name, 
+		                            StatusId,
+		                            (SELECT Description FROM votes.Status s WHERE s.StatusId = mv.StatusId)Status,
+		                            FromDate, 
+		                            ToDate, 
+		                            Points, 
+		                            CreatedDate, 
+		                            CreatedBy, 
+		                            UpdatedDate, 
+		                            UpdatedBy
+                            FROM	votes.MasterVote mv
+                            ORDER BY MasterVoteId DESC";
 
             using var connection = _context.CreateConnection();
-            return (await connection.QueryAsync<MasterVoteModel>(query)).ToList();
+            return (await connection.QueryAsync<MasterVoteVM>(query)).ToList();
         }
     }
 }

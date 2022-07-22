@@ -25,8 +25,8 @@ export const VotesPage = () => {
                 </div>
                 <div className="card-body">
                   <p className="card-text">
-                    <span class="badge bg-success">{ vote.status }</span>
-                    <span>{ vote.masterVoteCategoryId }</span>
+                    <span class="badge bg-success">{ vote.status }</span>&nbsp;
+                    <span>{ vote.category }</span>&nbsp;
                     <span class="badge bg-dark">{ vote.points }</span>
                   </p>
                   <i class="fas fa-clock"></i>

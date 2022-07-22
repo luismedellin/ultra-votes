@@ -36,9 +36,9 @@ SELECT * FROM votes.Users
 --drop table votes.MasterVote 
 CREATE TABLE votes.MasterVote (
     MasterVoteId INT NOT NULL IDENTITY PRIMARY KEY,
-	MasterVoteCategoryId INT NOT NULL,
+	MasterVoteCategoryId tinyint not null FOREIGN KEY REFERENCES votes.MasterVoteCategory (MasterVoteCategoryId),
 	Name         NVARCHAR (100)   NOT NULL,
-	Status		 tinyint  not null,
+	StatusId	 tinyint  not null FOREIGN KEY REFERENCES votes.Status (StatusId),
 	FromDate	 DATETIME NULL,
 	ToDate		 DATETIME NULL,
 	Points		 tinyint, 
@@ -48,11 +48,38 @@ CREATE TABLE votes.MasterVote (
     UpdatedBy    NVARCHAR (256)  NULL
 );
 
-INSERT INTO votes.MasterVote (MasterVoteCategoryId, Name, Status, FromDate, ToDate, Points, CreatedDate, CreatedBy)
+INSERT INTO votes.MasterVote (MasterVoteCategoryId, Name, StatusId, FromDate, ToDate, Points, CreatedDate, CreatedBy)
 VALUES 
 (1, 'Compañerismo', 1, '2022-07-20 12:18:00', '2022-07-27 17:00:00', 10, GETDATE(), '1020')
 
-
 SELECT * FROM votes.MasterVote
 
+*/
+
+/*
+20220722
+
+
+drop table votes.MasterVoteCategory
+CREATE TABLE votes.MasterVoteCategory
+(
+	MasterVoteCategoryId tinyint IDENTITY PRIMARY KEY,
+	Description NVARCHAR(50)
+)
+
+INSERT INTO votes.MasterVoteCategory (Description) VALUES
+('Compañia'),
+('Departamento')
+
+--drop table votes.Status 
+CREATE TABLE votes.Status
+(
+	StatusId tinyint IDENTITY PRIMARY KEY,
+	Description NVARCHAR(50)
+)
+
+INSERT INTO votes.Status (Description) VALUES
+('Abierta'),
+('Cerrada'),
+('En Progreso')
 */

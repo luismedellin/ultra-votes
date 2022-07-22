@@ -1,9 +1,10 @@
-﻿using UltraVotes.Data.Models;
+﻿using UltraVotes.Core.ViewModels;
+using UltraVotes.Data.Models;
 
 namespace UltraVotes.Core.Services
 {
     public interface IMasterVoteService
     {
-        Task<List<MasterVoteModel>> GetAllVotes();
+        Task<List<MasterVoteVM>> GetAllVotes();
     }
 }
