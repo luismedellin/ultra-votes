@@ -11,10 +11,12 @@ builder.Services.AddSingleton<DapperContext>();
 #endregion
 #region My Services
 builder.Services.AddTransient<IUnitOfWork, UnitOfWork>();
+builder.Services.AddTransient<IMasterDataRepository, MasterDataRepository>();
 builder.Services.AddTransient<IMasterVoteRepository, MasterVoteRepository>();
 builder.Services.AddTransient<IUserRepository, UserRepository>();
 
 builder.Services.AddTransient<IMasterVoteService, MasterVoteService>();
+builder.Services.AddTransient<IMasterDataService, MasterDataService>();
 #endregion
 builder.Services.AddControllersWithViews();
 builder.Services.AddCors(p => p.AddPolicy("corsapp", builder =>
