@@ -1,3 +1,4 @@
+using FluentValidation.AspNetCore;
 using UltraVotes.Core.Services;
 using UltraVotes.Data;
 using UltraVotes.Data.Repositories;
@@ -23,6 +24,12 @@ builder.Services.AddCors(p => p.AddPolicy("corsapp", builder =>
 {
     builder.WithOrigins("*").AllowAnyMethod().AllowAnyHeader();
 }));
+builder.Services.AddFluentValidation(conf =>
+{
+    conf.RegisterValidatorsFromAssembly(typeof(Program).Assembly);
+    conf.AutomaticValidationEnabled = false;
+});
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 var app = builder.Build();
 

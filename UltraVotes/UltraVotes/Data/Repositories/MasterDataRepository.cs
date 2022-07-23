@@ -1,15 +1,16 @@
 ﻿using Dapper;
+using System.Data;
 using UltraVotes.Data.Models;
 
 namespace UltraVotes.Data.Repositories
 {
     public class MasterDataRepository : IMasterDataRepository
     {
-        private readonly DapperContext _context;
+        private readonly IDbConnection dbConnection;
 
         public MasterDataRepository(DapperContext context)
         {
-            _context = context;
+            dbConnection = context.CreateConnection();
         }
 
         public async Task<List<MasterVoteCategoryModel>> GetCategories()
@@ -19,8 +20,7 @@ namespace UltraVotes.Data.Repositories
                         FROM	votes.MasterVoteCategory
                         ORDER BY Description";
 
-            using var connection = _context.CreateConnection();
-            return (await connection.QueryAsync<MasterVoteCategoryModel>(query)).ToList();
+            return (await dbConnection.QueryAsync<MasterVoteCategoryModel>(query)).ToList();
         }
 
         public async Task<List<StatusModel>> GetStatus()
@@ -31,8 +31,7 @@ namespace UltraVotes.Data.Repositories
                             FROM	votes.Status
                             ORDER BY SortOrder";
 
-            using var connection = _context.CreateConnection();
-            return (await connection.QueryAsync<StatusModel>(query)).ToList();
+            return (await dbConnection.QueryAsync<StatusModel>(query)).ToList();
         }
     }
 }

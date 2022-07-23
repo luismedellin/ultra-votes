@@ -6,5 +6,6 @@ namespace UltraVotes.Data.Repositories
     public interface IMasterVoteRepository
     {
         Task<List<MasterVoteVM>> GetAllVotes();
+        Task Save(MasterVoteModel masterVote);
     }
 }
