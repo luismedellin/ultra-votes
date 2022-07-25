@@ -1,4 +1,6 @@
 import { useEffect } from 'react'
+import { Link } from 'react-router-dom';
+
 import { useMasterVoteStore } from '../../hooks';
 
 export const VotesPage = () => {
@@ -11,12 +13,18 @@ export const VotesPage = () => {
 
   return (
     <main className="container">
-      <section className="col-6">
+      <section className="col-8">
       <h1 className="animate__animated animate__bounce">Votaciones</h1>
+      <Link
+        className='btn btn-secondary mb-4'
+        to="/votaciones/nueva">
+          <i className="fa-solid fa-plus"></i> Agregar
+          Votaciones
+      </Link>
       <div className="row">
         {
           votes.map(vote => (
-            <div key={ vote.masterVoteId } className="col-sm-8" >
+            <div key={ vote.masterVoteId } className="col-sm-6 mb-2" >
               <div className="card">
                 <div className="card-header">
                   <h5 className="text-header">

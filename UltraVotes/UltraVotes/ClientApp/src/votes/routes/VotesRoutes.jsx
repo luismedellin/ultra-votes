@@ -1,7 +1,13 @@
-import React from 'react'
+import { Routes, Route, Navigate } from "react-router-dom";
+import { VotesPage, NewVotesPage } from "..";
 
 export const VotesRoutes = () => {
   return (
-    <div>VotesRoutes</div>
+    <>
+      <Routes>
+        <Route path="votaciones/nueva" element={ <NewVotesPage /> } />
+        <Route path="*" element={<VotesPage />} />
+      </Routes>
+    </>
   )
 }

@@ -45,9 +45,6 @@ namespace UltraVotes.Core.Services
             var masterVoteModel = mapper.Map<MasterVoteModel>(masterVoteDto);
 
             await unitOfWork.MasterVotes.Save(masterVoteModel);
-
-
-
         }
     }
 }

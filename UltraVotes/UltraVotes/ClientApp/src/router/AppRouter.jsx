@@ -1,7 +1,7 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
 
 import { LoginPage } from '../auth';
-import { VotesPage } from '../votes/pages/VotesPage';
+import { VotesPage, NewVotesPage } from '../votes';
 
 
 
@@ -18,7 +18,8 @@ export const AppRouter = () => {
                     : <Route path="/*" element={ <CalendarPage /> } />
             } */}
             <Route path="/auth/*" element={ <LoginPage /> } />
-            <Route path="/*" element={ <VotesPage /> } />
+            <Route path="votaciones/nueva" element={ <NewVotesPage /> } />
+            <Route path="*" element={<VotesPage />} />
             {/* <Route path="/*" element={ <Navigate to="/auth/Login" /> } /> */}
         </Routes>
     )
