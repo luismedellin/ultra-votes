@@ -18,8 +18,8 @@ export const VotesPage = () => {
       <Link
         className='btn btn-secondary mb-4'
         to="/votaciones/nueva">
-          <i className="fa-solid fa-plus"></i> Agregar
-          Votaciones
+          <i className="fa-solid fa-plus"></i> 
+          Agregar Votaciones
       </Link>
       <div className="row">
         {
