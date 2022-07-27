@@ -41,10 +41,14 @@ export const NewVotesPage = () => {
                                     className="form-select"
                                     {...register("category", { required: true })}
                                     >
-                                    <option>-- Seleccione una categoría</option>
-                                    <option>Compañía</option>
-                                    <option>Departamento</option>
+                                    <option value="0">-- Seleccione una categoría</option>
+                                    {
+                                    data.categories.map(({masterVoteCategoryId: id, description: name}) => (
+                                        <option key={id} value={id}>{ name }</option>
+                                    ))
+                                    }
                                 </select>
+                                { errors.category && <span className="text-danger">Seleccione una categoría</span> }
                             </div>
                             <div className="col-2">
                                 <label htmlFor="points" className="form-label">Puntos:</label>
