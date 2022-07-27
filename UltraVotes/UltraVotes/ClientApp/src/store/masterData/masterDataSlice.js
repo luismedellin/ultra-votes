@@ -9,9 +9,7 @@ export const masterDataSlice = createSlice({
     reducers: {
         onLoadMasterData: (state, { payload }) => {
             state.data = payload;
-            console.log(state.isLoading);
             state.isLoading = true;
-            console.log(state.isLoading);
         },
     }
 });

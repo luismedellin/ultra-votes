@@ -5,8 +5,6 @@ import { LoginPage } from '../auth';
 import { useMasterDataStore } from '../hooks';
 import { VotesPage, NewVotesPage } from '../votes';
 
-
-
 export const AppRouter = () => {
 
     const { startLoadingMasterData, isLoading } = useMasterDataStore();

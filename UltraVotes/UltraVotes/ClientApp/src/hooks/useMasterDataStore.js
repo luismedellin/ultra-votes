@@ -10,7 +10,6 @@ export const useMasterDataStore = () => {
     const startLoadingMasterData = async() => {
         try {
             const { data } = await masterDataApi.get('masterdata');
-            console.log({data},'--------');
             dispatch( onLoadMasterData(data) );
         } catch (error) {
           console.log('Error cargando los datos maestros');

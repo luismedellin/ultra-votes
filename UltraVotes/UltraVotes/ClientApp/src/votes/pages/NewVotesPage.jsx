@@ -1,9 +1,9 @@
-// import { useEffect } from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useMasterDataStore } from "../../hooks";
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
+import Select from 'react-select'
 import DatePicker, { registerLocale } from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
@@ -16,6 +16,7 @@ registerLocale( 'es', es );
 
 const schema = yup.object().shape({
     name: yup.string().required(),
+    category: yup.number().min(1),
     points: yup.number().required().min(0).max(10),
   })
   .required();
@@ -23,7 +24,7 @@ const schema = yup.object().shape({
 export const NewVotesPage = () => {
     const { data } = useMasterDataStore();
 
-    const { register, control, handleSubmit, formState: { errors } } = useForm({
+    const { register, control, handleSubmit, setValue, formState: { errors }, clearErrors  } = useForm({
         resolver: yupResolver(schema),
       });
 
@@ -33,9 +34,19 @@ export const NewVotesPage = () => {
         name: '',
         category: 0,
         points: 0,
-        start: parseISO('2012-07-18 15:30:30'),
+        start: null,
         end: null,
     });
+
+    const onSelectChanged = ({value}, {name}) => {
+        setValue(name, value);
+        setFormValues({
+            ...formValues,
+            [name]: value
+        })
+        console.log(errors);
+        clearErrors(name);
+    }
 
     const onDateChanged = ( event, changing, field ) => {
         setFormValues({
@@ -47,6 +58,7 @@ export const NewVotesPage = () => {
     }
 
     const onSubmit = data => console.log(data, {formValues});
+
 
   return (
     <>
@@ -75,17 +87,23 @@ export const NewVotesPage = () => {
                         <div className="row mb-3">
                             <div className="col-6">
                                 <label htmlFor="category" className="form-label">Categoría: *</label>
-                                <select 
-                                    className="form-select"
-                                    {...register("category")}
-                                    >
-                                    <option value="0">-- Seleccione una categoría</option>
-                                    {
-                                    data.categories.map(({masterVoteCategoryId: id, description: name}) => (
-                                        <option key={id} value={id}>{ name }</option>
-                                    ))
-                                    }
-                                </select>
+                                <Controller
+                                    control={control}
+                                    defaultValue={formValues.category}
+                                    name="category"
+                                    render={({ onChange, value, name, ref }) => (
+                                        <Select
+                                            inputRef={ref}
+                                            classNamePrefix="form-select"
+                                            options={data.categories}
+                                            {...register('category')}
+                                            defaultValue={{ value: 0, label: "-- Seleccione una categoría" }}
+                                            // value={data.categories.find(c => c.value === value)}
+                                            onChange={ onSelectChanged }
+                                        />
+
+                                    )}
+                                />
                                 { errors.category && <span className="text-danger">Seleccione una categoría</span> }
                             </div>
                             <div className="col-6">
@@ -108,6 +126,7 @@ export const NewVotesPage = () => {
                                     render={({ field }) => (
                                         <DatePicker 
                                             selected={ formValues.start }
+                                            {...register('category')}
                                             onChange={ (event) => onDateChanged(event, 'start', field) }
                                             className="form-control"
                                             dateFormat="Pp"
@@ -117,7 +136,6 @@ export const NewVotesPage = () => {
                                         />
                                         )}
                                     />
-                                { errors.dateFrom && <span className="text-danger">Ingrese una fecha</span> }
                             </div>
                             <div className="col">
                                 <label htmlFor="dateTo" className="form-label">Hasta:</label>

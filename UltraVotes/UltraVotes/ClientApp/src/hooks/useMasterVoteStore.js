@@ -11,7 +11,7 @@ export const useMasterVoteStore = () => {
         try {
             
             const { data } = await masterVoteApi.get('MasterVote/getall');
-            console.log(data);
+
             dispatch( onLoadMasterVotes(data) );
         } catch (error) {
           console.log('Error cargando las votaciones');
