@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@hookform/resolvers": "^2.9.7",
     "@reduxjs/toolkit": "^1.8.3",
     "axios": "^0.27.2",
     "date-fns": "^2.28.0",
@@ -18,7 +19,8 @@
     "react-router-dom": "^6.3.0",
     "react-scripts": "5.0.1",
     "rimraf": "^2.6.2",
-    "sweetalert2": "^11.4.23"
+    "sweetalert2": "^11.4.23",
+    "yup": "^0.32.11"
   },
   "devDependencies": {
     "cross-env": "^7.0.3",

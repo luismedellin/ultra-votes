@@ -1,12 +1,21 @@
-import { useEffect } from "react";
+// import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useMasterDataStore } from "../../hooks";
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
 
+const schema = yup.object().shape({
+    name: yup.string().required(),
+    points: yup.number().required().min(0).max(10),
+  })
+  .required();
 
 export const NewVotesPage = () => {
     const { data } = useMasterDataStore();
 
-    const { register, handleSubmit, formState: { errors } } = useForm();
+    const { register, handleSubmit, formState: { errors } } = useForm({
+        resolver: yupResolver(schema),
+      });
 
     const onSubmit = data => console.log(data);
 
@@ -29,7 +38,7 @@ export const NewVotesPage = () => {
                                 placeholder="Ingrese el nombre de la votación" 
                                 className="form-control"
                                 name="name"
-                                {...register("name", { required: true })}
+                                {...register("name")}
                             />
                             { errors.name && <span className="text-danger">Ingrese el nombre de la votación</span> }
                         </div>
@@ -39,7 +48,7 @@ export const NewVotesPage = () => {
                                 <label htmlFor="category" className="form-label">Categoría</label>
                                 <select 
                                     className="form-select"
-                                    {...register("category", { required: true })}
+                                    {...register("category")}
                                     >
                                     <option value="0">-- Seleccione una categoría</option>
                                     {
@@ -50,17 +59,14 @@ export const NewVotesPage = () => {
                                 </select>
                                 { errors.category && <span className="text-danger">Seleccione una categoría</span> }
                             </div>
-                            <div className="col-2">
+                            <div className="col-6">
                                 <label htmlFor="points" className="form-label">Puntos:</label>
                                 <input
                                     type="number"
-                                    id="points"
-                                    min="0"
-                                    max="10"
-                                    value="0"
-                                    className="form-control" 
-                                    {...register("points", { required: true })}
+                                    className="form-control col-2"
+                                    {...register("points")}
                                 />
+                                { errors.points && <span className="text-danger">Seleccione un rango entre 0 y 10</span> }
                             </div>
                         </div>
 
