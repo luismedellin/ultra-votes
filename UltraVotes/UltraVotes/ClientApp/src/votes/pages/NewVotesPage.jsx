@@ -1,9 +1,13 @@
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
+import { useMasterDataStore } from "../../hooks";
 
 
 export const NewVotesPage = () => {
+    const { data } = useMasterDataStore();
+
     const { register, handleSubmit, formState: { errors } } = useForm();
-    
+
     const onSubmit = data => console.log(data);
 
   return (
