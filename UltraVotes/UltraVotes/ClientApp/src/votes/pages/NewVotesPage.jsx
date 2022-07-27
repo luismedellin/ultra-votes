@@ -1,8 +1,18 @@
 // import { useEffect } from "react";
-import { useForm } from "react-hook-form";
+import { useState } from "react";
+import { Controller, useForm } from "react-hook-form";
 import { useMasterDataStore } from "../../hooks";
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
+import DatePicker, { registerLocale } from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+
+import es from 'date-fns/locale/es';
+
+import { addHours, differenceInSeconds, parseISO  } from 'date-fns';
+
+
+registerLocale( 'es', es );
 
 const schema = yup.object().shape({
     name: yup.string().required(),
@@ -13,11 +23,30 @@ const schema = yup.object().shape({
 export const NewVotesPage = () => {
     const { data } = useMasterDataStore();
 
-    const { register, handleSubmit, formState: { errors } } = useForm({
+    const { register, control, handleSubmit, formState: { errors } } = useForm({
         resolver: yupResolver(schema),
       });
 
-    const onSubmit = data => console.log(data);
+    // console.log(parseISO('2012-07-18 15:30:30'))
+
+    const [formValues, setFormValues] = useState({
+        name: '',
+        category: 0,
+        points: 0,
+        start: parseISO('2012-07-18 15:30:30'),
+        end: null,
+    });
+
+    const onDateChanged = ( event, changing, field ) => {
+        setFormValues({
+            ...formValues,
+            [changing]: event
+        })
+
+        field.onChange(event);
+    }
+
+    const onSubmit = data => console.log(data, {formValues});
 
   return (
     <>
@@ -45,7 +74,7 @@ export const NewVotesPage = () => {
 
                         <div className="row mb-3">
                             <div className="col-6">
-                                <label htmlFor="category" className="form-label">Categoría</label>
+                                <label htmlFor="category" className="form-label">Categoría: *</label>
                                 <select 
                                     className="form-select"
                                     {...register("category")}
@@ -60,7 +89,7 @@ export const NewVotesPage = () => {
                                 { errors.category && <span className="text-danger">Seleccione una categoría</span> }
                             </div>
                             <div className="col-6">
-                                <label htmlFor="points" className="form-label">Puntos:</label>
+                                <label htmlFor="points" className="form-label">Puntos: *</label>
                                 <input
                                     type="number"
                                     className="form-control col-2"
@@ -73,19 +102,40 @@ export const NewVotesPage = () => {
                         <div className="row mb-3">
                             <div className="col">
                                 <label htmlFor="dateFrom" className="form-label">Desde:</label>
-                                <input
-                                    type="date"
-                                    className="form-control"
-                                    {...register("dateFrom")}
-                                />
+                                <Controller
+                                    control={control}
+                                    name='dateFrom'
+                                    render={({ field }) => (
+                                        <DatePicker 
+                                            selected={ formValues.start }
+                                            onChange={ (event) => onDateChanged(event, 'start', field) }
+                                            className="form-control"
+                                            dateFormat="Pp"
+                                            showTimeSelect
+                                            locale="es"
+                                            timeCaption="Hora"
+                                        />
+                                        )}
+                                    />
+                                { errors.dateFrom && <span className="text-danger">Ingrese una fecha</span> }
                             </div>
                             <div className="col">
                                 <label htmlFor="dateTo" className="form-label">Hasta:</label>
-                                <input
-                                    type="date"
-                                    className="form-control"
-                                    {...register("dateTo")}
-                                />
+                                <Controller
+                                    control={control}
+                                    name='dateTo'
+                                    render={({ field }) => (
+                                        <DatePicker 
+                                            selected={ formValues.end }
+                                            onChange={ (event) => onDateChanged(event, 'end', field) }
+                                            className="form-control"
+                                            dateFormat="Pp"
+                                            showTimeSelect
+                                            locale="es"
+                                            timeCaption="Hora"
+                                        />
+                                        )}
+                                    />
                             </div>
                         </div>
                         

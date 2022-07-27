@@ -8,7 +8,6 @@ export const masterVoteSlice = createSlice({
     },
     reducers: {
         onLoadMasterVotes: (state, { payload }) => {
-            console.log('$$$',{payload});
             state.votes = payload;
         },
     }
