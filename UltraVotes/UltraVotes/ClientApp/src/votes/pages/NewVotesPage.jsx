@@ -1,6 +1,11 @@
+import { useForm } from "react-hook-form";
 
 
 export const NewVotesPage = () => {
+    const { register, handleSubmit, formState: { errors } } = useForm();
+    
+    const onSubmit = data => console.log(data);
+
   return (
     <>
         <main className="container">
@@ -8,40 +13,65 @@ export const NewVotesPage = () => {
             <section className="card col-8">
                 <div className="card-body">
                 <h2>Registro de nueva votación</h2>
-                <form>
+                <form onSubmit={handleSubmit(onSubmit)}>
                     <fieldset>
                         <legend>
-                            Ingrese todos los campos a continuación para registrar una nueva votación.
+                            Ingrese la siguiente información para crear una nueva votación.
                         </legend>
                         
                         <div className="mb-3">
-                            <label for="disabledTextInput" className="form-label">Nombre:</label>
-                            <input type="text" id="disabledTextInput" className="form-control" placeholder="Ingrese el nombre de la votación" />
+                            <label htmlFor="name" className="form-label">Nombre: *</label>
+                            <input 
+                                placeholder="Ingrese el nombre de la votación" 
+                                className="form-control"
+                                name="name"
+                                {...register("name", { required: true })}
+                            />
+                            { errors.name && <span className="text-danger">Ingrese el nombre de la votación</span> }
                         </div>
 
                         <div className="row mb-3">
                             <div className="col-6">
-                                <label for="disabledTextInput" className="form-label">Categoría</label>
-                                <select id="disabledSelect" className="form-select">
+                                <label htmlFor="category" className="form-label">Categoría</label>
+                                <select 
+                                    className="form-select"
+                                    {...register("category", { required: true })}
+                                    >
                                     <option>-- Seleccione una categoría</option>
                                     <option>Compañía</option>
                                     <option>Departamento</option>
                                 </select>
                             </div>
                             <div className="col-2">
-                                <label for="points" className="form-label">Puntos:</label>
-                                <input type="number" id="points" min="0" max="10" className="form-control" />
+                                <label htmlFor="points" className="form-label">Puntos:</label>
+                                <input
+                                    type="number"
+                                    id="points"
+                                    min="0"
+                                    max="10"
+                                    value="0"
+                                    className="form-control" 
+                                    {...register("points", { required: true })}
+                                />
                             </div>
                         </div>
 
                         <div className="row mb-3">
                             <div className="col">
-                                <label for="dateFrom" className="form-label">Desde:</label>
-                                <input type="date" id="dateFrom" className="form-control" />
+                                <label htmlFor="dateFrom" className="form-label">Desde:</label>
+                                <input
+                                    type="date"
+                                    className="form-control"
+                                    {...register("dateFrom")}
+                                />
                             </div>
                             <div className="col">
-                                <label for="dateTo" className="form-label">Hasta:</label>
-                                <input type="date" id="dateTo" className="form-control" />
+                                <label htmlFor="dateTo" className="form-label">Hasta:</label>
+                                <input
+                                    type="date"
+                                    className="form-control"
+                                    {...register("dateTo")}
+                                />
                             </div>
                         </div>
                         
