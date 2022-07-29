@@ -27,7 +27,12 @@ namespace UltraVotes.Core.Services
             return unitOfWork.MasterVotes.GetAllVotes();   
         }
 
-        public async Task SaveMasterVote(MasterVoteDto masterVoteDto)
+        public Task<MasterVoteVM> GetVoteById(int masterVoteId)
+        {
+            return unitOfWork.MasterVotes.GetVoteById(masterVoteId);
+        }
+
+        public async Task<MasterVoteVM> SaveMasterVote(MasterVoteDto masterVoteDto)
         {
             var validation = await masterVoteValidator.ValidateAsync(masterVoteDto);
             if (!validation.IsValid)
@@ -45,6 +50,8 @@ namespace UltraVotes.Core.Services
             var masterVoteModel = mapper.Map<MasterVoteModel>(masterVoteDto);
 
             await unitOfWork.MasterVotes.Save(masterVoteModel);
+
+            return await unitOfWork.MasterVotes.GetVoteById(masterVoteModel.MasterVoteId);
         }
     }
 }

@@ -23,14 +23,22 @@ namespace UltraVotes.Controllers
             return Ok(masterVotes);
         }
 
+        [HttpGet("getMasterVote/{id}")]
+        public async Task<IActionResult> Get(int id)
+        {
+            var masterVote = await masterVoteService.GetVoteById(id);
+
+            return Ok(masterVote);
+        }
+
 
         [HttpPost()]
         public async Task<IActionResult> Post(MasterVoteDto masterVote)
         {
             try
             {
-                await masterVoteService.SaveMasterVote(masterVote);
-                return Ok(masterVote);
+                var savedMasterVote = await masterVoteService.SaveMasterVote(masterVote);
+                return Ok(savedMasterVote);
             }
             catch (Exception e)
             {
