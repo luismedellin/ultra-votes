@@ -6,5 +6,6 @@ namespace UltraVotes.Data.Repositories
     {
         Task<List<StatusModel>> GetStatus();
         Task<List<MasterVoteCategoryModel>> GetCategories();
+        Task<List<MasterVoteRestrictionModel>> GetRestrictions();
     }
 }

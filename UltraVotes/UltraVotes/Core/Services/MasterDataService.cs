@@ -16,11 +16,13 @@ namespace UltraVotes.Core.Services
         {
             var status = await unitOfWork.DataMaster.GetStatus();
             var categories = await unitOfWork.DataMaster.GetCategories();
+            var restrictions = await unitOfWork.DataMaster.GetRestrictions();
 
             return new MasterDataVM()
             {
                 Status = status,
                 Categories = categories,
+                Restrictions = restrictions,
             };
         }
     }

@@ -49,6 +49,9 @@ dlldata.c
 *.meta
 *.obj
 *.iobj
+*.jfm
+*.cache.v2
+*.cache
 *.pch
 *.pdb
 *.pgc

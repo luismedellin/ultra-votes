@@ -19,12 +19,15 @@ namespace UltraVotes.Data.Repositories
             var query = @"SELECT	MasterVoteId, 
 		                            MasterVoteCategoryId, 
 		                            (SELECT Description FROM votes.MasterVoteCategory c WHERE c.MasterVoteCategoryId = mv.MasterVoteCategoryId)Category,
+		                            MasterVoteRestrictionId, 
+		                            (SELECT Description FROM votes.MasterVoteRestriction c WHERE c.RestrictionId = mv.MasterVoteRestrictionId)Restriction,
 		                            Name, 
 		                            StatusId,
 		                            (SELECT Description FROM votes.Status s WHERE s.StatusId = mv.StatusId)Status,
 		                            FromDate, 
 		                            ToDate, 
 		                            Points, 
+		                            Candidates, 
 		                            CreatedDate, 
 		                            CreatedBy, 
 		                            UpdatedDate, 
@@ -40,12 +43,15 @@ namespace UltraVotes.Data.Repositories
             var query = @"SELECT	MasterVoteId, 
 		                            MasterVoteCategoryId, 
 		                            (SELECT Description FROM votes.MasterVoteCategory c WHERE c.MasterVoteCategoryId = mv.MasterVoteCategoryId)Category,
+		                            MasterVoteRestrictionId, 
+		                            (SELECT Description FROM votes.MasterVoteRestriction c WHERE c.RestrictionId = mv.MasterVoteRestrictionId)Restriction,
 		                            Name, 
 		                            StatusId,
 		                            (SELECT Description FROM votes.Status s WHERE s.StatusId = mv.StatusId)Status,
 		                            FromDate, 
 		                            ToDate, 
 		                            Points, 
+		                            Candidates, 
 		                            CreatedDate, 
 		                            CreatedBy, 
 		                            UpdatedDate, 
@@ -60,8 +66,8 @@ namespace UltraVotes.Data.Repositories
         {
             dbConnection.Open();
             using var transaction = CreateTransaction();
-            const string sql = @"INSERT INTO votes.MasterVote (MasterVoteCategoryId, Name, StatusId, FromDate, ToDate, Points, CreatedDate, CreatedBy) OUTPUT INSERTED.MasterVoteId
-                                    VALUES (@MasterVoteCategoryId, @Name, 1, @FromDate, @ToDate, @Points, GETDATE(), '$$test');";
+            const string sql = @"INSERT INTO votes.MasterVote (MasterVoteCategoryId, MasterVoteRestrictionId,  Name, StatusId, FromDate, ToDate, Points, Candidates, CreatedDate, CreatedBy) OUTPUT INSERTED.MasterVoteId
+                                    VALUES (@MasterVoteCategoryId, @MasterVoteRestrictionId, @Name, 1, @FromDate, @ToDate, @Points, @Candidates, GETDATE(), '$$test');";
             try
             {
                 masterVote.MasterVoteId = await (dbConnection.ExecuteScalarAsync<int>(sql, masterVote, transaction));
