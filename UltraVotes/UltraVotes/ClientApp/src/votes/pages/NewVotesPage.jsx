@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useMasterDataStore, useMasterVoteStore } from "../../hooks";
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -17,14 +17,17 @@ registerLocale( 'es', es );
 
 const schema = yup.object().shape({
     name: yup.string().required(),
+    candidates: yup.number().min(0).max(5),
     category: yup.number().min(1),
-    points: yup.number().required(),
+    restriction: yup.number().required(),
+    points: yup.number().required().min(0),
   })
   .required();
 
 const defaultValues = {
     category: 0,
     // category: '',
+    restriction: { value: "1", label: "Ninguna" },
     points: 0,
     fromDate: null,
     toDate: null
@@ -77,10 +80,10 @@ export const NewVotesPage = () => {
         field.onChange(event);
     }
 
-    const onInputChange = ({target}, name)=> {
-        setValue(name, target.value);
-        // setFormValues({...formValues, [name]: target.value})
-    }
+    // const onInputChange = ({target}, name)=> {
+    //     setValue(name, target.value);
+    //     // setFormValues({...formValues, [name]: target.value})
+    // }
 
     const onSubmit = async(data) => {
         await startSavingMasterVotes( data );
@@ -135,15 +138,50 @@ export const NewVotesPage = () => {
                                 />
                                 { errors.category && <span className="text-danger">Seleccione una categoría</span> }
                             </div>
+                            
                             <div className="col-6">
-                                <label htmlFor="points" className="form-label">Puntos: *</label>
-                                <input
-                                    type="number"
-                                    className="form-control col-2"
-                                    {...register("points")}
-                                    // onChange={event => onInputChange(event, 'points') }
-                                />
-                                { errors.points && <span className="text-danger">Seleccione un rango entre 0 y 10</span> }
+                                    <label htmlFor="points" className="form-label">Restricción por votación: *</label>
+                                    <Controller
+                                        control={control}
+                                        defaultValue={defaultValues.restriction}
+                                        name="restriction"
+                                        render={({ onChange, value, name, ref }) => (
+                                            <Select
+                                                inputRef={ref}
+                                                classNamePrefix="form-select"
+                                                options={data.restrictions}
+                                                {...register('restriction')}
+                                                defaultValue={defaultValues.restriction}
+                                                onChange={ onSelectChanged }
+                                            />
+
+                                        )}
+                                    />
+                            </div>
+                            
+                        </div>
+
+                        <div className="row mb-3">
+                            <div className="col-6">
+                                    <label htmlFor="points" className="form-label">Puntos: *</label>
+                                    <input
+                                        type="number"
+                                        className="form-control col-2"
+                                        {...register("points")}
+                                        // onChange={event => onInputChange(event, 'points') }
+                                    />
+                                    { errors.points && <span className="text-danger">Seleccione un número >= 0</span> }
+                            </div>
+
+                            <div className="col-6">
+                                    <label htmlFor="points" className="form-label">Número de candidatos: *</label>
+                                    <input
+                                        type="number"
+                                        className="form-control col-2"
+                                        {...register("candidates")}
+                                        // onChange={event => onInputChange(event, 'points') }
+                                    />
+                                    { errors.candidates && <span className="text-danger">Seleccione un rango entre 0 y 5</span> }
                             </div>
                         </div>
 
