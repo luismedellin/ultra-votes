@@ -1,3 +1,4 @@
+using FluentValidation.AspNetCore;
 using UltraVotes.Core.Services;
 using UltraVotes.Data;
 using UltraVotes.Data.Repositories;
@@ -11,16 +12,24 @@ builder.Services.AddSingleton<DapperContext>();
 #endregion
 #region My Services
 builder.Services.AddTransient<IUnitOfWork, UnitOfWork>();
+builder.Services.AddTransient<IMasterDataRepository, MasterDataRepository>();
 builder.Services.AddTransient<IMasterVoteRepository, MasterVoteRepository>();
 builder.Services.AddTransient<IUserRepository, UserRepository>();
 
 builder.Services.AddTransient<IMasterVoteService, MasterVoteService>();
+builder.Services.AddTransient<IMasterDataService, MasterDataService>();
 #endregion
 builder.Services.AddControllersWithViews();
 builder.Services.AddCors(p => p.AddPolicy("corsapp", builder =>
 {
     builder.WithOrigins("*").AllowAnyMethod().AllowAnyHeader();
 }));
+builder.Services.AddFluentValidation(conf =>
+{
+    conf.RegisterValidatorsFromAssembly(typeof(Program).Assembly);
+    conf.AutomaticValidationEnabled = false;
+});
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 var app = builder.Build();
 

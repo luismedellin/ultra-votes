@@ -4,7 +4,8 @@ namespace UltraVotes.Data
 {
     public interface IUnitOfWork
     {
-        IUserRepository Users { get; }
+        IMasterDataRepository DataMaster { get; }
         IMasterVoteRepository MasterVotes { get; }
+        IUserRepository Users { get; }
     }
 }

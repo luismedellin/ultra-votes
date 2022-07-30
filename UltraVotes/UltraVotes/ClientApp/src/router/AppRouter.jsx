@@ -1,16 +1,26 @@
+import { useEffect } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
 
 import { LoginPage } from '../auth';
-import { VotesPage } from '../votes/pages/VotesPage';
-
-
+import { useMasterDataStore } from '../hooks';
+import { VotesPage, NewVotesPage } from '../votes';
 
 export const AppRouter = () => {
 
+    const { startLoadingMasterData, isLoading } = useMasterDataStore();
+
+    useEffect(() => {
+        startLoadingMasterData();
+    }, [])
+
     const authStatus = 'not-authenticated'; // 'authenticated'; // 'not-authenticated';
 
+    if (!isLoading) {
+        return <p>Loading...</p>
+    }
 
     return (
+
         <Routes>
             {/* {
                 ( authStatus === 'not-authenticated')  
@@ -18,7 +28,8 @@ export const AppRouter = () => {
                     : <Route path="/*" element={ <CalendarPage /> } />
             } */}
             <Route path="/auth/*" element={ <LoginPage /> } />
-            <Route path="/*" element={ <VotesPage /> } />
+            <Route path="votaciones/nueva" element={ <NewVotesPage /> } />
+            <Route path="*" element={<VotesPage />} />
             {/* <Route path="/*" element={ <Navigate to="/auth/Login" /> } /> */}
         </Routes>
     )

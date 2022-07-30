@@ -8,12 +8,15 @@ export const masterVoteSlice = createSlice({
     },
     reducers: {
         onLoadMasterVotes: (state, { payload }) => {
-            console.log('$$$',{payload});
             state.votes = payload;
+        },
+        onSavingMasterVotes: (state, { payload }) => {
+            state.votes.push(payload);
+            state.activeVote = payload;
         },
     }
 });
 
 
 // Action creators are generated for each case reducer function
-export const { onLoadMasterVotes } = masterVoteSlice.actions;
+export const { onLoadMasterVotes, onSavingMasterVotes } = masterVoteSlice.actions;
