@@ -45,5 +45,19 @@ namespace UltraVotes.Controllers
                 return StatusCode(500, e.Message);
             }
         }
+
+        [HttpPut()]
+        public async Task<IActionResult> Put(MasterVoteDto masterVote)
+        {
+            try
+            {
+                await masterVoteService.Update(masterVote);
+                return Ok("Master Vote actualizado");
+            }
+            catch (Exception e)
+            {
+                return StatusCode(500, e.Message);
+            }
+        }
     }
 }

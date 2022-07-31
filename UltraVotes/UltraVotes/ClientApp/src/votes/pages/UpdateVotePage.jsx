@@ -20,23 +20,16 @@ const schema = yup.object().shape({
   })
   .required();
 
-const defaultValues = {
-    category: 0,
-    points: 0,
-    fromDate: null,
-    toDate: null
-};
-
 export const UpdateVotePage = () => {
   const { id } = useParams();
   const { data } = useMasterDataStore();
 
-  const { getDefaultMasterVote } = useMasterVoteStore();
+  const { getDefaultMasterVote, startSavingMasterVotes } = useMasterVoteStore();
   const [masterVote, setMasterVote] = useState(null);
 
   const [formValues, setFormValues] = useState({
-      fromDate: defaultValues.fromDate,
-      toDate: defaultValues.toDate,
+      fromDate: new Date(),
+      toDate: new Date(),
   });  
 
   const { 
@@ -55,6 +48,10 @@ export const UpdateVotePage = () => {
      const load = async() => {
         const myMasterVote = await getDefaultMasterVote(id);
         setMasterVote(myMasterVote);
+        setFormValues({
+          fromDate: parseISO(myMasterVote.fromDate),
+          toDate: parseISO(myMasterVote.toDate)
+        })
      }
 
      load();
@@ -73,13 +70,14 @@ export const UpdateVotePage = () => {
     field.onChange(event);
 }
 
-  const onSelectChanged = ({value, label}, {name}) => {
-    setValue(name, value);
+  const onSelectChanged = (value, label, propId, name) => {
+    setValue(propId, value);
+    setValue(name, label);
     clearErrors(name);
   }
 
   const onSubmit = async(data) => {
-      console.log(data);
+    await startSavingMasterVotes( data );
   }
   
   
@@ -130,7 +128,7 @@ export const UpdateVotePage = () => {
                                             options={data.categories}
                                             {...register('category')}
                                             defaultValue={{ value: masterVote.masterVoteCategoryId, label: masterVote.category }}
-                                            onChange={ onSelectChanged }l
+                                            onChange={ ({value, label}, {name}) => onSelectChanged(value, label, "masterVoteCategoryId", name)  }l
                                         />
 
                                     )}
@@ -142,7 +140,7 @@ export const UpdateVotePage = () => {
                                     <label htmlFor="restriction" className="form-label">Restricción por votación: *</label>
                                     <Controller
                                         control={control}
-                                        defaultValue={defaultValues.restriction}
+                                        defaultValue={masterVote.masterVoteRestrictionId}
                                         name="restriction"
                                         render={({ onChange, value, name, ref }) => (
                                             <Select
@@ -151,7 +149,7 @@ export const UpdateVotePage = () => {
                                                 options={data.restrictions}
                                                 {...register('restriction')}
                                                 defaultValue={{ value: masterVote.masterVoteRestrictionId, label: masterVote.restriction }}
-                                                onChange={ onSelectChanged }
+                                                onChange={ ({value, label}, {name}) => onSelectChanged(value, label, "masterVoteRestrictionId", name) }l
                                             />
 
                                         )}
@@ -190,7 +188,7 @@ export const UpdateVotePage = () => {
                                     name='fromDate'
                                     render={({ field }) => (
                                         <DatePicker 
-                                            selected={ parseISO(masterVote.fromDate) }
+                                            selected={ formValues.fromDate }
                                             {...register('category')}
                                             onChange={ (event) => onDateChanged(event, 'fromDate', field) }
                                             className="form-control"
@@ -209,7 +207,7 @@ export const UpdateVotePage = () => {
                                     name='toDate'
                                     render={({ field }) => (
                                         <DatePicker 
-                                            selected={ parseISO(masterVote.toDate) }
+                                            selected={ formValues.toDate }
                                             onChange={ (event) => onDateChanged(event, 'toDate', field) }
                                             className="form-control"
                                             dateFormat="Pp"

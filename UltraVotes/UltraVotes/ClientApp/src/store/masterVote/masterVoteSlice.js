@@ -17,9 +17,25 @@ export const masterVoteSlice = createSlice({
         onSetActiveMasterVote: (state, { payload }) => {
             state.activeVote = payload;
         },
+        onUpdateMasterVote: (state, { payload }) => {
+            if(!state.votes.length){
+                state.activeVote = payload;
+                return;
+            }
+            
+            state.votes = state.votes.map( vote => {
+                
+                if ( vote.masterVoteId === payload.masterVoteId ) {
+                    
+                    return payload;
+                }
+
+                return vote;
+            });
+        }
     }
 });
 
 
 // Action creators are generated for each case reducer function
-export const { onLoadMasterVotes, onSavingMasterVotes, onSetActiveMasterVote } = masterVoteSlice.actions;
+export const { onLoadMasterVotes, onSavingMasterVotes, onSetActiveMasterVote, onUpdateMasterVote } = masterVoteSlice.actions;

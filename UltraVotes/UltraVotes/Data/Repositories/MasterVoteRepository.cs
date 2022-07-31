@@ -84,6 +84,37 @@ namespace UltraVotes.Data.Repositories
             }
         }
 
+        public async Task Update(MasterVoteModel masterVote)
+        {
+            dbConnection.Open();
+            using var transaction = CreateTransaction();
+            const string sql = @"UPDATE	votes.MasterVote
+                                SET		MasterVoteCategoryId = @MasterVoteCategoryId,
+		                                MasterVoteRestrictionId = @MasterVoteRestrictionId,
+		                                Name = @Name,
+		                                FromDate = @FromDate,
+		                                ToDate = @ToDate,
+		                                Points = @Points,
+		                                Candidates = @Candidates,
+		                                UpdatedBy = 'UPDATE',
+		                                UpdatedDate = GETDATE()
+                                WHERE	MasterVoteId = @MasterVoteId;";
+            try
+            {
+                await (dbConnection.ExecuteScalarAsync<int>(sql, masterVote, transaction));
+                transaction.Commit();
+            }
+            catch (Exception e)
+            {
+                transaction.Rollback();
+                var errorMessage = $@"Error guardando una nueva votación";
+            }
+            finally
+            {
+                dbConnection.Close();
+            }
+        }
+
         private IDbTransaction CreateTransaction()
         {
             return dbConnection.BeginTransaction(IsolationLevel.ReadCommitted);
