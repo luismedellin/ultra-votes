@@ -3,7 +3,7 @@ import { Navigate, Route, Routes } from 'react-router-dom';
 
 import { LoginPage } from '../auth';
 import { useMasterDataStore } from '../hooks';
-import { VotesPage, NewVotesPage } from '../votes';
+import { VotesPage, NewVotesPage, UpdateVotePage } from '../votes';
 
 export const AppRouter = () => {
 
@@ -29,6 +29,7 @@ export const AppRouter = () => {
             } */}
             <Route path="/auth/*" element={ <LoginPage /> } />
             <Route path="votaciones/nueva" element={ <NewVotesPage /> } />
+            <Route path="votaciones/:id" element={ <UpdateVotePage /> } />
             <Route path="*" element={<VotesPage />} />
             {/* <Route path="/*" element={ <Navigate to="/auth/Login" /> } /> */}
         </Routes>

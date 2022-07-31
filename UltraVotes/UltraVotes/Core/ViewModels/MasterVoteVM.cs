@@ -13,5 +13,6 @@
         public DateTime? FromDate { get; set; }
         public DateTime? ToDate { get; set; }
         public byte Points { get; set; }
+        public byte Candidates { get; set; }
     }
 }
