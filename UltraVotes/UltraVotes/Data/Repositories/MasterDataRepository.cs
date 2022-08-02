@@ -6,10 +6,12 @@ namespace UltraVotes.Data.Repositories
 {
     public class MasterDataRepository : IMasterDataRepository
     {
+        private readonly ILogger<MasterDataRepository> logger;
         private readonly IDbConnection dbConnection;
 
-        public MasterDataRepository(DapperContext context)
+        public MasterDataRepository(ILogger<MasterDataRepository> logger, DapperContext context)
         {
+            this.logger = logger;
             dbConnection = context.CreateConnection();
         }
 
@@ -31,7 +33,34 @@ namespace UltraVotes.Data.Repositories
                             FROM	votes.Status
                             ORDER BY SortOrder";
 
-            return (await dbConnection.QueryAsync<StatusModel>(query)).ToList();
+            try
+            {
+                return (await dbConnection.QueryAsync<StatusModel>(query)).ToList();
+            }
+            catch (Exception e)
+            {
+                this.logger.LogError(query, e.Message);
+                throw; 
+            }
+        }
+
+        public async Task<List<MasterVoteRestrictionModel>> GetRestrictions()
+        {
+            var query = @"  SELECT	RestrictionId,
+		                            Description,
+		                            SortOrder
+                            FROM	votes.MasterVoteRestriction
+                            ORDER BY SortOrder";
+
+            try
+            {
+                return (await dbConnection.QueryAsync<MasterVoteRestrictionModel>(query)).ToList();
+            }
+            catch (Exception e)
+            {
+                this.logger.LogError(query, e.Message);
+                throw;
+            }
         }
     }
 }

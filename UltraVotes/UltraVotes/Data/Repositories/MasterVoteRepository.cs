@@ -19,12 +19,15 @@ namespace UltraVotes.Data.Repositories
             var query = @"SELECT	MasterVoteId, 
 		                            MasterVoteCategoryId, 
 		                            (SELECT Description FROM votes.MasterVoteCategory c WHERE c.MasterVoteCategoryId = mv.MasterVoteCategoryId)Category,
+		                            MasterVoteRestrictionId, 
+		                            (SELECT Description FROM votes.MasterVoteRestriction c WHERE c.RestrictionId = mv.MasterVoteRestrictionId)Restriction,
 		                            Name, 
 		                            StatusId,
 		                            (SELECT Description FROM votes.Status s WHERE s.StatusId = mv.StatusId)Status,
 		                            FromDate, 
 		                            ToDate, 
 		                            Points, 
+		                            Candidates, 
 		                            CreatedDate, 
 		                            CreatedBy, 
 		                            UpdatedDate, 
@@ -40,12 +43,15 @@ namespace UltraVotes.Data.Repositories
             var query = @"SELECT	MasterVoteId, 
 		                            MasterVoteCategoryId, 
 		                            (SELECT Description FROM votes.MasterVoteCategory c WHERE c.MasterVoteCategoryId = mv.MasterVoteCategoryId)Category,
+		                            MasterVoteRestrictionId, 
+		                            (SELECT Description FROM votes.MasterVoteRestriction c WHERE c.RestrictionId = mv.MasterVoteRestrictionId)Restriction,
 		                            Name, 
 		                            StatusId,
 		                            (SELECT Description FROM votes.Status s WHERE s.StatusId = mv.StatusId)Status,
 		                            FromDate, 
 		                            ToDate, 
 		                            Points, 
+		                            Candidates, 
 		                            CreatedDate, 
 		                            CreatedBy, 
 		                            UpdatedDate, 
@@ -60,11 +66,42 @@ namespace UltraVotes.Data.Repositories
         {
             dbConnection.Open();
             using var transaction = CreateTransaction();
-            const string sql = @"INSERT INTO votes.MasterVote (MasterVoteCategoryId, Name, StatusId, FromDate, ToDate, Points, CreatedDate, CreatedBy) OUTPUT INSERTED.MasterVoteId
-                                    VALUES (@MasterVoteCategoryId, @Name, 1, @FromDate, @ToDate, @Points, GETDATE(), '$$test');";
+            const string sql = @"INSERT INTO votes.MasterVote (MasterVoteCategoryId, MasterVoteRestrictionId,  Name, StatusId, FromDate, ToDate, Points, Candidates, CreatedDate, CreatedBy) OUTPUT INSERTED.MasterVoteId
+                                    VALUES (@MasterVoteCategoryId, @MasterVoteRestrictionId, @Name, 1, @FromDate, @ToDate, @Points, @Candidates, GETDATE(), '$$test');";
             try
             {
                 masterVote.MasterVoteId = await (dbConnection.ExecuteScalarAsync<int>(sql, masterVote, transaction));
+                transaction.Commit();
+            }
+            catch (Exception e)
+            {
+                transaction.Rollback();
+                var errorMessage = $@"Error guardando una nueva votación";
+            }
+            finally
+            {
+                dbConnection.Close();
+            }
+        }
+
+        public async Task Update(MasterVoteModel masterVote)
+        {
+            dbConnection.Open();
+            using var transaction = CreateTransaction();
+            const string sql = @"UPDATE	votes.MasterVote
+                                SET		MasterVoteCategoryId = @MasterVoteCategoryId,
+		                                MasterVoteRestrictionId = @MasterVoteRestrictionId,
+		                                Name = @Name,
+		                                FromDate = @FromDate,
+		                                ToDate = @ToDate,
+		                                Points = @Points,
+		                                Candidates = @Candidates,
+		                                UpdatedBy = 'UPDATE',
+		                                UpdatedDate = GETDATE()
+                                WHERE	MasterVoteId = @MasterVoteId;";
+            try
+            {
+                await (dbConnection.ExecuteScalarAsync<int>(sql, masterVote, transaction));
                 transaction.Commit();
             }
             catch (Exception e)

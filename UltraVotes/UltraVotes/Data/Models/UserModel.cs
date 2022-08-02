@@ -10,6 +10,7 @@
         public string Document { get; set; }
         public string Phone { get; set; }
         public string DepartmentId { get; set; }
+        public string AreaId { get; set; }
         public string BossId { get; set; }
     }
 }

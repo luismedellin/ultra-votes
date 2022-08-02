@@ -7,6 +7,7 @@
     [Document]     NVARCHAR (20)   NOT NULL,
     [Phone]        NVARCHAR (20)   NULL,
     [DepartmentId] NVARCHAR (50)   NULL,
+    [AreaId]       NVARCHAR (50)   NULL,
     [BossId]       NVARCHAR (256)  NULL,
     [CountryId]    NVARCHAR (50)   NOT NULL,
     [Avatar]       NVARCHAR (256)  NULL,
@@ -16,6 +17,8 @@
     [UpdatedBy]    NVARCHAR (256)  NULL,
     PRIMARY KEY CLUSTERED ([UserId] ASC)
 );
+
+
 
 
 
