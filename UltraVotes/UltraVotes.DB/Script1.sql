@@ -24,7 +24,15 @@ CREATE TABLE votes.Users(
 
 INSERT INTO votes.Users VALUES
 ('luiseduardo1218@gmail.com','123','Luis','Velandia',
-'luiseduardo1218@gmail.com', '1020', '311', 'ti', 'develop', '1020', 'colombia', '', GETDATE(), '1020', NULL, NULL)
+'luiseduardo1218@gmail.com', '1020', '311', 'ti', 'develop', '1020', 'colombia', '', GETDATE(), '1020', NULL, NULL),
+('maria@gmail.com','123','Maria C','Torres',
+'maria@gmail.com', '1020', '311', 'financiera', 'juridica', '1020', 'colombia', '', GETDATE(), '1020', NULL, NULL),
+('mary@gmail.com','123','Mary','Franco',
+'mary@gmail.com', '1020', '311', 'financiera', 'contabilidad', '1020', 'colombia', '', GETDATE(), '1020', NULL, NULL),
+('alejandra@gmail.com','123','Alejandra','Giraldo',
+'aleja@gmail.com', '1020', '311', 'ti', 'dev', '1020', 'colombia', '', GETDATE(), '1020', NULL, NULL),
+('alejandro@gmail.com','123','Alejandro','Giraldo',
+'alejandro@gmail.com', '1020', '311', 'comercial', 'diseño', '1020', 'colombia', '', GETDATE(), '1020', NULL, NULL)
 
 
 SELECT * FROM votes.Users
