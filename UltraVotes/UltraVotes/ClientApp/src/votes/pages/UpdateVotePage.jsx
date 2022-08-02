@@ -10,6 +10,7 @@ import es from 'date-fns/locale/es';
 import Select from 'react-select'
 import * as yup from 'yup';
 import { useMasterDataStore, useMasterVoteStore } from "../../hooks";
+import { VotesMenu } from '../components/VotesMenu';
 
 registerLocale( 'es', es );
 
@@ -87,7 +88,9 @@ export const UpdateVotePage = () => {
 
   return (
     <main className="container">
-            <div className="row justify-content-md-center pt-3">
+            
+            <div className="justify-content-md-center d-flex">
+            <VotesMenu />
             <section className="card col-8">
                 <div className="card-body">
                 <h2>Actualización de votación:</h2>
