@@ -12,7 +12,7 @@ namespace UltraVotes.Data.Repositories
             _context = context;
         }
 
-        public async Task<List<UserModel>> GetUsers()
+        public async Task<List<UserModel>> GetAll()
         {
             var query = "SELECT * FROM votes.Users";
             using var connection = _context.CreateConnection();

@@ -20,7 +20,7 @@ namespace UltraVotes.Controllers
         public async Task<IActionResult> Get()
         {
             var watch = System.Diagnostics.Stopwatch.StartNew();
-            var users = await _unitOfWork.Users.GetUsers();
+            var users = await _unitOfWork.Users.GetAll();
             watch.Stop();
             var elapsedMs = watch.ElapsedMilliseconds;
 

@@ -1,8 +1,8 @@
 ﻿using UltraVotes.Data.Models;
 
-namespace UltraVotes.Data.Repositories
+namespace UltraVotes.Core.Services
 {
-    public interface IUserRepository
+    public interface IUserService
     {
         Task<List<UserModel>> GetAll();
     }
