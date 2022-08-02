@@ -39,10 +39,13 @@ export const useMasterVoteStore = () => {
         try {
 
             if(!activeVote) {
-                const { data } = await masterVoteApi.get(`MasterVote/getMasterVote/${masterVoteId}`);
-                console.log(data);
-                dispatch( onSetActiveMasterVote(data) );
-                return data;
+                const { data: masterVote } = await masterVoteApi.get(`MasterVote/getMasterVote/${masterVoteId}`);
+                const { data: users } = await masterVoteApi.get(`MasterVote/users/${masterVoteId}`);
+                masterVote['users'] = users;
+
+                dispatch( onSetActiveMasterVote(masterVote) );
+                
+                return masterVote;
             }
 
             return activeVote;

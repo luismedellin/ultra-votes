@@ -14,8 +14,8 @@ namespace UltraVotes.Controllers
             this.userService = userService;
         }
 
-        [HttpGet]
-        public async Task<IActionResult> Get()
+        [HttpGet("/api/MasterVote/Users/{masterVoteId}")]
+        public async Task<IActionResult> Get(int masterVoteId)
         {
             var users = await userService.GetAll();
 
