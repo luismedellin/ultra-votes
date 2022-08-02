@@ -44,7 +44,7 @@ export const VotesPage = () => {
                   <p className="card-text">
                     <strong>Hasta : </strong>{ vote.toDate }
                   </p>
-                  <Link to={`/votaciones/${vote.masterVoteId}`}>
+                  <Link to={`/votaciones/detalle/${vote.masterVoteId}`}>
                     Actualizar
                   </Link>
                 </div>
