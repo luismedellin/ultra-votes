@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import { useTable, useGlobalFilter } from 'react-table';
 
 import { VotesMenu } from '../';
-import { useMasterDataStore, useMasterVoteStore } from "../../hooks";
+import { useMasterVoteStore } from "../../hooks";
 import { GlobalFiltering } from '../../ui';
 
 export const UsersVotesPage = () => {
@@ -17,30 +17,10 @@ export const UsersVotesPage = () => {
     const load = async() => {
        const myMasterVote = await getDefaultMasterVote(id);
        setData(myMasterVote.users);
-       
-       
     }
 
     load();
  }, [id]);
-
-  // const data = useMemo(
-  //   () => [
-  //     {
-  //       name: 'Hello',
-  //       lastName: 'World',
-  //     },
-  //     {
-  //       name: 'react-table',
-  //       lastName: 'rocks',
-  //     },
-  //     {
-  //       name: 'whatever',
-  //       lastName: 'you want',
-  //     },
-  //   ],
-  //   []
-  // )
 
   const columns = useMemo(
     () => [

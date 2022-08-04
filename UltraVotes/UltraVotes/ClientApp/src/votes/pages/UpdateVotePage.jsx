@@ -88,7 +88,6 @@ export const UpdateVotePage = () => {
 
   return (
     <main className="container">
-            
             <div className="justify-content-md-center d-flex">
             <VotesMenu />
             <section className="card col-8">
