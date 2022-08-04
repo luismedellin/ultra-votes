@@ -1,9 +1,10 @@
 import { useState, useMemo, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { useTable } from 'react-table';
+import { useTable, useGlobalFilter } from 'react-table';
 
 import { VotesMenu } from '../';
 import { useMasterDataStore, useMasterVoteStore } from "../../hooks";
+import { GlobalFiltering } from '../../ui';
 
 export const UsersVotesPage = () => {
 
@@ -64,12 +65,19 @@ export const UsersVotesPage = () => {
   )
 
   const {
-    getTableProps,
     getTableBodyProps,
+    getTableProps,
     headerGroups,
-    rows,
     prepareRow,
-  } = useTable({ columns, data })
+    rows,
+    setGlobalFilter,
+    state,
+  } = useTable({ 
+    columns, 
+    data 
+  }, useGlobalFilter)
+
+  const { globalFilter } = state;
 
   if (!data){
     return <p>loading...</p>
@@ -84,8 +92,15 @@ export const UsersVotesPage = () => {
                 <div className="card-body">
                   <h2>Usuarios de la votación:</h2>
 
+
+                  <GlobalFiltering 
+                  filter={globalFilter} 
+                  setFilter={setGlobalFilter} />
+
                   <div className='p-2'>
                 
+                
+
                 <table {...getTableProps()} 
                   className="table">
                 <thead>
