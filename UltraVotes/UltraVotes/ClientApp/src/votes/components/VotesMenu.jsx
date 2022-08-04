@@ -29,7 +29,6 @@ export const VotesMenu = () => {
     const { id } = useParams();
 
     const getMenuClass = (isActive)=> {
-        console.log(isActive);
         return `list-group-item ${isActive ? 'bg-secondary text-white' : ''}`;
     }
 

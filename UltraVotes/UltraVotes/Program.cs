@@ -18,6 +18,7 @@ builder.Services.AddTransient<IUserRepository, UserRepository>();
 
 builder.Services.AddTransient<IMasterVoteService, MasterVoteService>();
 builder.Services.AddTransient<IMasterDataService, MasterDataService>();
+builder.Services.AddTransient<IUserService, UserService>();
 #endregion
 builder.Services.AddControllersWithViews();
 builder.Services.AddCors(p => p.AddPolicy("corsapp", builder =>
