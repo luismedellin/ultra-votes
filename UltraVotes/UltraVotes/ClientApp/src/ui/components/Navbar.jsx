@@ -8,48 +8,64 @@ export const Navbar = () => {
     }
 
     return (
-        <nav className="navbar navbar-expand-sm navbar-dark bg-dark p-2">
-            
-            <Link 
-                className="navbar-brand" 
-                to="/"
-            >
-                Ultra Votes
-            </Link>
+        <header className="header-home">
+        <nav className="navbar navbar-expand-sm navbar-dark bg-dark">
+            <div className="container-fluid">
+                <button className="navbar-toggler" 
+                        type="button" data-bs-toggle="collapse" 
+                        data-bs-target="#navbarTogglerUltraVotes" 
+                        aria-controls="navbarTogglerUltraVotes" 
+                        ria-expanded="false" 
+                        aria-label="Toggle navigation">
+                    <span className="navbar-toggler-icon"></span>
+                </button>
 
-            <div className="navbar-collapse">
-                <div className="navbar-nav">
+                <Link 
+                    className="navbar-brand" 
+                    to="/"
+                >
+                    Ultra Votes
+                </Link>
 
-                    <NavLink 
-                        className={ isActive }
-                        to="/auth/login"
-                    >
-                        Login
-                    </NavLink>
+                <div className="collapse navbar-collapse" id="navbarTogglerUltraVotes">
+                    
 
-                    <NavLink 
-                        className={ isActive }
-                        to="/"
-                    >
-                        Votaciones
-                    </NavLink>
+                    <div className="navbar-collapse">
+                        <div className="navbar-nav">
 
+                            <NavLink 
+                                className={ isActive }
+                                to="/auth/login"
+                            >
+                                Login
+                            </NavLink>
+
+                            <NavLink 
+                                className={ isActive }
+                                to="/"
+                            >
+                                Votaciones
+                            </NavLink>
+
+                        </div>
+                    </div>
+
+                    <div className="navbar-collapse collapse w-100 order-3 dual-collapse2 d-flex justify-content-end">
+                        <ul className="navbar-nav ml-auto">
+                            {/* <span className="nav-item nav-link text-primary">
+                                { user?.name }
+                            </span>
+                            <button
+                                className="nav-item nav-link btn"
+                                onClick={ onLogout }
+                            >
+                                Logout
+                            </button> */}
+                        </ul>
+                    </div>
                 </div>
             </div>
-
-            <div className="navbar-collapse collapse w-100 order-3 dual-collapse2 d-flex justify-content-end">
-                <ul className="navbar-nav ml-auto">
-                    {/* <span className="nav-item nav-link text-primary">
-                        { user?.name }
-                    </span>
-                    <button
-                        className="nav-item nav-link btn"
-                        onClick={ onLogout }
-                    >
-                        Logout
-                    </button> */}
-                </ul>
-            </div>
         </nav>
+        </header>
     )
 }
