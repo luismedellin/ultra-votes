@@ -44,6 +44,13 @@ header,footer,nav,article,aside { box-sizing: border-box;/* padding: 1em; */}
     }    
 }
 
+@media (min-width: 768px) { 
+    #LoginPage > div {
+        border: var(--bs-border-width) var(--bs-border-style) var(--bs-border-color)!important;
+    }    
+}
+
+
 
 .btn-outline-danger:hover > i {
     color: white !important;;

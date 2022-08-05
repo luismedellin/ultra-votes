@@ -1,7 +1,7 @@
 export const LoginPage = () => {
   return (
-    <main className="d-flex align-items-center justify-content-center mt-2" style={{minHeight: '60vh'}}>
-      <div className="col col-md-3 border p-4 ">
+    <main id="LoginPage" className="d-flex align-items-center justify-content-center mt-2" style={{minHeight: '60vh'}}>
+      <div className="col col-md-3 p-4 ">
       
         <form>
         <div className="mb-4 d-flex justify-content-center col-8 m-auto" 
@@ -24,7 +24,7 @@ export const LoginPage = () => {
         <hr />
 
         <div className="form-outline mb-4">
-          <label className="form-label" for="mail">Correo Electronico</label>
+          <label className="form-label" for="mail">Correo Electrónico</label>
           <input type="email" id="mail" className="form-control" />
           
         </div>
