@@ -4,6 +4,53 @@
     flex-direction: column;
 }
 
+main {flex: 1; display: flex;}
+.main-article, .main-section {flex: 2 2 12em;}
+.main-nav, .main-aside { flex: 1; }
+
+
+@media screen and (max-width: 500px) {    
+    main { flex-direction: column; }
+    .main-article, .main-section{flex:1; }  
+    .main-nav, .main-aside { flex: none; }
+}
+
+header,footer,nav,article,aside { box-sizing: border-box;/* padding: 1em; */}
+
+@media screen and (max-width: 500px) {    
+    main { flex-direction: column; }
+    .main-article, .main-section{flex:1; }  
+    .main-nav, .main-aside { flex: none; }
+}
+
+@media (max-width:767px){
+    .page-footer {
+        padding-top: 2rem !important;
+        padding-bottom: 0.3rem !important;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+
+        .page-footer-header {
+            padding: 0 !important;
+        }
+
+        h1 {
+            font-size: 1.1rem;
+        }
+
+        nav a {
+            font-size: 0.9rem;
+        }
+    }    
+}
+
+
+.btn-outline-danger:hover > i {
+    color: white !important;;
+}
+
+
+
 .search{
     position: relative;
     box-shadow: 0 0 40px rgba(51, 51, 51, .1);
