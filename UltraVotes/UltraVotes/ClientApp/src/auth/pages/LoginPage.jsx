@@ -1,34 +1,13 @@
-import { useState } from "react";
-import { config } from "../../Config";
-// import { PublicClientApplication } from "@azure/msal-browser";
+import { useMsal } from "@azure/msal-react";
+import { loginRequest } from "../";
 
 export const LoginPage = () => {
+  const { instance } = useMsal();
 
-  const [state, setState] = useState({
-    isAuthenticated: false,
-    error: null,
-    user: {}
-  })
-
-  // const publicClientApplication = new PublicClientApplication({
-  //   auth: {
-  //     clientId: config.clientId,
-  //     redirectUri: config.redirectUri,
-  //     authority: config.authority
-  //   },
-  //   cache: {
-  //     cacheLocation: 'sessionStorage',
-  //     storeAuthStateInCookie: true
-  //   }
-  // });
-
-  const loginOffice = async() =>{
-    // await publicClientApplication.loginPopup({
-    //   scopes: config.scopes,
-    //   prompt: 'select_account'
-    // });
-
-    setState({isAuthenticated: true});
+  const loginOffice = () =>{
+    instance.loginPopup(loginRequest).catch(e => {
+        console.error(e);
+    });
   }
 
   return (

@@ -13,3 +13,4 @@ Backend:
 Frontend:
 - Redux
 - sheetjs: 
+- Microsoft Authentication Library for React (msal-react)
