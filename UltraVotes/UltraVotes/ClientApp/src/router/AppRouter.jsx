@@ -6,7 +6,7 @@ import { useMasterDataStore } from '../hooks';
 import { VotesPage, SummaryVotePage, NewVotesPage, UpdateVotePage, UsersVotesPage } from '../votes';
 
 export const AppRouter = () => {
-
+    
     const { startLoadingMasterData, isLoading } = useMasterDataStore();
 
     useEffect(() => {
@@ -27,7 +27,7 @@ export const AppRouter = () => {
                     ? <Route path="/auth/*" element={ <LoginPage /> } />
                     : <Route path="/*" element={ <CalendarPage /> } />
             } */}
-            <Route path="/auth/*" element={ <LoginPage /> } />
+            {/* <Route path="/auth/*" element={ <LoginPage /> } /> */}
             <Route path="votaciones/nueva" element={ <NewVotesPage /> } />
             <Route path="votaciones/resumen/:id" element={ <SummaryVotePage /> } />
             <Route path="votaciones/detalle/:id" element={ <UpdateVotePage /> } />

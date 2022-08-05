@@ -2,7 +2,8 @@ export const msalConfig = {
     auth: {
         clientId: "3de90c9a-197f-494c-a3d1-a834851dfcd4", // This is the ONLY mandatory field that you need to supply.
         authority: "https://login.microsoftonline.com/c5520394-f881-4824-b860-39f8ffd0f60f", // Defaults to "https://login.microsoftonline.com/common"
-        redirectUri: "/"
+        redirectUri: "/", //defaults to application start page
+        postLogoutRedirectUri: "/",
     },
     cache: {
       cacheLocation: "localStorage", // This configures where your cache will be stored

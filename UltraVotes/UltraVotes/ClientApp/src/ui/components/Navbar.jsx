@@ -15,9 +15,12 @@ export const Navbar = () => {
         instance.logoutRedirect().catch(e => {
             console.error(e);
         });
+        // const logoutRequest = {
+        //     account: instance.getAccountByHomeId('/'),
+        //     postLogoutRedirectUri: "/",
+        //   };
+        //   instance.logoutRedirect(logoutRequest);
     }
-
-    console.log('Authenticated', isAuthenticated);
 
     return (
         <header className="header-home">
@@ -45,12 +48,12 @@ export const Navbar = () => {
                     <div className="navbar-collapse">
                         <div className="navbar-nav">
 
-                            <NavLink 
+                            {/* <NavLink 
                                 className={ isActive }
                                 to="/auth/login"
                             >
                                 Login
-                            </NavLink>
+                            </NavLink> */}
 
                             <NavLink 
                                 className={ isActive }
