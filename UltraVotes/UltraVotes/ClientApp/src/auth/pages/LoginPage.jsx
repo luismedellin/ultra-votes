@@ -1,4 +1,36 @@
+import { useState } from "react";
+import { config } from "../../Config";
+// import { PublicClientApplication } from "@azure/msal-browser";
+
 export const LoginPage = () => {
+
+  const [state, setState] = useState({
+    isAuthenticated: false,
+    error: null,
+    user: {}
+  })
+
+  // const publicClientApplication = new PublicClientApplication({
+  //   auth: {
+  //     clientId: config.clientId,
+  //     redirectUri: config.redirectUri,
+  //     authority: config.authority
+  //   },
+  //   cache: {
+  //     cacheLocation: 'sessionStorage',
+  //     storeAuthStateInCookie: true
+  //   }
+  // });
+
+  const loginOffice = async() =>{
+    // await publicClientApplication.loginPopup({
+    //   scopes: config.scopes,
+    //   prompt: 'select_account'
+    // });
+
+    setState({isAuthenticated: true});
+  }
+
   return (
     <main id="LoginPage" className="d-flex align-items-center justify-content-center mt-2" style={{minHeight: '60vh'}}>
       <div className="col col-md-3 p-4 ">
@@ -15,6 +47,7 @@ export const LoginPage = () => {
         <div className="d-flex justify-content-center">
           <button type="button" 
               className="btn btn-outline-danger mb-4" 
+              onClick={ loginOffice }
               // style={{backgroundColor:"#eb3c00"}}
               >
               <i className="fab fa-microsoft text-danger"></i>&nbsp;
@@ -24,21 +57,21 @@ export const LoginPage = () => {
         <hr />
 
         <div className="form-outline mb-4">
-          <label className="form-label" for="mail">Correo Electrónico</label>
+          <label className="form-label" htmlFor="mail">Correo Electrónico</label>
           <input type="email" id="mail" className="form-control" />
           
         </div>
 
         <div className="form-outline mb-4">
-          <label className="form-label" for="password">Contraseña</label>
+          <label className="form-label" htmlFor="password">Contraseña</label>
           <input type="password" id="password" className="form-control" />
         </div>
 
         <div className="row mb-4">
           <div className="col d-flex ">
             <div className="form-check">
-              <label className="form-check-label" for="rememberme"> Recordarme </label>
-              <input className="form-check-input" type="checkbox" value="" id="rememberme" checked />
+              <label className="form-check-label" htmlFor="rememberme"> Recordarme </label>
+              <input className="form-check-input" type="checkbox" value="" id="rememberme" defaultChecked />
             </div>
           </div>
 
