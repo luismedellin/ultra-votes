@@ -1,6 +1,8 @@
-﻿body {
+﻿body, #root {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
 }
-
 
 .search{
     position: relative;

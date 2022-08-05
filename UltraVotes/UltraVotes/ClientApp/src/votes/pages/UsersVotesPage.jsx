@@ -66,7 +66,7 @@ export const UsersVotesPage = () => {
   return (
     <>
       <main className="container">
-        <div className="justify-content-md-center d-flex">
+        <div className="d-flex justify-content-md-center">
           <VotesMenu />
           <section className="card col-8">
                 <div className="card-body">
