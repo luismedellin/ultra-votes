@@ -62,6 +62,13 @@ namespace UltraVotes.Data.Repositories
             return (await dbConnection.QueryAsync<MasterVoteVM>(query, new { masterVoteId })).FirstOrDefault();
         }
 
+        public async Task<List<MasterVoteVM>> GetVotesByUser(string userId)
+        {
+            var query = @"EXEC votes.GetVotesByUser @userId";
+
+            return (await dbConnection.QueryAsync<MasterVoteVM>(query, new { userId })).ToList();
+        }
+
         public async Task Save(MasterVoteModel masterVote)
         {
             dbConnection.Open();

@@ -54,6 +54,13 @@ export const Navbar = () => {
                                 className={ isActive }
                                 to="/"
                             >
+                                Mis Votaciones
+                            </NavLink>
+
+                            <NavLink 
+                                className={ isActive }
+                                to="/votaciones"
+                            >
                                 Votaciones
                             </NavLink>
 

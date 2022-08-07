@@ -7,5 +7,6 @@ namespace UltraVotes.Data
         IMasterDataRepository DataMaster { get; }
         IMasterVoteRepository MasterVotes { get; }
         IUserRepository Users { get; }
+        IVoteRepository Votes { get; }
     }
 }

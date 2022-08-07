@@ -23,6 +23,14 @@ namespace UltraVotes.Controllers
             return Ok(masterVotes);
         }
 
+        [HttpGet("getAll/{userId}")]
+        public async Task<IActionResult> GetVotesByUser(string userId)
+        {
+            var masterVotes = await masterVoteService.GetVotesByUser(userId);
+
+            return Ok(masterVotes);
+        }
+
         [HttpGet("getMasterVote/{id}")]
         public async Task<IActionResult> Get(int id)
         {
