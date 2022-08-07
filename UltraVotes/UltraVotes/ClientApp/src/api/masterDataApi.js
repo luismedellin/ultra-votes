@@ -6,9 +6,11 @@ const masterDataApi = axios.create({
 
 masterDataApi.interceptors.request.use(config => {
 
+    const authorization = `Bearer ${localStorage.getItem('token')}`;
+
     config.headers = {
         ...config.headers,
-        'x-token': localStorage.getItem('token')
+        'Authorization': authorization
     };
 
     return config;

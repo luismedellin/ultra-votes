@@ -5,7 +5,29 @@ export const LoginPage = () => {
   const { instance } = useMsal();
 
   const loginOffice = () =>{
-    instance.loginPopup(loginRequest).catch(e => {
+    instance.loginPopup(loginRequest)
+    .then((loginResponse)=> {
+      console.log(loginResponse);
+      console.log(loginResponse.accessToken);
+      console.log(loginResponse.account.username);
+
+      const request = {
+          ...loginRequest,
+          account: loginResponse.account,
+          scopes: ["api://0b0c98d7-edfe-47f5-9e78-0730ae7bf194/access_as_user"]
+      };
+
+      instance.acquireTokenSilent(request).then((response2) => {
+        console.log(response2.accessToken);
+        debugger;
+        localStorage.setItem('token', response2.accessToken);
+      }).catch((e) => {
+          instance.acquireTokenPopup(request).then((response) => {
+          });
+      });
+
+    })
+    .catch(e => {
         console.error(e);
     });
   }

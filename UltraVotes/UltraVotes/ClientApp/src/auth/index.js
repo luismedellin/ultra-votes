@@ -1,2 +1,2 @@
 export * from "./pages/LoginPage";
-export { loginRequest, msalConfig, graphConfig } from './authConfig';
+export { loginRequest, msalConfig, graphConfig, appRoles, protectedResources } from './authConfig';

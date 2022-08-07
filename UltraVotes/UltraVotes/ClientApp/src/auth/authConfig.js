@@ -1,9 +1,9 @@
 export const msalConfig = {
     auth: {
-        clientId: "3de90c9a-197f-494c-a3d1-a834851dfcd4", // This is the ONLY mandatory field that you need to supply.
+        clientId: "038fcc16-edac-4392-9fa3-bea0998bb48b", // This is the ONLY mandatory field that you need to supply.
         authority: "https://login.microsoftonline.com/c5520394-f881-4824-b860-39f8ffd0f60f", // Defaults to "https://login.microsoftonline.com/common"
         redirectUri: "/", //defaults to application start page
-        postLogoutRedirectUri: "/",
+        postLogoutRedirectUri: "https://localhost:44475/",
     },
     cache: {
       cacheLocation: "localStorage", // This configures where your cache will be stored
@@ -13,10 +13,23 @@ export const msalConfig = {
   
   // Add scopes here for ID token to be used at Microsoft identity platform endpoints.
   export const loginRequest = {
-   scopes: ["User.Read"]
+   scopes: ["User.Read", "email"]
   };
   
   // Add the endpoints here for Microsoft Graph API services you'd like to use.
   export const graphConfig = {
-      graphMeEndpoint: "Enter_the_Graph_Endpoint_Here/v1.0/me"
+      graphMeEndpoint: "https://graph.microsoft.com/v1.0/me"
   };
+
+export const protectedResources = {
+  apiTodoList: {
+      todoListEndpoint: "http://localhost:5000/api/todolist",
+      dashboardEndpoint: "http://localhost:5000/api/dashboard",
+      scopes: ["Enter_the_Web_Api_Scope_here"],
+  },
+}
+
+export const appRoles = {
+    TaskUser: "TaskUser",
+    TaskAdmin: "TaskAdmin"
+};

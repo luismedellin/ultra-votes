@@ -2,6 +2,7 @@ using FluentValidation.AspNetCore;
 using UltraVotes.Core.Services;
 using UltraVotes.Data;
 using UltraVotes.Data.Repositories;
+using Microsoft.Identity.Web;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -32,6 +33,8 @@ builder.Services.AddFluentValidation(conf =>
 });
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
+builder.Services.AddMicrosoftIdentityWebApiAuthentication(builder.Configuration);
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -45,6 +48,8 @@ app.UseCors("corsapp");
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",

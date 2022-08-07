@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using UltraVotes.Data;
 
 namespace UltraVotes.Controllers
@@ -29,6 +30,30 @@ namespace UltraVotes.Controllers
                 time = elapsedMs,
                 users,
             });
+        }
+
+        [Authorize]
+        [HttpGet("/api/weather")]
+        public async Task<IActionResult> Get2()
+        {
+
+            return Ok("api/weather");
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpGet("/api/weather2")]
+        public async Task<IActionResult> GetAdmin()
+        {
+
+            return Ok("api/weather/GetAdmin");
+        }
+
+        [Authorize(Roles = "Api.Read")]
+        [HttpGet("/api/weather3")]
+        public async Task<IActionResult> GetEmpleado()
+        {
+
+            return Ok("api/weather/GetEmpleado");
         }
     }
 }

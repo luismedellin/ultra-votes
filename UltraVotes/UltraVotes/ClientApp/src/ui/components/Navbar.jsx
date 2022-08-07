@@ -1,10 +1,7 @@
-import { useContext } from 'react';
-import { Link, NavLink, useNavigate } from 'react-router-dom';
-import { useMsal } from "@azure/msal-react";
+import { Link, NavLink } from 'react-router-dom';
 import { useIsAuthenticated  } from "@azure/msal-react";
 
 export const Navbar = () => {
-    const { instance } = useMsal();
     const isAuthenticated = useIsAuthenticated();
 
     const isActive = ({isActive})=> {
@@ -12,14 +9,12 @@ export const Navbar = () => {
     }
 
     const onLogout = () => {
-        instance.logoutRedirect().catch(e => {
-            console.error(e);
-        });
-        // const logoutRequest = {
-        //     account: instance.getAccountByHomeId('/'),
-        //     postLogoutRedirectUri: "/",
-        //   };
-        //   instance.logoutRedirect(logoutRequest);
+        localStorage.clear();
+        window.location.reload();
+        
+        // instance.logoutRedirect().catch(e => {
+        //     console.error(e);
+        // });
     }
 
     return (
@@ -71,16 +66,13 @@ export const Navbar = () => {
                             <span className="nav-item nav-link text-primary">
                                 {/* { user?.name } */}
                             </span>
-                            { isAuthenticated ?  
-                                (
-                                    <button
-                                        className="nav-item nav-link btn"
-                                        onClick={ onLogout }
-                                    >
-                                        Cerrar sesión
-                                    </button>
-                                )
-                            : ''
+                            { isAuthenticated &&
+                                <button
+                                    className="nav-item nav-link btn"
+                                    onClick={ onLogout }
+                                >
+                                    Cerrar sesión
+                                </button>
                             }
                         </ul>
                     </div>
