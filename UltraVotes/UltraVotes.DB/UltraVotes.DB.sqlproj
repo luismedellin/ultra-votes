@@ -59,6 +59,8 @@
     <Folder Include="votes\" />
     <Folder Include="votes\Tables\" />
     <Folder Include="Security\" />
+    <Folder Include="Develop" />
+    <Folder Include="votes\Stored Procedures\" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="votes\Tables\Users.sql" />
@@ -67,8 +69,9 @@
     <Build Include="votes\Tables\Status.sql" />
     <Build Include="votes\Tables\MasterVoteCategory.sql" />
     <Build Include="votes\Tables\MasterVoteRestriction.sql" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Script1.sql" />
+    <None Include="Develop\Script1.sql" />
+    <Build Include="Develop\calculate votes.sql" />
+    <Build Include="votes\Tables\Vote.sql" />
+    <Build Include="votes\Stored Procedures\GetVotesByUser.sql" />
   </ItemGroup>
 </Project>

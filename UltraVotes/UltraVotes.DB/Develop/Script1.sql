@@ -212,4 +212,107 @@ INSERT INTO votes.MasterVoteRestriction (Description, SortOrder) VALUES
 ('Área',2)
 
 
+20220708:
+CREATE TABLE votes.Vote(
+VoteId INT IDENTITY PRIMARY KEY NOT NULL,
+MasterVoteId INT not null FOREIGN KEY REFERENCES votes.MasterVote (MasterVoteId),
+UserId NVARCHAR(256) NOT NULL,
+CandidateId NVARCHAR(256) NOT NULL,
+Points tinyint,
+CreatedDate  DATETIME        DEFAULT (getdate()) NOT NULL,
+CreatedBy    NVARCHAR (256)  NOT NULL,
+)
+
+
+INSERT INTO votes.Vote (MasterVoteId, UserId, CandidateId, Points, CreatedDate, CreatedBy) VALUES
+(1, 'luiseduardo1218@gmail.com', 'mary@gmail.com', 2, GETDATE(), 'luiseduardo1218@gmail.com')
+
+INSERT INTO votes.Vote (MasterVoteId, UserId, CandidateId, Points, CreatedDate, CreatedBy) VALUES
+(1, 'luiseduardo1218@gmail.com', 'alejandra@gmail.com', 1, GETDATE(), 'luiseduardo1218@gmail.com')
+
+
+
+
+INSERT INTO votes.Vote (MasterVoteId, UserId, CandidateId, Points, CreatedDate, CreatedBy) VALUES
+(1, 'maria@gmail.com', 'mary@gmail.com', 3, GETDATE(), 'maria@gmail.com')
+
+INSERT INTO votes.Vote (MasterVoteId, UserId, CandidateId, Points, CreatedDate, CreatedBy) VALUES
+(1, 'maria@gmail.com', 'alejandra@gmail.com', 2, GETDATE(), 'maria@gmail.com')
+
+
+INSERT INTO votes.Vote (MasterVoteId, UserId, CandidateId, Points, CreatedDate, CreatedBy) VALUES
+(2, 'maria@gmail.com', 'mary@gmail.com', 0, GETDATE(), 'maria@gmail.com')
+
+INSERT INTO votes.Vote (MasterVoteId, UserId, CandidateId, Points, CreatedDate, CreatedBy) VALUES
+(2, 'maria@gmail.com', 'alejandra@gmail.com', 0, GETDATE(), 'maria@gmail.com')
+
+
+
+
+INSERT INTO votes.Vote (MasterVoteId, UserId, CandidateId, Points, CreatedDate, CreatedBy) VALUES
+(2, 'alejandra@gmail.com', 'mary@gmail.com', 0, GETDATE(), 'alejandra@gmail.com')
+
+
+INSERT INTO votes.Vote (MasterVoteId, UserId, CandidateId, Points, CreatedDate, CreatedBy) VALUES
+(2, 'alejandra@gmail.com', 'alejandro@gmail.com', 0, GETDATE(), 'alejandra@gmail.com')
+
+
+INSERT INTO votes.Vote (MasterVoteId, UserId, CandidateId, Points, CreatedDate, CreatedBy) VALUES
+(3, 'alejandra@gmail.com', 'mary@gmail.com', 3, GETDATE(), 'alejandra@gmail.com')
+
+INSERT INTO votes.Vote (MasterVoteId, UserId, CandidateId, Points, CreatedDate, CreatedBy) VALUES
+(3, 'alejandra@gmail.com', 'alejandro@gmail.com', 2, GETDATE(), 'alejandra@gmail.com')
+
+
+
+INSERT INTO votes.Vote (MasterVoteId, UserId, CandidateId, Points, CreatedDate, CreatedBy) VALUES
+(3, 'alejandra@gmail.com', 'luiseduardo1218@gmail.com', 1, GETDATE(), 'alejandra@gmail.com')
+
+
+
+
+
+EXEC votes.GetVotesByUser 'luiseduardo1218@gmail.com'
+EXEC votes.GetVotesByUser 'maria@gmail.com'
+EXEC votes.GetVotesByUser 'alejandra@gmail.com'
+EXEC votes.GetVotesByUser 'mary@gmail.com'
+
+--DROP PROCEDURE votes.GetVotesByUser
+CREATE PROCEDURE votes.GetVotesByUser(
+	@UserId NVARCHAR (256)
+)
+AS 
+BEGIN 
+
+	DECLARE @True BIT = 1,
+			@False BIT = 0
+
+	SELECT	*,
+			CASE 
+				WHEN Points > 0 AND (Points- VotedPoints)  = 0 THEN @False
+				WHEN Candidates > 0 AND (Candidates - Votes)  = 0 THEN @False
+				WHEN GETDATE() NOT BETWEEN FromDate AND ToDate THEN @False
+				WHEN StatusId = 2 THEN @False
+				ELSE @True END 
+			AS IsAvailable
+	FROM (
+		SELECT	mv.MasterVoteId, 
+				MasterVoteCategoryId, (SELECT Description FROM votes.MasterVoteCategory c WHERE c.MasterVoteCategoryId = mv.MasterVoteCategoryId)Category,
+				MasterVoteRestrictionId, (SELECT Description FROM votes.MasterVoteRestriction c WHERE c.RestrictionId = mv.MasterVoteRestrictionId)Restriction,
+				Name, 
+				StatusId, (SELECT Description FROM votes.Status s WHERE s.StatusId = mv.StatusId)Status,
+				FromDate, ToDate, 
+				ISNULL(v.Points, 0) VotedPoints, mv.Points, 
+				ISNULL(v.Votes, 0) Votes, Candidates
+		FROM	votes.MasterVote mv
+		LEFT JOIN (
+			SELECT	MasterVoteId, SUM(Points) Points, COUNT('') Votes
+			FROM	votes.Vote
+			WHERE UserId = @UserId
+			GROUP BY MasterVoteId
+		) v ON mv.MasterVoteId = v.MasterVoteId
+	) AS MV
+
+END
+
 */
