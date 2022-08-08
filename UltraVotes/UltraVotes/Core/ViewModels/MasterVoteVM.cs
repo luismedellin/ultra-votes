@@ -21,5 +21,8 @@
         public int SentNotifications { get; set; }
         public string FromDateText => FromDate?.ToString("dd/MM/yyyy, HH:mm");
         public string ToDateText => ToDate?.ToString("dd/MM/yyyy, HH:mm");
+
+        public int Value => MasterVoteId;
+        public string Label => Name;
     }
 }
