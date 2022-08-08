@@ -1,6 +1,21 @@
-import React from 'react'
+import { useEffect } from 'react'
+import { useSelector } from 'react-redux';
+import { useMyVotesStore } from '../../hooks';
 
 export const MyVotesPage = () => {
+  const { user } = useSelector( state => state.auth );
+  debugger;
+  const { startLoadingMyVotes, isLoading } = useMyVotesStore();
+
+  useEffect(() => {
+    debugger;
+    startLoadingMyVotes(user.username);
+  }, [])
+  
+  if (!isLoading) {
+    return <p>Loading...</p>
+}
+
   return (
     <main id="LoginPage" className="d-flex align-items-center justify-content-center mt-2" style={{minHeight: '60vh'}}>
       <div className="col col-md-3 p-4 ">
