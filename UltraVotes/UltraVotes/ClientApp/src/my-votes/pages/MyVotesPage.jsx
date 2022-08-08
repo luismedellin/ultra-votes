@@ -4,11 +4,13 @@ import { Controller, useForm } from "react-hook-form";
 import Select from 'react-select'
 
 import { useMyVotesStore } from '../../hooks';
+import { useNavigate } from 'react-router-dom';
 
 export const MyVotesPage = () => {
   const { user } = useSelector( state => state.auth );
   const { startLoadingMyVotes, isLoading, myVotes } = useMyVotesStore();
 
+  const navigate = useNavigate();
 
   const { 
     register,
@@ -23,8 +25,8 @@ export const MyVotesPage = () => {
     startLoadingMyVotes('luiseduardo1218@gmail.com');
   }, [user])
 
-  const onSelectChanged = (value) => {
-    
+  const onSelectChanged = (idVotacion) => {
+    navigate(`mis-votaciones/votar/${idVotacion}`)
   }
   
   if (!isLoading) {

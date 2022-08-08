@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import { Route, Routes } from 'react-router-dom';
 
 import { useMasterDataStore } from '../hooks';
-import { MyVotesPage } from '../my-votes';
+import { MyVotesPage, VotePage } from '../my-votes';
 import { VotesPage, SummaryVotePage, NewVotesPage, UpdateVotePage, UsersVotesPage } from '../votes';
 
 export const AppRouter = () => {
@@ -34,6 +34,8 @@ export const AppRouter = () => {
             <Route path="votaciones/resumen/:id" element={ <SummaryVotePage /> } />
             <Route path="votaciones/detalle/:id" element={ <UpdateVotePage /> } />
             <Route path="votaciones/usuarios/:id" element={ <UsersVotesPage /> } />
+            <Route path="mis-votaciones/votar/:id" element={<VotePage />} />
+            <Route path="mis-votaciones" element={<MyVotesPage />} />
             <Route path="*" element={<MyVotesPage />} />
             {/* <Route path="/*" element={ <Navigate to="/auth/Login" /> } /> */}
         </Routes>
