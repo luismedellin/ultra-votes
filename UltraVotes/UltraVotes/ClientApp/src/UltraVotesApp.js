@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Provider } from 'react-redux';
 import { AppRouter } from './router/AppRouter';
-import { store } from './store';
+import { store, saveState } from './store';
 import { Navbar } from './ui';
 import { useMsal } from "@azure/msal-react";
 import { useIsAuthenticated, AuthenticatedTemplate, UnauthenticatedTemplate } from "@azure/msal-react";
@@ -60,6 +60,10 @@ export const UltraVotesApp = () => {
 
     useEffect(() => {
         populateWeatherData();
+    }, [])
+
+    useEffect(() => {
+        window.addEventListener('unload', saveState);
     }, [])
 
     return (

@@ -4,13 +4,13 @@ import { useMyVotesStore } from '../../hooks';
 
 export const MyVotesPage = () => {
   const { user } = useSelector( state => state.auth );
-  debugger;
   const { startLoadingMyVotes, isLoading } = useMyVotesStore();
 
   useEffect(() => {
-    debugger;
-    startLoadingMyVotes(user.username);
-  }, [])
+    if(user.username){
+      startLoadingMyVotes(user.username);
+    }
+  }, [user])
   
   if (!isLoading) {
     return <p>Loading...</p>

@@ -10,9 +10,9 @@ export const LoginPage = () => {
   const loginOffice = () =>{
     instance.loginPopup(loginRequest)
     .then((loginResponse)=> {
-      console.log(loginResponse);
-      console.log(loginResponse.accessToken);
-      console.log(loginResponse.account.username);
+      // console.log(loginResponse);
+      // console.log(loginResponse.accessToken);
+      // console.log(loginResponse.account.username);
 
       const request = {
           ...loginRequest,
