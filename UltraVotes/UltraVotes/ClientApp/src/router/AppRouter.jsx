@@ -1,20 +1,21 @@
 import { useEffect } from 'react';
-import { Navigate, Route, Routes } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 
-import { LoginPage } from '../auth';
-import { useMasterDataStore } from '../hooks';
+import { useMasterDataStore, useMyVotesStore } from '../hooks';
 import { MyVotesPage } from '../my-votes';
 import { VotesPage, SummaryVotePage, NewVotesPage, UpdateVotePage, UsersVotesPage } from '../votes';
 
 export const AppRouter = () => {
     
-    const { startLoadingMasterData, isLoading } = useMasterDataStore();
+    const { startLoadingMasterData, isLoading: loadingMasterData } = useMasterDataStore();
+    const { startLoadingMyVotes, isLoading: loadingMyVotes } = useMyVotesStore();
 
     useEffect(() => {
         startLoadingMasterData();
+        startLoadingMyVotes();
     }, [])    
 
-    if (!isLoading) {
+    if (!loadingMasterData || !loadingMyVotes) {
         return <p>Loading...</p>
     }
 

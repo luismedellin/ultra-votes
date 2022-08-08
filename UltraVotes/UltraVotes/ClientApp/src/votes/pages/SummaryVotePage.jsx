@@ -25,7 +25,7 @@ export const SummaryVotePage = () => {
 
   return (
     <main className="container">
-        <div className="justify-content-md-center d-flex">
+        <div className="d-flex justify-content-md-center">
             <VotesMenu />
 
             <section className="card col-8">
@@ -45,10 +45,10 @@ export const SummaryVotePage = () => {
 
                         <div className="row mb-3">
                             <div className="col-6">
-                            <label htmlFor="category" className="form-label">Categoría: </label>
-                            <select className="form-select">
-                                <option>{masterVote.category}</option>
-                            </select>
+                                <label htmlFor="category" className="form-label">Categoría: </label>
+                                <select className="form-select">
+                                    <option>{masterVote.category}</option>
+                                </select>
                             </div>
                             
                             <div className="col-6">
