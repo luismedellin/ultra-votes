@@ -24,7 +24,7 @@ export const VotePage = () => {
         //   startLoadingMyVotes(user.username);
         // }
         startLoadingMyVotes('luiseduardo1218@gmail.com');
-    }, [user])
+    }, [id, user])
 
     useEffect(() => {
         const load = async() => {
@@ -46,44 +46,46 @@ export const VotePage = () => {
 
 
      const onSelectChanged = (idVotacion) => {
-        navigate(`mis-votaciones/votar/${idVotacion}`)
+        navigate(`../mis-votaciones/votar/${idVotacion}`)
       }
 
 
-     if(!vote)
+     if(!vote){
         return <p>Loading...</p>
+    }
 
-  return (
-    <main id="LoginPage" className="d-flex justify-content-center" style={{minHeight: '60vh'}}>
-      <div className="col col-md-3 p-2">
+    return (
+        <main id="LoginPage" className="d-flex justify-content-center" style={{minHeight: '60vh'}}>
+        <div className="col col-md-3 p-2">
 
-        <div className="mb-3">
-            <Controller
-                control={control}
-                name="vote"
-                defaultValue={'0'}
-                render={({ ref }) => (
-                    <Select
-                        inputRef={ref}
-                        classNamePrefix="form-select"
-                        options={myVotes}
-                        {...register('vote')}
-                        defaultValue={{ value: vote.MasterVoteId, label: vote.Name }}
-                        onChange={ ({value}) => onSelectChanged(value)  }l
-                    />
-                    )}
-            />
+            <div className="mb-3">
+                <Controller
+                    control={control}
+                    name="vote"
+                    defaultValue={'0'}
+                    render={({ ref }) => (
+                        <Select
+                            inputRef={ref}
+                            classNamePrefix="form-select"
+                            options={myVotes}
+                            {...register('vote')}
+                            defaultValue={{ value: vote.masterVoteId, label: vote.name }}
+                            onChange={ ({value}) => onSelectChanged(value)  }l
+                        />
+                        )}
+                />
+            </div>
+
+            <div>
+                <button className="btn btn-link">Ver información</button>
+            </div>
+
+            <div>
+                Candidatos: { vote?.candidatesToVote.length }
+            </div>
+
         </div>
 
-        <div>
-            <button className="btn btn-link">Ver información</button>
-        </div>
-
-        <div>
-            Candidatos: { vote?.candidatesToVote.length }
-        </div>
-
-      </div>
-    </main>
-  )
+        </main>
+    )
 }

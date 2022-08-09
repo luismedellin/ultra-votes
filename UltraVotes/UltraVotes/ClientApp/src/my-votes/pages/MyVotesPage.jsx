@@ -17,7 +17,6 @@ export const MyVotesPage = () => {
     control
 } = useForm();
 
-
   useEffect(() => {
     // if(user.username){
     //   startLoadingMyVotes(user.username);

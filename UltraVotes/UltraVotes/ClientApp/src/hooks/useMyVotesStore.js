@@ -19,21 +19,17 @@ export const useMyVotesStore = () => {
     
     const getVote = async( masterVoteId ) => {
         try {
-            if(!currentVote) {
-                const searchedVote = myVotes.find((vote)=> vote.masterVoteId === +masterVoteId);
-                const {data: candidates} = await ultraVotesApi.get(`candidates/${masterVoteId}`);
+            const searchedVote = myVotes.find((vote)=> vote.masterVoteId === +masterVoteId);
+            const {data: candidates} = await ultraVotesApi.get(`candidates/${masterVoteId}`);
 
-                const voteDetail = {
-                    ...searchedVote,
-                    candidatesToVote: candidates
-                };
-                
-                dispatch( onSetCurrentVote(voteDetail) );
-                console.log(voteDetail);
-                return voteDetail;
-            }
-
-            return currentVote;
+            const voteDetail = {
+                ...searchedVote,
+                candidatesToVote: candidates
+            };
+            
+            dispatch( onSetCurrentVote(voteDetail) );
+            console.log(voteDetail);
+            return voteDetail;
 
         } catch (error) {
             console.log(error);
