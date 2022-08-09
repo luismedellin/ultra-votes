@@ -315,4 +315,40 @@ BEGIN
 
 END
 
+20220808
+
+--DROP TABLE votes.Candidate
+CREATE TABLE votes.Candidate(
+CandidateId	INT PRIMARY KEY IDENTITY (1, 1) NOT NULL,
+MasterVoteId INT FOREIGN KEY REFERENCES votes.MasterVote (MasterVoteId),
+UserId NVARCHAR(256) NOT NULL,
+Name  NVARCHAR(60) NOT NULL,
+LastName  NVARCHAR(60) NOT NULL,
+DepartmentId NVARCHAR (50) NULL,
+AreaId NVARCHAR (50) NULL,
+Avatar NVARCHAR(256) NOT NULL,
+IsFinalist BIT NOT NULL,
+)
+
+
+
+INSERT INTO votes.Candidate (MasterVoteId,
+UserId,
+Name,
+LastName,
+DepartmentId,
+AreaId,
+Avatar,
+IsFinalist)
+SELECT	mv.MasterVoteId,
+		UserId,
+		u.Name,
+		LastName,
+		DepartmentId,
+		AreaId,
+		Avatar, 
+		0
+FROM votes.Users u,
+votes.MasterVote mv
+
 */

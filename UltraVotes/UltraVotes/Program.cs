@@ -13,11 +13,13 @@ builder.Services.AddSingleton<DapperContext>();
 #endregion
 #region My Services
 builder.Services.AddTransient<IUnitOfWork, UnitOfWork>();
+builder.Services.AddTransient<ICandidateRepository, CandidateRepository>();
 builder.Services.AddTransient<IMasterDataRepository, MasterDataRepository>();
 builder.Services.AddTransient<IMasterVoteRepository, MasterVoteRepository>();
 builder.Services.AddTransient<IUserRepository, UserRepository>();
 builder.Services.AddTransient<IVoteRepository, VoteRepository>();
 
+builder.Services.AddTransient<ICandidateService, CandidateService>();
 builder.Services.AddTransient<IMasterVoteService, MasterVoteService>();
 builder.Services.AddTransient<IMasterDataService, MasterDataService>();
 builder.Services.AddTransient<IUserService, UserService>();

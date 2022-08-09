@@ -7,10 +7,10 @@ import { useMyVotesStore } from '../../hooks';
 import { useNavigate } from 'react-router-dom';
 
 export const MyVotesPage = () => {
+  const navigate = useNavigate();
+
   const { user } = useSelector( state => state.auth );
   const { startLoadingMyVotes, isLoading, myVotes } = useMyVotesStore();
-
-  const navigate = useNavigate();
 
   const { 
     register,

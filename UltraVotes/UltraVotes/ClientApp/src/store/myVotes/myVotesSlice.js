@@ -12,9 +12,12 @@ export const myVotesSlice = createSlice({
             state.myVotes = payload;
             state.isLoading = true;
         },
+        onSetCurrentVote: (state, { payload }) => {
+            state.currentVote = payload;
+        },
     }
 });
 
 
 // Action creators are generated for each case reducer function
-export const { onLoadingVotes } = myVotesSlice.actions;
+export const { onLoadingVotes, onSetCurrentVote } = myVotesSlice.actions;

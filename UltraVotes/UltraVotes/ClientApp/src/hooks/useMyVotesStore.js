@@ -1,11 +1,11 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { ultraVotesApi } from '../api';
-import { onLoadingVotes } from '../store';
+import { onLoadingVotes, onSetCurrentVote } from '../store';
 
 export const useMyVotesStore = () => {
     const dispatch = useDispatch();
 
-    const { myVotes, isLoading } = useSelector(state => state.myVotes );
+    const { myVotes, isLoading, currentVote } = useSelector(state => state.myVotes );
 
     const startLoadingMyVotes = async(user) => {
         try {
@@ -16,11 +16,29 @@ export const useMyVotesStore = () => {
           console.log(error)
         }
     }
+    
+    const getVote = async( masterVoteId ) => {
+        try {
+            if(!currentVote) {
+                const voteDetail = myVotes.find((vote)=> vote.masterVoteId === masterVoteId)
+
+                dispatch( onSetCurrentVote(voteDetail) );
+                
+                return voteDetail;
+            }
+
+            return currentVote;
+
+        } catch (error) {
+            console.log(error);
+        }
+    }
 
     return {
         myVotes,
         isLoading,
         
         startLoadingMyVotes,
+        getVote,
     }
 }
