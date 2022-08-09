@@ -62,12 +62,12 @@ export const VotePage = () => {
 
     return (
         <>
-        <main id="LoginPage" className="container mx-auto border row justify-content-md-center" style={{minHeight: '60vh'}}>
+        <main id="LoginPage" 
+            className="container mx-auto border row justify-content-md-center animate__animated animate__fadeIn" 
+            style={{minHeight: '60vh'}}>
 
         <div className="col col-md-3 p-3 d-none d-md-block">
-
             <VoteInformation vote={{...vote}} />
-
         </div>
 
         <div className="col col-md-5 p-2">

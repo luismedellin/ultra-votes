@@ -10,7 +10,7 @@ export const VoteInformation = ({vote}) => {
             </div>
 
             <div className="mb-3 text-center">
-                <i className="fas fa-trophy text-warning fs-1 text-centerc animate__animated animate__fadeInDown"></i>
+                <i className="fas fa-trophy text-warning fs-1 text-center animate__animated animate__fadeInDown"></i>
             </div>
 
             <div className="mb-3 row ">

@@ -29,7 +29,7 @@ export const DetailVoteModal = ({title, children}) => {
             style={ customStyles }
             className="modal"
             overlayClassName="modal-fondo"
-            closeTimeoutMS={ 200 }
+            closeTimeoutMS={ 300 }
         >
             <div className="modal-header">
                 <h5 className="modal-title">{title}</h5>
