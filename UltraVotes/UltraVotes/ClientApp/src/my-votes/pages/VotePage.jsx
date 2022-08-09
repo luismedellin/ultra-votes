@@ -11,7 +11,7 @@ export const VotePage = () => {
     const navigate = useNavigate();
 
     const { user } = useSelector( state => state.auth );
-    const { startLoadingMyVotes, isLoading, myVotes, getVote } = useMyVotesStore();
+    const { startLoadingMyVotes, isLoading, myVotes, getVote, currentVote } = useMyVotesStore();
     const [vote, setVote] = useState(null);
 
     const { 
@@ -29,20 +29,26 @@ export const VotePage = () => {
     useEffect(() => {
         const load = async() => {
         
-            const myVote = await getVote(id);
-            setVote(myVote);
-        //    setFormValues({
-        //      fromDate: parseISO(myMasterVote.fromDate),
-        //      toDate: parseISO(myMasterVote.toDate)
-        //    })
+            // const myVote = await getVote(id);
+            // setVote(myVote);
+            await getVote(id);
         }
-   
-        load();
-     }, [id, myVotes])
+        
+        if(myVotes.length){
+            load();
+        }
+     }, [myVotes])
+
+     useEffect(() => {
+        setVote(currentVote);
+
+     }, [currentVote])
+
 
      const onSelectChanged = (idVotacion) => {
         navigate(`mis-votaciones/votar/${idVotacion}`)
       }
+
 
      if(!vote)
         return <p>Loading...</p>
@@ -67,14 +73,15 @@ export const VotePage = () => {
                     />
                     )}
             />
-            
         </div>
 
         <div>
             <button className="btn btn-link">Ver información</button>
         </div>
 
-        
+        <div>
+            Candidatos: { vote?.candidatesToVote.length }
+        </div>
 
       </div>
     </main>
