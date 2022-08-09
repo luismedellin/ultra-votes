@@ -18,9 +18,10 @@ BEGIN
 			AS IsAvailable
 	FROM (
 		SELECT	mv.MasterVoteId, 
-				MasterVoteCategoryId, (SELECT Description FROM votes.MasterVoteCategory c WHERE c.MasterVoteCategoryId = mv.MasterVoteCategoryId)Category,
-				MasterVoteRestrictionId, (SELECT Description FROM votes.MasterVoteRestriction c WHERE c.RestrictionId = mv.MasterVoteRestrictionId)Restriction,
-				Name, 
+				CategoryId, (SELECT Description FROM votes.MasterVoteCategory c WHERE c.MasterVoteCategoryId = mv.CategoryId)Category,
+				RestrictionId, (SELECT Description FROM votes.MasterVoteRestriction c WHERE c.RestrictionId = mv.RestrictionId)Restriction,
+				Title, 
+				Subtitle,
 				StatusId, (SELECT Description FROM votes.Status s WHERE s.StatusId = mv.StatusId)Status,
 				FromDate, ToDate, 
 				ISNULL(v.Points, 0) VotedPoints, mv.Points, 

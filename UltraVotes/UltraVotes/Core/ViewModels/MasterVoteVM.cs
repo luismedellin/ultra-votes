@@ -3,11 +3,12 @@
     public class MasterVoteVM
     {
         public int MasterVoteId { get; set; }
-        public int MasterVoteCategoryId { get; set; }
+        public int CategoryId { get; set; }
         public string Category { get; set; }
-        public int MasterVoteRestrictionId { get; set; }
+        public int RestrictionId { get; set; }
         public string Restriction { get; set; }
-        public string Name { get; set; }
+        public string Title { get; set; }
+        public string Subtitle { get; set; }
         public byte StatusId { get; set; }
         public string Status { get; set; }
         public int VotedPoints { get; set; }
@@ -23,6 +24,6 @@
         public string ToDateText => ToDate?.ToString("dd/MM/yyyy, HH:mm");
 
         public int Value => MasterVoteId;
-        public string Label => Name;
+        public string Label => Title;
     }
 }

@@ -45,9 +45,10 @@ SELECT * FROM votes.Users
 --drop table votes.MasterVote 
 CREATE TABLE votes.MasterVote (
     MasterVoteId INT NOT NULL IDENTITY PRIMARY KEY,
-	MasterVoteCategoryId tinyint not null FOREIGN KEY REFERENCES votes.MasterVoteCategory (MasterVoteCategoryId),
-	MasterVoteRestrictionId tinyint not null FOREIGN KEY REFERENCES votes.MasterVoteRestriction (RestrictionId),
-	Name         NVARCHAR (100)   NOT NULL,
+	CategoryId tinyint not null FOREIGN KEY REFERENCES votes.MasterVoteCategory (MasterVoteCategoryId),
+	RestrictionId tinyint not null FOREIGN KEY REFERENCES votes.MasterVoteRestriction (RestrictionId),
+	Title         NVARCHAR (100)   NOT NULL,
+	Subtitle      NVARCHAR (100)   NOT NULL,
 	StatusId	 tinyint  not null FOREIGN KEY REFERENCES votes.Status (StatusId),
 	FromDate	 DATETIME NULL,
 	ToDate		 DATETIME NULL,
@@ -59,9 +60,15 @@ CREATE TABLE votes.MasterVote (
     UpdatedBy    NVARCHAR (256)  NULL
 );
 
-INSERT INTO votes.MasterVote (MasterVoteCategoryId, MasterVoteRestrictionId, Name, StatusId, FromDate, ToDate, Points, Candidates, CreatedDate, CreatedBy)
+INSERT INTO votes.MasterVote (CategoryId, RestrictionId, Title, Subtitle, StatusId, FromDate, ToDate, Points, Candidates, CreatedDate, CreatedBy)
 VALUES 
-(1, 1, 'Compañerismo', 1, '2022-07-20 12:18:00', '2022-07-27 17:00:00', 10, 2, GETDATE(), '1020')
+(1, 1, 'Compañerismo', '', 1, '2022-07-20 12:18:00', '2022-07-27 17:00:00', 10, 2, GETDATE(), '1020')
+
+
+1	2	2	Compañerismo		1	2022-08-06 11:01:55.713	2022-08-30 11:01:55.713	5	2	2022-07-30 09:07:08.457	1020	2022-07-31 12:35:07.953	UPDATE
+2	1	2	Amistad		1	2022-07-26 15:00:00.000	2022-08-30 11:01:55.713	0	2	2022-07-30 09:55:20.320	$$test	NULL	NULL
+3	1	2	Trabajo en equipo		1	2022-07-28 21:30:00.000	2022-08-30 11:01:55.713	6	0	2022-07-30 09:56:24.193	$$test	2022-07-31 13:51:21.870	UPDATE
+
 
 */
 
@@ -213,6 +220,7 @@ INSERT INTO votes.MasterVoteRestriction (Description, SortOrder) VALUES
 
 
 20220708:
+--drop TABLE votes.Vote
 CREATE TABLE votes.Vote(
 VoteId INT IDENTITY PRIMARY KEY NOT NULL,
 MasterVoteId INT not null FOREIGN KEY REFERENCES votes.MasterVote (MasterVoteId),
@@ -229,7 +237,6 @@ INSERT INTO votes.Vote (MasterVoteId, UserId, CandidateId, Points, CreatedDate, 
 
 INSERT INTO votes.Vote (MasterVoteId, UserId, CandidateId, Points, CreatedDate, CreatedBy) VALUES
 (1, 'luiseduardo1218@gmail.com', 'alejandra@gmail.com', 1, GETDATE(), 'luiseduardo1218@gmail.com')
-
 
 
 
@@ -270,6 +277,21 @@ INSERT INTO votes.Vote (MasterVoteId, UserId, CandidateId, Points, CreatedDate, 
 
 
 
+VoteId	MasterVoteId	UserId	CandidateId	Points	CreatedDate	CreatedBy	
+1	1	luiseduardo1218@gmail.com	mary@gmail.com	2	2022-08-07 09:42:12.983	luiseduardo1218@gmail.com	
+2	1	luiseduardo1218@gmail.com	alejandra@gmail.com	1	2022-08-07 09:49:29.613	luiseduardo1218@gmail.com	
+3	2	maria@gmail.com	mary@gmail.com	0	2022-08-07 10:17:03.250	maria@gmail.com	
+4	2	maria@gmail.com	alejandra@gmail.com	0	2022-08-07 10:17:03.250	maria@gmail.com	
+5	3	alejandra@gmail.com	mary@gmail.com	3	2022-08-07 10:18:49.200	alejandra@gmail.com	
+6	3	alejandra@gmail.com	alejandro@gmail.com	2	2022-08-07 10:18:49.200	alejandra@gmail.com	
+7	1	maria@gmail.com	mary@gmail.com	3	2022-08-07 10:28:52.163	maria@gmail.com	
+8	1	maria@gmail.com	alejandra@gmail.com	2	2022-08-07 10:28:52.163	maria@gmail.com	
+9	2	alejandra@gmail.com	mary@gmail.com	0	2022-08-07 10:33:38.350	alejandra@gmail.com	
+11	2	alejandra@gmail.com	alejandro@gmail.com	0	2022-08-07 10:35:39.313	alejandra@gmail.com	
+12	3	alejandra@gmail.com	luiseduardo1218@gmail.com	1	2022-08-07 10:37:22.960	alejandra@gmail.com	
+
+
+
 
 
 EXEC votes.GetVotesByUser 'luiseduardo1218@gmail.com'
@@ -297,9 +319,10 @@ BEGIN
 			AS IsAvailable
 	FROM (
 		SELECT	mv.MasterVoteId, 
-				MasterVoteCategoryId, (SELECT Description FROM votes.MasterVoteCategory c WHERE c.MasterVoteCategoryId = mv.MasterVoteCategoryId)Category,
-				MasterVoteRestrictionId, (SELECT Description FROM votes.MasterVoteRestriction c WHERE c.RestrictionId = mv.MasterVoteRestrictionId)Restriction,
-				Name, 
+				CategoryId, (SELECT Description FROM votes.MasterVoteCategory c WHERE c.MasterVoteCategoryId = mv.CategoryId)Category,
+				RestrictionId, (SELECT Description FROM votes.MasterVoteRestriction c WHERE c.RestrictionId = mv.RestrictionId)Restriction,
+				Title, 
+				Subtitle,
 				StatusId, (SELECT Description FROM votes.Status s WHERE s.StatusId = mv.StatusId)Status,
 				FromDate, ToDate, 
 				ISNULL(v.Points, 0) VotedPoints, mv.Points, 
@@ -350,5 +373,22 @@ SELECT	mv.MasterVoteId,
 		0
 FROM votes.Users u,
 votes.MasterVote mv
+
+1	1	alejandra@gmail.com	Alejandra	Giraldo	ti	dev		0
+3	1	luiseduardo1218@gmail.com	Luis	Velandia	ti	develop		0
+4	1	maria@gmail.com	Maria C	Torres	financiera	juridica		0
+5	1	mary@gmail.com	Mary	Franco	financiera	contabilidad		0
+6	2	alejandra@gmail.com	Alejandra	Giraldo	ti	dev		0
+7	2	alejandro@gmail.com	Alejandro	Giraldo	comercial	diseño		0
+8	2	luiseduardo1218@gmail.com	Luis	Velandia	ti	develop		0
+9	2	maria@gmail.com	Maria C	Torres	financiera	juridica		0
+10	2	mary@gmail.com	Mary	Franco	financiera	contabilidad		0
+11	3	alejandra@gmail.com	Alejandra	Giraldo	ti	dev		0
+12	3	alejandro@gmail.com	Alejandro	Giraldo	comercial	diseño		0
+13	3	luiseduardo1218@gmail.com	Luis	Velandia	ti	develop		0
+14	3	maria@gmail.com	Maria C	Torres	financiera	juridica		0
+15	3	mary@gmail.com	Mary	Franco	financiera	contabilidad		0
+
+
 
 */
