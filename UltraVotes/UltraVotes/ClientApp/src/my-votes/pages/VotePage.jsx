@@ -4,11 +4,14 @@ import { Controller, useForm } from "react-hook-form";
 import { useNavigate, useParams } from 'react-router-dom';
 import Select from 'react-select'
 
-import { useMyVotesStore } from '../../hooks';
+import { useMyVotesStore, useUiStore } from '../../hooks';
+import { DetailVoteModal } from '../components/DetailVoteModal';
+import { VoteInformation } from '../';
 
 export const VotePage = () => {
     const { id } = useParams();
     const navigate = useNavigate();
+    const { openModal } = useUiStore();
 
     const { user } = useSelector( state => state.auth );
     const { startLoadingMyVotes, isLoading, myVotes, getVote, currentVote } = useMyVotesStore();
@@ -45,56 +48,29 @@ export const VotePage = () => {
      }, [currentVote])
 
 
-     const onSelectChanged = (idVotacion) => {
+    const onSelectChanged = (idVotacion) => {
         navigate(`../mis-votaciones/votar/${idVotacion}`)
-      }
+    }
 
+    const onViewDetail = () => {
+        openModal();
+    }
 
      if(!vote){
         return <p>Loading...</p>
     }
 
     return (
+        <>
         <main id="LoginPage" className="container mx-auto border row justify-content-md-center" style={{minHeight: '60vh'}}>
 
         <div className="col col-md-3 p-3 d-none d-md-block">
-            <h2 className="text-center">{vote.title}</h2>
-            
-            <div className="mb-2 text-center">
-                <p className="fw-normal">{vote.subtitle}</p>
-            </div>
 
-            <div className="mb-3 text-center">
-                <i className="fas fa-trophy text-warning fs-1 text-centerc animate__animated animate__fadeInDown"></i>
-            </div>
-
-            <div className="mb-3 row ">
-                <div>
-                    <i className="fas fa-clock"></i> &nbsp;
-                    Fechas: 
-                </div>
-                <div className='fw-lighter'>
-                    {vote.fromDateText} - {vote.toDateText}
-                </div>
-            </div>
-
-            <div className="mb-3 row">
-                <div className="col">
-                    <div>Puntos:</div>
-                    <span className="badge bg-secondary">{ vote.points }</span>
-                </div>
-                <div className="col">
-                    <div>Candidatos:</div>
-                    <span className="badge bg-secondary">{ vote.candidates }</span>
-                </div>
-                
-            </div>
-
-            
+            <VoteInformation vote={{...vote}} />
 
         </div>
 
-        <div className="col col-md-4 p-2">
+        <div className="col col-md-5 p-2">
 
             <div className="mb-2">
                 <Controller
@@ -115,7 +91,11 @@ export const VotePage = () => {
             </div>
 
             <div className="d-lg-none d-md-none d-xxl-none">
-                <button className="btn btn-outline-primary">Ver información</button>
+            {/* <div className=""> */}
+                <button 
+                    className="btn btn-outline-primary"
+                    onClick={ onViewDetail }
+                    >Ver información</button>
             </div>
 
             <div>
@@ -124,6 +104,11 @@ export const VotePage = () => {
 
         </div>
 
+        <DetailVoteModal>
+            <VoteInformation vote={{...vote}} />
+        </DetailVoteModal>
+
         </main>
+        </>
     )
 }

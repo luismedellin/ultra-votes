@@ -1,5 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
-import { authSlice, masterDataSlice, masterVoteSlice, myVotesSlice } from "./";
+import { authSlice, masterDataSlice, masterVoteSlice, myVotesSlice, uiSlice } from "./";
 
 const globalState = localStorage.getItem('GLOBAL_STATE');
 const initialState = globalState ? JSON.parse(globalState) : undefined;
@@ -10,6 +10,7 @@ export const store = configureStore({
         masterData: masterDataSlice.reducer,
         masterVote: masterVoteSlice.reducer,
         myVotes: myVotesSlice.reducer,
+        ui:       uiSlice.reducer,
     }
 }, initialState);
 
