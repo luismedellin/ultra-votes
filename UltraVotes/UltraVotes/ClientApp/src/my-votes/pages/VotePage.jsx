@@ -55,34 +55,48 @@ export const VotePage = () => {
     }
 
     return (
-        <main id="LoginPage" className="d-flex justify-content-center" style={{minHeight: '60vh'}}>
+        <main id="LoginPage" className="container mx-auto border row justify-content-md-center" style={{minHeight: '60vh'}}>
 
-        <div className="col col-md-3 p-2">
-            <h2>{vote.name}</h2>
-            <div className="mb-3">
-            <label htmlFor="disabledTextInput" className="form-label">Disabled input</label>
-            <input type="text" id="disabledTextInput" className="form-control" placeholder="Disabled input" />
+        <div className="col col-md-3 p-3 d-none d-md-block">
+            <h2 className="text-center">{vote.title}</h2>
+            
+            <div className="mb-2 text-center">
+                <p className="fw-normal">{vote.subtitle}</p>
             </div>
-            <div className="mb-3">
-            <label htmlFor="disabledSelect" className="form-label">Disabled select menu</label>
-            <select id="disabledSelect" className="form-select">
-                <option>Disabled select</option>
-            </select>
+
+            <div className="mb-3 text-center">
+                <i className="fas fa-trophy text-warning fs-1 text-centerc animate__animated animate__fadeInDown"></i>
             </div>
-            <div className="mb-3">
-            <div className="form-check">
-                <input className="form-check-input" type="checkbox" id="disabledFieldsetCheck" disabled />
-                <label className="form-check-label" htmlFor="disabledFieldsetCheck">
-                Can't check this
-                </label>
+
+            <div className="mb-3 row ">
+                <div>
+                    <i className="fas fa-clock"></i> &nbsp;
+                    Fechas: 
+                </div>
+                <div className='fw-lighter'>
+                    {vote.fromDateText} - {vote.toDateText}
+                </div>
             </div>
+
+            <div className="mb-3 row">
+                <div className="col">
+                    <div>Puntos:</div>
+                    <span className="badge bg-secondary">{ vote.points }</span>
+                </div>
+                <div className="col">
+                    <div>Candidatos:</div>
+                    <span className="badge bg-secondary">{ vote.candidates }</span>
+                </div>
+                
             </div>
-            <button type="submit" className="btn btn-primary">Submit</button>
+
+            
+
         </div>
 
-        <div className="col col-md-3 p-2">
+        <div className="col col-md-4 p-2">
 
-            <div className="mb-3">
+            <div className="mb-2">
                 <Controller
                     control={control}
                     name="vote"
@@ -93,15 +107,15 @@ export const VotePage = () => {
                             classNamePrefix="form-select"
                             options={myVotes}
                             {...register('vote')}
-                            defaultValue={{ value: vote.masterVoteId, label: vote.name }}
+                            defaultValue={{ value: vote.masterVoteId, label: vote.title }}
                             onChange={ ({value}) => onSelectChanged(value)  }l
                         />
                     )}
                 />
             </div>
 
-            <div>
-                <button className="btn btn-link">Ver información</button>
+            <div className="d-lg-none d-md-none d-xxl-none">
+                <button className="btn btn-outline-primary">Ver información</button>
             </div>
 
             <div>

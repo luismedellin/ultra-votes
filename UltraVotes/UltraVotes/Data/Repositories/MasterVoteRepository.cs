@@ -18,7 +18,7 @@ namespace UltraVotes.Data.Repositories
         {
             var query = @"SELECT	MasterVoteId, 
 		                            CategoryId, 
-		                            (SELECT Description FROM votes.MasterVoteCategory c WHERE c.CategoryId = mv.CategoryId)Category,
+		                            (SELECT Description FROM votes.MasterVoteCategory c WHERE c.MasterVoteCategoryId = mv.CategoryId)Category,
 		                            RestrictionId, 
 		                            (SELECT Description FROM votes.MasterVoteRestriction c WHERE c.RestrictionId = mv.RestrictionId)Restriction,
 		                            Title, 
@@ -43,7 +43,7 @@ namespace UltraVotes.Data.Repositories
         {
             var query = @"SELECT	MasterVoteId, 
 		                            CategoryId, 
-		                            (SELECT Description FROM votes.MasterVoteCategory c WHERE c.CategoryId = mv.CategoryId)Category,
+		                            (SELECT Description FROM votes.MasterVoteCategory c WHERE c.MasterVoteCategoryId = mv.CategoryId)Category,
 		                            RestrictionId, 
 		                            (SELECT Description FROM votes.MasterVoteRestriction c WHERE c.RestrictionId = mv.RestrictionId)Restriction,
 		                            Title, 
