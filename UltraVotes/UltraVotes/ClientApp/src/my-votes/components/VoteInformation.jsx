@@ -22,12 +22,10 @@ export const VoteInformation = ({vote}) => {
                     {vote.fromDateText} - {vote.toDateText}
                 </div>
             </div>
-
             
             <div className="mb-3 row">
                 {
-                    vote.points > 0 && 
-
+                    vote.points > 0 &&
                     <div className="col">
                         <div>Puntos:</div>
                         <span className="badge bg-secondary">{ vote.points }</span>
@@ -35,7 +33,7 @@ export const VoteInformation = ({vote}) => {
                 }
                 
                 {
-                    vote.candidates > 0 && 
+                    vote.candidates > 0 &&
                     <div className="col">
                         <div>Candidatos:</div>
                         <span className="badge bg-secondary">{ vote.candidates }</span>

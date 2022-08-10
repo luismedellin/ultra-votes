@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useSelector } from 'react-redux';
 import { Controller, useForm } from "react-hook-form";
 import { useNavigate, useParams } from 'react-router-dom';
@@ -7,11 +7,15 @@ import Select from 'react-select'
 import { useMyVotesStore, useUiStore } from '../../hooks';
 import { DetailVoteModal } from '../components/DetailVoteModal';
 import { VoteInformation } from '../';
+import { useGlobalFilter, useTable } from 'react-table';
+import { GlobalFiltering } from '../../ui';
 
 export const VotePage = () => {
     const { id } = useParams();
     const navigate = useNavigate();
     const { openModal } = useUiStore();
+
+    const [data, setData] = useState([]);
 
     const { user } = useSelector( state => state.auth );
     const { startLoadingMyVotes, isLoading, myVotes, getVote, currentVote } = useMyVotesStore();
@@ -34,7 +38,7 @@ export const VotePage = () => {
         
             // const myVote = await getVote(id);
             // setVote(myVote);
-            await getVote(id);
+            await getVote(id, 'luiseduardo1218@gmail.com');
         }
         
         if(myVotes.length){
@@ -44,7 +48,11 @@ export const VotePage = () => {
 
      useEffect(() => {
         setVote(currentVote);
-
+        // debugger;
+        if(currentVote?.candidatesToVote){
+            console.log(currentVote.candidatesToVote)
+            setData(currentVote.candidatesToVote);
+        }
      }, [currentVote])
 
 
@@ -56,6 +64,43 @@ export const VotePage = () => {
         openModal();
     }
 
+    const columns = useMemo(
+        () => [
+          {
+            Header: 'Nombres',
+            accessor: 'fullName',
+          },
+          {
+            Header: 'Área',
+            accessor: 'areaId',
+          },
+          {
+            accessor: 'voted',
+            Header: '',
+            Cell: ({ row: { original } }) => (
+                original.voted && <i className="fas fa-trophy text-warning fs-6 text-center"></i>
+            )
+           },
+        ],
+        []
+      )
+
+      const {
+        getTableBodyProps,
+        getTableProps,
+        headerGroups,
+        prepareRow,
+        rows,
+        setGlobalFilter,
+        state,
+      } = useTable({ 
+        columns, 
+        data,
+      }, useGlobalFilter);
+
+    const { globalFilter } = state;
+
+
      if(!vote){
         return <p>Loading...</p>
     }
@@ -66,7 +111,7 @@ export const VotePage = () => {
             className="container mx-auto border row justify-content-md-center animate__animated animate__fadeIn" 
             style={{minHeight: '60vh'}}>
 
-        <div className="col col-md-3 p-3 d-none d-md-block">
+        <div className="col col-md-4 p-5 d-none d-md-block">
             <VoteInformation vote={{...vote}} />
         </div>
 
@@ -90,7 +135,7 @@ export const VotePage = () => {
                 />
             </div>
 
-            <div className="d-lg-none d-md-none d-xxl-none">
+            <div className="d-lg-none d-md-none d-xxl-none mb-2">
             {/* <div className=""> */}
                 <button 
                     className="btn btn-outline-primary"
@@ -98,8 +143,53 @@ export const VotePage = () => {
                     >Ver información</button>
             </div>
 
+            <div className="mb-2">
+                <GlobalFiltering 
+                    filter={globalFilter} 
+                    setFilter={setGlobalFilter}
+                    placeholder="Busque algun candidato"
+                    />
+            </div>
+
+            <div className="mb-2 text-end">
+                <span>Candidatos: { vote?.candidatesToVote.length }</span>
+            </div>
+
             <div>
-                Candidatos: { vote?.candidatesToVote.length }
+
+                <table {...getTableProps()} 
+                  className="table table-striped border candidates">
+                <thead>
+                  {headerGroups.map(headerGroup => (
+                    <tr {...headerGroup.getHeaderGroupProps()}>
+                      {headerGroup.headers.map(column => (
+                        <th {...column.getHeaderProps()}>
+                          {column.render('Header')}
+                        </th>
+                      ))}
+                    </tr>
+                  ))}
+                </thead>
+                <tbody {...getTableBodyProps()}>
+                  {rows.map(row => {
+                    prepareRow(row)
+                    return (
+                      <tr {...row.getRowProps()} onClick={() => console.log(row.original)} >
+                        {row.cells.map(cell => {
+                          return (
+                            <td
+                              {...cell.getCellProps()}
+                            >
+                              {cell.render('Cell')}
+                            </td>
+                          )
+                        })}
+                      </tr>
+                    )
+                  })}
+                </tbody>
+              </table>
+
             </div>
 
         </div>

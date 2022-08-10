@@ -14,10 +14,10 @@ namespace UltraVotes.Controllers
             this.candidateService = candidateService;
         }
 
-        [HttpGet("{voteId}")]
-        public async Task<IActionResult> Get(int voteId)
+        [HttpGet("{voteId}/{userId}")]
+        public async Task<IActionResult> Get(int voteId, string userId)
         {
-            var candidates = await candidateService.GetByVoteId(voteId);
+            var candidates = await candidateService.GetByVoteId(voteId, userId);
             return Ok(candidates);
         }
     }

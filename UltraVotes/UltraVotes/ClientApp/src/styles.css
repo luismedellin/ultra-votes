@@ -64,35 +64,35 @@ header,footer,nav,article,aside { box-sizing: border-box;/* padding: 1em; */}
 
 .search{
     position: relative;
-    box-shadow: 0 0 40px rgba(51, 51, 51, .1);
+    box-shadow: 0 0 30px rgba(51, 51, 51, .1);
 }
 
 .search input{
-     height: 60px;
-     text-indent: 25px;
+     height: 40px;
+     text-indent: 5px;
      border: 2px solid #d6d4d4;
 }
 
 
 .search input:focus{
      box-shadow: none;
-     border: 2px solid blue;
+     border: 2px solid #0D6EFD;
 }
 
 .search .fa-search{
     position: absolute;
-    top: 20px;
-    left: 16px;
+    top: 12px;
+    right: 16px;
 }
 
-.search button{
+/* .search button{
     position: absolute;
     top: 5px;
     right: 5px;
     height: 50px;
     width: 110px;
     background: blue;
-}
+} */
 
 
 /* Modal */
@@ -135,3 +135,10 @@ header,footer,nav,article,aside { box-sizing: border-box;/* padding: 1em; */}
     outline: none;
     padding: 10px;
   }
+
+
+table.candidates tbody tr:hover {
+    background: #FF8200;
+    color: white;
+    cursor: pointer;
+}

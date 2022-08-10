@@ -1,9 +1,9 @@
-﻿using UltraVotes.Data.Models;
+﻿using UltraVotes.Core.ViewModels;
 
 namespace UltraVotes.Core.Services
 {
     public interface ICandidateService
     {
-        Task<List<CandidateModel>> GetByVoteId(int voteId);
+        Task<List<CandidateVM>> GetByVoteId(int voteId, string userId);
     }
 }

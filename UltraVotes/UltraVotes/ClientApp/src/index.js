@@ -12,11 +12,11 @@ import { msalConfig } from './auth'
 const msalInstance = new PublicClientApplication(msalConfig);
 
 ReactDOM.createRoot(document.getElementById('root')).render(
-    <React.StrictMode>
+    // <React.StrictMode>
         <MsalProvider instance={msalInstance}>
             <BrowserRouter>
                 <UltraVotesApp />
             </BrowserRouter>
         </MsalProvider>
-    </React.StrictMode>
+    // </React.StrictMode>
 )

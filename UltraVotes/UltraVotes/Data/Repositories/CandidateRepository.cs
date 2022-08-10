@@ -1,5 +1,5 @@
 ﻿using Dapper;
-using UltraVotes.Data.Models;
+using UltraVotes.Core.ViewModels;
 
 namespace UltraVotes.Data.Repositories
 {
@@ -12,14 +12,26 @@ namespace UltraVotes.Data.Repositories
             _context = context;
         }
 
-        public async Task<List<CandidateModel>> GetByVoteId(int voteId)
+        public async Task<List<CandidateVM>> GetByVoteId(int voteId, string userId)
         {
-            const string query = @$"SELECT CandidateId, MasterVoteId, UserId, Name, LastName, DepartmentId, AreaId, Avatar, IsFinalist
-                                FROM	votes.Candidate
-                                WHERE	MasterVoteId = @voteId";
+            const string query = @$"DECLARE @True BIT = 1,
+		                                    @False BIT = 0
+
+                                    SELECT	c.CandidateId, c.MasterVoteId, c.UserId, Name, LastName, DepartmentId, AreaId, Avatar, IsFinalist, 
+		                                    ISNULL(v.Points, 0) Points, 
+		                                    CASE WHEN v.Points IS NOT NULL THEN @True ELSE @False END Voted
+                                    FROM	votes.Candidate c
+                                    LEFT JOIN (
+		                                    SELECT MasterVoteId, CandidateId, Points
+		                                    FROM votes.Vote
+		                                    where MasterVoteId = 1
+		                                    and UserId = @userId
+	                                    )v 
+	                                    ON c.MasterVoteId = v.MasterVoteId AND c.UserId = v.CandidateId
+                                    WHERE	c.MasterVoteId = @voteId";
 
             using var connection = _context.CreateConnection();
-            return (await connection.QueryAsync<CandidateModel>(query, new { voteId })).ToList();
+            return (await connection.QueryAsync<CandidateVM>(query, new { voteId, userId })).ToList();
         }
     }
 }

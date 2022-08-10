@@ -1,4 +1,5 @@
-﻿using UltraVotes.Data;
+﻿using UltraVotes.Core.ViewModels;
+using UltraVotes.Data;
 using UltraVotes.Data.Models;
 
 namespace UltraVotes.Core.Services
@@ -17,9 +18,9 @@ namespace UltraVotes.Core.Services
             return unitOfWork.Users.GetAll();
         }
 
-        public Task<List<CandidateModel>> GetByVoteId(int voteId)
+        public Task<List<CandidateVM>> GetByVoteId(int voteId, string userId)
         {
-            return unitOfWork.Candidates.GetByVoteId(voteId);
+            return unitOfWork.Candidates.GetByVoteId(voteId, userId);
         }
     }
 }
