@@ -1,14 +1,37 @@
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom';
+import Swal from 'sweetalert2';
 import { useCandidateStore } from '../../hooks';
 
 export const UserCandidates = React.memo(() => {
     const { id } = useParams();
-    const { candidates, getCandidates} =  useCandidateStore();
+    const { candidates, getCandidates, onDeleteCandidate } =  useCandidateStore();
 
     useEffect(() => {
       getCandidates(id);
     }, [])
+
+    const deleteCandidate = (candidate) => {
+        console.log('Hola mundo')
+        Swal.fire({
+            title: `Deseas eliminar a <strong>${candidate.fullName}</strong> de la votación?`,
+            showCancelButton: true,
+            confirmButtonText: 'Si',
+            cancelButtonText: 'No',
+            confirmButtonColor: "#dc3545",   
+            cancelButtonColor: "#adb5bd",   
+            customClass: {
+              actions: 'my-actions',
+              cancelButton: 'order-1 right-gap me-5 btn btn-primary',
+              confirmButton: 'order-2 btn btn-danger',
+            }
+          }).then(async(result) => {
+            if (result.isConfirmed) {
+                await onDeleteCandidate(candidate.candidateId);
+                Swal.fire('Candidato eliminado', '', 'success')
+            }
+          })
+    }
 
     return (
         <aside className="card">
@@ -32,7 +55,10 @@ export const UserCandidates = React.memo(() => {
                                     <button className="btn btn-primary btn-sm me-2 ">
                                         <i className="fa fa-solid fa-user-pen" aria-hidden="true"></i>
                                     </button>
-                                    <button className="btn btn-danger btn-sm">
+                                    <button 
+                                        className="btn btn-danger btn-sm"
+                                        onClick={ () => deleteCandidate(candidate) }
+                                        >
                                         <i className="fa fa-trash" aria-hidden="true"></i>
                                     </button>
                                 </div>

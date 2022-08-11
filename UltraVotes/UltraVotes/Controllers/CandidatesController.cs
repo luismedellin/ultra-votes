@@ -27,5 +27,12 @@ namespace UltraVotes.Controllers
             var candidates = await candidateService.GetByVoteId(voteId, userId);
             return Ok(candidates);
         }
+
+        [HttpDelete("{masterVoteId}")]
+        public async Task<IActionResult> DeleteCandidate(int masterVoteId)
+        {
+            await candidateService.Delete(masterVoteId);
+            return Ok("Candiddate deleted");
+        }
     }
 }

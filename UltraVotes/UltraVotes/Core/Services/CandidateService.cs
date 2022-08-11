@@ -22,5 +22,10 @@ namespace UltraVotes.Core.Services
         {
             return unitOfWork.Candidates.GetByVoteId(voteId, userId);
         }
+
+        public Task Delete(int candidateId)
+        {
+            return unitOfWork.Candidates.Delete(candidateId);
+        }
     }
 }

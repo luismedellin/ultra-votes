@@ -6,5 +6,6 @@ namespace UltraVotes.Data.Repositories
     {
         Task<List<CandidateVM>> GetFinalCandidates(int masterVoteId);
         Task<List<CandidateVM>> GetByVoteId(int voteId, string userId);
+        Task Delete(int candidateId);
     }
 }

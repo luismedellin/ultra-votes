@@ -1,15 +1,16 @@
 ﻿using Dapper;
+using System.Data;
 using UltraVotes.Core.ViewModels;
 
 namespace UltraVotes.Data.Repositories
 {
     public class CandidateRepository : ICandidateRepository
     {
-        private readonly DapperContext _context;
+        private readonly IDbConnection dbConnection;
 
         public CandidateRepository(DapperContext context)
         {
-            _context = context;
+            dbConnection = context.CreateConnection();
         }
 
         public async Task<List<CandidateVM>> GetFinalCandidates(int masterVoteId)
@@ -18,8 +19,7 @@ namespace UltraVotes.Data.Repositories
                                     FROM	votes.Candidate
                                     WHERE	MasterVoteId = @masterVoteId";
 
-            using var connection = _context.CreateConnection();
-            return (await connection.QueryAsync<CandidateVM>(query, new { masterVoteId })).ToList();
+            return (await dbConnection.QueryAsync<CandidateVM>(query, new { masterVoteId })).ToList();
         }
 
         public async Task<List<CandidateVM>> GetByVoteId(int voteId, string userId)
@@ -41,8 +41,33 @@ namespace UltraVotes.Data.Repositories
                                     WHERE	c.MasterVoteId = @voteId AND
 											c.UserId <> @UserId";
 
-            using var connection = _context.CreateConnection();
-            return (await connection.QueryAsync<CandidateVM>(query, new { voteId, userId })).ToList();
+            return (await dbConnection.QueryAsync<CandidateVM>(query, new { voteId, userId })).ToList();
+        }
+
+        public async Task Delete(int candidateId)
+        {
+            dbConnection.Open();
+            using var transaction = CreateTransaction();
+            const string sql = @"DELETE FROM votes.Candidate WHERE CandidateId = @candidateId;";
+            try
+            {
+                await (dbConnection.ExecuteScalarAsync<int>(sql, new { candidateId }, transaction));
+                transaction.Commit();
+            }
+            catch (Exception e)
+            {
+                transaction.Rollback();
+                var errorMessage = $@"Error al borrar el usuario de la votación: {candidateId}";
+            }
+            finally
+            {
+                dbConnection.Close();
+            }
+        }
+
+        private IDbTransaction CreateTransaction()
+        {
+            return dbConnection.BeginTransaction(IsolationLevel.ReadCommitted);
         }
     }
 }

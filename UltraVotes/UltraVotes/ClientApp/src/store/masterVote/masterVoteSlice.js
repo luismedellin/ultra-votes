@@ -36,6 +36,9 @@ export const masterVoteSlice = createSlice({
         },
         onUpdatingCandidates: (state, { payload }) => {
             state.candidates = payload;
+        },
+        onDeletingCandidate: (state, { payload }) => {
+            state.candidates = state.candidates.filter((candidate)=> candidate.candidateId !== payload);
         }
     }
 });
@@ -47,5 +50,6 @@ export const {
     onSavingMasterVotes, 
     onSetActiveMasterVote, 
     onUpdateMasterVote, 
-    onUpdatingCandidates 
+    onUpdatingCandidates,
+    onDeletingCandidate
 } = masterVoteSlice.actions;
