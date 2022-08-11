@@ -11,8 +11,10 @@
         public string Subtitle { get; set; }
         public byte StatusId { get; set; }
         public string Status { get; set; }
+        public int AvailablePoints { get; set; }
         public int VotedPoints { get; set; }
         public byte Points { get; set; }
+        public int AvailableCandidates { get; set; }
         public int Votes { get; set; }
         public byte Candidates { get; set; }
         public DateTime? FromDate { get; set; }

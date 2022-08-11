@@ -72,14 +72,11 @@ export const UsersVotesPage = () => {
                 <div className="card-body">
                   <h2>Usuarios de la votación:</h2>
 
-
                   <GlobalFiltering 
-                  filter={globalFilter} 
-                  setFilter={setGlobalFilter} />
+                    filter={globalFilter} 
+                    setFilter={setGlobalFilter} />
 
                   <div className='p-2'>
-                
-                
 
                 <table {...getTableProps()} 
                   className="table">

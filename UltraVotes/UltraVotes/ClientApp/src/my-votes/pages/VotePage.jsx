@@ -9,11 +9,11 @@ import { DetailVoteModal } from '../components/DetailVoteModal';
 import { VoteInformation } from '../';
 import { useGlobalFilter, useTable } from 'react-table';
 import { GlobalFiltering } from '../../ui';
+import { Vote } from '../components/Vote';
 
 export const VotePage = () => {
     const { id } = useParams();
     const navigate = useNavigate();
-    const { openModal } = useUiStore();
 
     const [data, setData] = useState([]);
 
@@ -60,10 +60,6 @@ export const VotePage = () => {
         navigate(`../mis-votaciones/votar/${idVotacion}`)
     }
 
-    const onViewDetail = () => {
-        openModal();
-    }
-
     const columns = useMemo(
         () => [
           {
@@ -100,8 +96,30 @@ export const VotePage = () => {
 
     const { globalFilter } = state;
 
+    const { openModal } = useUiStore();
+    const { isModalOpen, closeModal } = useUiStore();
+    const [voteInformationOpen, setVoteInformationOpen] = useState(false);
+    const [addCandidateModal, setAddCandidateModal] = useState(false);
+    const [candidate, setCandidate] = useState({});
 
-     if(!vote){
+    const onViewDetail = () => {
+        // openModal();
+        setVoteInformationOpen(true);
+    }
+
+    const onCloseModalViewDetail = () => {
+        // openModal();
+        setVoteInformationOpen(false);
+        setAddCandidateModal(false);
+    }
+
+    const onOpenVote = ({original: candidate}) => {
+        setAddCandidateModal(true);
+        setCandidate(candidate);
+
+    }
+
+    if(!vote){
         return <p>Loading...</p>
     }
 
@@ -135,7 +153,8 @@ export const VotePage = () => {
                 />
             </div>
 
-            <div className="d-lg-none d-md-none d-xxl-none mb-2">
+            <div className="mb-2">
+            {/* <div className="d-lg-none d-md-none d-xxl-none mb-2"> */}
             {/* <div className=""> */}
                 <button 
                     className="btn btn-outline-primary"
@@ -174,7 +193,7 @@ export const VotePage = () => {
                   {rows.map(row => {
                     prepareRow(row)
                     return (
-                      <tr {...row.getRowProps()} onClick={() => console.log(row.original)} >
+                      <tr {...row.getRowProps()} onClick={() => onOpenVote(row)} >
                         {row.cells.map(cell => {
                           return (
                             <td
@@ -193,10 +212,16 @@ export const VotePage = () => {
             </div>
 
         </div>
+        
+                        {/* <tr {...row.getRowProps()} onClick={() => console.log(row.original)} > */}
 
-        <DetailVoteModal>
+        <DetailVoteModal isModalOpen={voteInformationOpen} closeModal={onCloseModalViewDetail}>
             <VoteInformation vote={{...vote}} />
         </DetailVoteModal>
+
+        <DetailVoteModal isModalOpen={addCandidateModal} closeModal={onCloseModalViewDetail} title={vote.title}>
+            <Vote vote={{...vote}} candidate={{...candidate}} />
+        </DetailVoteModal>;
 
         </main>
         </>

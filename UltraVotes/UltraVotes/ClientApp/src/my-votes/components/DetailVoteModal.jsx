@@ -14,9 +14,9 @@ const customStyles = {
 
 Modal.setAppElement('#root');
 
-export const DetailVoteModal = ({title, children}) => {
+export const DetailVoteModal = ({isModalOpen, closeModal, title, children}) => {
 
-    const { isModalOpen, closeModal } = useUiStore();
+    // const { isModalOpen, closeModal } = useUiStore();
 
     const onCloseModal = () => {
         closeModal();

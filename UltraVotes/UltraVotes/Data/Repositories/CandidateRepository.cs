@@ -28,7 +28,8 @@ namespace UltraVotes.Data.Repositories
 		                                    and UserId = @userId
 	                                    )v 
 	                                    ON c.MasterVoteId = v.MasterVoteId AND c.UserId = v.CandidateId
-                                    WHERE	c.MasterVoteId = @voteId";
+                                    WHERE	c.MasterVoteId = @voteId AND
+											c.UserId <> @UserId";
 
             using var connection = _context.CreateConnection();
             return (await connection.QueryAsync<CandidateVM>(query, new { voteId, userId })).ToList();
