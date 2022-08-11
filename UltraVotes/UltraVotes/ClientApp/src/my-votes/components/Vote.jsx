@@ -1,36 +1,20 @@
 import { useState } from 'react'
-import { useForm } from "react-hook-form";
-import { yupResolver } from '@hookform/resolvers/yup';
-
-import * as yup from 'yup';
-
-const schema = yup.object().shape({
-    // message: yup.string().required(),
-    points: yup.number().required().min(0),
-  })
-  .required();
+import { useFormik } from 'formik';
 
 export const Vote = ({vote, candidate}) => {
 
     const limit = 180;
     const [characters, setCharacters] = useState(0)
 
-    const { 
-        register,
-        control,
-        handleSubmit,
-        setValue,
-        formState: { isDirty, isValid, isSubmitting, errors },
-        clearErrors,
-        reset
-    } = useForm({
-        mode: "onChange",
-        resolver: yupResolver(schema),
-    });
-
-    const onSubmit = async(data) => {
-        console.log(data);
-    }
+    const formik = useFormik({
+        initialValues: {
+            points: candidate.points,
+            message: candidate.message
+        },
+        onSubmit: values => {
+          console.log(values);
+        },
+      });
 
     return (
         <div>
@@ -47,24 +31,29 @@ export const Vote = ({vote, candidate}) => {
             <div>
                 <h3 className="mb-2 text-center">{candidate.fullName}</h3>
 
-                <form onSubmit={handleSubmit(onSubmit)}>
+                <form onSubmit={formik.handleSubmit}>
                     <fieldset>
 
-                        {/* <div className="mb-2">
+                        <div className="mb-2">
                             <label htmlFor="message" className="form-label">Mensaje* :</label>
                             <textarea 
                                 style={{resize: 'none'}}
                                 className="form-control" rows="4"
-                                {...register("message")}
+                                id="message"
+                                name="message"
+                                onChange={((e)=> {
+                                    setCharacters(e.target.value.length)
+                                    formik.handleChange(e);
+                                })}
+                                value={formik.values.message}
                                 disabled={candidate.voted}
-                                onChange={(({target})=> setCharacters(target.value.length))}
                                 maxLength={limit}
                             ></textarea>
 
                             <div className="text-end mt-1 fw-light">
                                 <span>{characters} / {limit}</span>
                             </div>
-                        </div> */}
+                        </div>
                         
                         {
                             vote.points > 0 &&
@@ -75,10 +64,11 @@ export const Vote = ({vote, candidate}) => {
                                     type="number"
                                     disabled={candidate.voted}
                                     className="form-control col-2"
-                                    {...register("points")}
-                                    defaultValue={candidate.points}
+                                    id="points"
+                                    name="points"
+                                    onChange={formik.handleChange}
+                                    value={formik.values.points}
                                     />
-                                { errors.points && <span className="text-danger">Seleccione un número >= 0</span> }
 
                                 <div className="text-end mt-1 fw-light">
                                     <span>Puntos disponibles {vote.availablePoints} / {vote.points}</span>
@@ -88,11 +78,10 @@ export const Vote = ({vote, candidate}) => {
                         {
                         !candidate.voted && 
                         <div className="d-grid gap-2">
-                        <button 
+                        <button type="submit"
                             className="btn btn-outline-primary btn-lg"
-                            disabled={!(isDirty && isValid)}
-                            // disabled={isSubmitting}
-                            >Enviar</button>
+                            disabled={!formik.dirty}
+                            >Votar</button>
                         </div>
                         }
                         
