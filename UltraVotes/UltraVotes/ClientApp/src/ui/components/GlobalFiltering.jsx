@@ -26,7 +26,7 @@ export const GlobalFiltering = ({ filter, setFilter, placeholder = "Ingresa algu
                 placeholder={placeholder}
                 onChange={onChange}
                 />
-            <button className="btn btn-primary">Buscar</button>
+            {/* <button className="btn btn-primary">Buscar</button> */}
             </div>
         </div>
     </div>

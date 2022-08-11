@@ -9,8 +9,8 @@ namespace UltraVotes.Core.Mappings
         public MasterVoteProfile()
         {
             CreateMap<MasterVoteDto, MasterVoteModel>()
-                //.ForMember(dest=> dest.MasterVoteCategoryId, opt=> opt.MapFrom(src=> src.Category))
-                //.ForMember(dest=> dest.MasterVoteRestrictionId, opt=> opt.MapFrom(src=> src.Restriction))
+                //.ForMember(dest=> dest.CategoryId, opt=> opt.MapFrom(src=> src.Category))
+                //.ForMember(dest=> dest.RestrictionId, opt=> opt.MapFrom(src=> src.Restriction))
                 .ReverseMap();
         }
     }

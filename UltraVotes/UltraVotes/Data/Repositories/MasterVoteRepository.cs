@@ -17,11 +17,12 @@ namespace UltraVotes.Data.Repositories
         public async Task<List<MasterVoteVM>> GetAllVotes()
         {
             var query = @"SELECT	MasterVoteId, 
-		                            MasterVoteCategoryId, 
-		                            (SELECT Description FROM votes.MasterVoteCategory c WHERE c.MasterVoteCategoryId = mv.MasterVoteCategoryId)Category,
-		                            MasterVoteRestrictionId, 
-		                            (SELECT Description FROM votes.MasterVoteRestriction c WHERE c.RestrictionId = mv.MasterVoteRestrictionId)Restriction,
-		                            Name, 
+		                            CategoryId, 
+		                            (SELECT Description FROM votes.MasterVoteCategory c WHERE c.MasterVoteCategoryId = mv.CategoryId)Category,
+		                            RestrictionId, 
+		                            (SELECT Description FROM votes.MasterVoteRestriction c WHERE c.RestrictionId = mv.RestrictionId)Restriction,
+		                            Title, 
+		                            Subtitle, 
 		                            StatusId,
 		                            (SELECT Description FROM votes.Status s WHERE s.StatusId = mv.StatusId)Status,
 		                            FromDate, 
@@ -41,11 +42,11 @@ namespace UltraVotes.Data.Repositories
         public async Task<MasterVoteVM> GetVoteById(int masterVoteId)
         {
             var query = @"SELECT	MasterVoteId, 
-		                            MasterVoteCategoryId, 
-		                            (SELECT Description FROM votes.MasterVoteCategory c WHERE c.MasterVoteCategoryId = mv.MasterVoteCategoryId)Category,
-		                            MasterVoteRestrictionId, 
-		                            (SELECT Description FROM votes.MasterVoteRestriction c WHERE c.RestrictionId = mv.MasterVoteRestrictionId)Restriction,
-		                            Name, 
+		                            CategoryId, 
+		                            (SELECT Description FROM votes.MasterVoteCategory c WHERE c.MasterVoteCategoryId = mv.CategoryId)Category,
+		                            RestrictionId, 
+		                            (SELECT Description FROM votes.MasterVoteRestriction c WHERE c.RestrictionId = mv.RestrictionId)Restriction,
+		                            Title, 
 		                            StatusId,
 		                            (SELECT Description FROM votes.Status s WHERE s.StatusId = mv.StatusId)Status,
 		                            FromDate, 
@@ -62,12 +63,19 @@ namespace UltraVotes.Data.Repositories
             return (await dbConnection.QueryAsync<MasterVoteVM>(query, new { masterVoteId })).FirstOrDefault();
         }
 
+        public async Task<List<MasterVoteVM>> GetVotesByUser(string userId)
+        {
+            var query = @"EXEC votes.GetVotesByUser @userId";
+
+            return (await dbConnection.QueryAsync<MasterVoteVM>(query, new { userId })).ToList();
+        }
+
         public async Task Save(MasterVoteModel masterVote)
         {
             dbConnection.Open();
             using var transaction = CreateTransaction();
-            const string sql = @"INSERT INTO votes.MasterVote (MasterVoteCategoryId, MasterVoteRestrictionId,  Name, StatusId, FromDate, ToDate, Points, Candidates, CreatedDate, CreatedBy) OUTPUT INSERTED.MasterVoteId
-                                    VALUES (@MasterVoteCategoryId, @MasterVoteRestrictionId, @Name, 1, @FromDate, @ToDate, @Points, @Candidates, GETDATE(), '$$test');";
+            const string sql = @"INSERT INTO votes.MasterVote (CategoryId, RestrictionId, Title, Subtitle, StatusId, FromDate, ToDate, Points, Candidates, CreatedDate, CreatedBy) OUTPUT INSERTED.MasterVoteId
+                                    VALUES (@CategoryId, @RestrictionId, @Title, @Subtitle, 1, @FromDate, @ToDate, @Points, @Candidates, GETDATE(), '$$test');";
             try
             {
                 masterVote.MasterVoteId = await (dbConnection.ExecuteScalarAsync<int>(sql, masterVote, transaction));
@@ -89,9 +97,10 @@ namespace UltraVotes.Data.Repositories
             dbConnection.Open();
             using var transaction = CreateTransaction();
             const string sql = @"UPDATE	votes.MasterVote
-                                SET		MasterVoteCategoryId = @MasterVoteCategoryId,
-		                                MasterVoteRestrictionId = @MasterVoteRestrictionId,
-		                                Name = @Name,
+                                SET		CategoryId = @CategoryId,
+		                                RestrictionId = @RestrictionId,
+		                                Title = @Title,
+		                                Subtitle = @Subtitle,
 		                                FromDate = @FromDate,
 		                                ToDate = @ToDate,
 		                                Points = @Points,

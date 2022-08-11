@@ -32,6 +32,11 @@ namespace UltraVotes.Core.Services
             return unitOfWork.MasterVotes.GetVoteById(masterVoteId);
         }
 
+        public async Task<List<MasterVoteVM>> GetVotesByUser(string userId)
+        {
+            return await unitOfWork.MasterVotes.GetVotesByUser(userId);
+        }
+
         public async Task<MasterVoteVM> SaveMasterVote(MasterVoteDto masterVoteDto)
         {
             var validation = await masterVoteValidator.ValidateAsync(masterVoteDto);

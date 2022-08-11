@@ -1,15 +1,18 @@
 import { useMsal } from "@azure/msal-react";
 import { loginRequest } from "../";
+import { useAuthStore } from "../../hooks";
+
 
 export const LoginPage = () => {
   const { instance } = useMsal();
+  const { startLogin } = useAuthStore();
 
   const loginOffice = () =>{
     instance.loginPopup(loginRequest)
     .then((loginResponse)=> {
-      console.log(loginResponse);
-      console.log(loginResponse.accessToken);
-      console.log(loginResponse.account.username);
+      // console.log(loginResponse);
+      // console.log(loginResponse.accessToken);
+      // console.log(loginResponse.account.username);
 
       const request = {
           ...loginRequest,
@@ -18,9 +21,7 @@ export const LoginPage = () => {
       };
 
       instance.acquireTokenSilent(request).then((response2) => {
-        console.log(response2.accessToken);
-        debugger;
-        localStorage.setItem('token', response2.accessToken);
+        startLogin(response2);
       }).catch((e) => {
           instance.acquireTokenPopup(request).then((response) => {
           });

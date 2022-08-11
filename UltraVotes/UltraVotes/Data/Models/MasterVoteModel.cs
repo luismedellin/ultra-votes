@@ -3,9 +3,10 @@
     public class MasterVoteModel
     {
         public int MasterVoteId { get; set; }
-        public int MasterVoteCategoryId { get; set; }
-        public int MasterVoteRestrictionId { get; set; }
-        public string Name { get; set; }
+        public int CategoryId { get; set; }
+        public int RestrictionId { get; set; }
+        public string Title { get; set; }
+        public string Subtitle { get; set; }
         public byte Status { get; set; }
         public DateTime? FromDate { get; set; }
         public DateTime? ToDate { get; set; }

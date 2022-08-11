@@ -18,7 +18,7 @@ namespace UltraVotes.Data.Repositories
         public async Task<List<MasterVoteCategoryModel>> GetCategories()
         {
             var query = @"SELECT	MasterVoteCategoryId,
-		                        Description
+		                            Description
                         FROM	votes.MasterVoteCategory
                         ORDER BY Description";
 

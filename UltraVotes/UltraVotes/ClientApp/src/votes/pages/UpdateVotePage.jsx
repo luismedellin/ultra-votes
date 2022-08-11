@@ -121,7 +121,7 @@ export const UpdateVotePage = () => {
                                 <label htmlFor="category" className="form-label">Categoría: *</label>
                                 <Controller
                                     control={control}
-                                    defaultValue={masterVote.masterVoteCategoryId}
+                                    defaultValue={masterVote.CategoryId}
                                     name="category"
                                     render={({ onChange, value, name, ref }) => (
                                         <Select
@@ -129,8 +129,8 @@ export const UpdateVotePage = () => {
                                             classNamePrefix="form-select"
                                             options={data.categories}
                                             {...register('category')}
-                                            defaultValue={{ value: masterVote.masterVoteCategoryId, label: masterVote.category }}
-                                            onChange={ ({value, label}, {name}) => onSelectChanged(value, label, "masterVoteCategoryId", name)  }l
+                                            defaultValue={{ value: masterVote.CategoryId, label: masterVote.category }}
+                                            onChange={ ({value, label}, {name}) => onSelectChanged(value, label, "CategoryId", name)  }l
                                         />
 
                                     )}
@@ -142,7 +142,7 @@ export const UpdateVotePage = () => {
                                     <label htmlFor="restriction" className="form-label">Restricción por votación: *</label>
                                     <Controller
                                         control={control}
-                                        defaultValue={masterVote.masterVoteRestrictionId}
+                                        defaultValue={masterVote.RestrictionId}
                                         name="restriction"
                                         render={({ onChange, value, name, ref }) => (
                                             <Select
@@ -150,8 +150,8 @@ export const UpdateVotePage = () => {
                                                 classNamePrefix="form-select"
                                                 options={data.restrictions}
                                                 {...register('restriction')}
-                                                defaultValue={{ value: masterVote.masterVoteRestrictionId, label: masterVote.restriction }}
-                                                onChange={ ({value, label}, {name}) => onSelectChanged(value, label, "masterVoteRestrictionId", name) }l
+                                                defaultValue={{ value: masterVote.RestrictionId, label: masterVote.restriction }}
+                                                onChange={ ({value, label}, {name}) => onSelectChanged(value, label, "RestrictionId", name) }l
                                             />
 
                                         )}

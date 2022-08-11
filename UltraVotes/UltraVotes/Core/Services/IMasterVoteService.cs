@@ -7,6 +7,7 @@ namespace UltraVotes.Core.Services
     {
         Task<List<MasterVoteVM>> GetAllVotes();
         Task<MasterVoteVM> GetVoteById(int masterVoteId);
+        Task<List<MasterVoteVM>> GetVotesByUser(string userId);
         Task<MasterVoteVM> SaveMasterVote(MasterVoteDto masterVoteDto);
         Task Update(MasterVoteDto masterVoteDto);
     }

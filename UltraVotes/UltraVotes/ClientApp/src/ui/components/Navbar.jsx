@@ -5,7 +5,7 @@ export const Navbar = () => {
     const isAuthenticated = useIsAuthenticated();
 
     const isActive = ({isActive})=> {
-        return `nav-item nav-link ${isActive ? 'active' : ''}`;
+        return `nav-link ${isActive ? 'active' : ''}`;
     }
 
     const onLogout = () => {
@@ -19,7 +19,7 @@ export const Navbar = () => {
 
     return (
         <header className="header-home">
-        <nav className="navbar navbar-expand-sm navbar-dark bg-dark">
+        <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
             <div className="container-fluid">
                 <button className="navbar-toggler" 
                         type="button" data-bs-toggle="collapse" 
@@ -39,26 +39,32 @@ export const Navbar = () => {
 
                 <div className="collapse navbar-collapse" id="navbarTogglerUltraVotes">
                     
+                    <ul className="navbar-nav col-6">
 
-                    <div className="navbar-collapse">
-                        <div className="navbar-nav">
+                        {/* <NavLink 
+                            className={ isActive }
+                            to="/auth/login"
+                        >
+                            Login
+                        </NavLink> */}
+                        <li className="nav-item dropdown">
+                        <NavLink 
+                            className={ isActive }
+                            to="/"
+                        >
+                            Mis Votaciones
+                        </NavLink>
+                        </li>
 
-                            {/* <NavLink 
-                                className={ isActive }
-                                to="/auth/login"
-                            >
-                                Login
-                            </NavLink> */}
-
-                            <NavLink 
-                                className={ isActive }
-                                to="/"
-                            >
-                                Votaciones
-                            </NavLink>
-
-                        </div>
-                    </div>
+                        <li className="nav-item">
+                        <NavLink 
+                            className={ isActive }
+                            to="/votaciones"
+                        >
+                            Votaciones
+                        </NavLink>
+                        </li>
+                    </ul>
 
                     <div id="navbarLogout"
                         className="navbar-collapse collapse w-100 order-3 dual-collapse2 d-flex">
