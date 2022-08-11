@@ -220,13 +220,15 @@ INSERT INTO votes.MasterVoteRestriction (Description, SortOrder) VALUES
 
 
 20220708:
---drop TABLE votes.Vote
+--drop TABLE votes.Vote 
+go
 CREATE TABLE votes.Vote(
 VoteId INT IDENTITY PRIMARY KEY NOT NULL,
 MasterVoteId INT not null FOREIGN KEY REFERENCES votes.MasterVote (MasterVoteId),
 UserId NVARCHAR(256) NOT NULL,
 CandidateId NVARCHAR(256) NOT NULL,
-Points tinyint,
+Message NVARCHAR(256) NOT NULL,
+Points tinyint not null,
 CreatedDate  DATETIME        DEFAULT (getdate()) NOT NULL,
 CreatedBy    NVARCHAR (256)  NOT NULL,
 )
@@ -277,18 +279,18 @@ INSERT INTO votes.Vote (MasterVoteId, UserId, CandidateId, Points, CreatedDate, 
 
 
 
-VoteId	MasterVoteId	UserId	CandidateId	Points	CreatedDate	CreatedBy	
-1	1	luiseduardo1218@gmail.com	mary@gmail.com	2	2022-08-07 09:42:12.983	luiseduardo1218@gmail.com	
-2	1	luiseduardo1218@gmail.com	alejandra@gmail.com	1	2022-08-07 09:49:29.613	luiseduardo1218@gmail.com	
-3	2	maria@gmail.com	mary@gmail.com	0	2022-08-07 10:17:03.250	maria@gmail.com	
-4	2	maria@gmail.com	alejandra@gmail.com	0	2022-08-07 10:17:03.250	maria@gmail.com	
-5	3	alejandra@gmail.com	mary@gmail.com	3	2022-08-07 10:18:49.200	alejandra@gmail.com	
-6	3	alejandra@gmail.com	alejandro@gmail.com	2	2022-08-07 10:18:49.200	alejandra@gmail.com	
-7	1	maria@gmail.com	mary@gmail.com	3	2022-08-07 10:28:52.163	maria@gmail.com	
-8	1	maria@gmail.com	alejandra@gmail.com	2	2022-08-07 10:28:52.163	maria@gmail.com	
-9	2	alejandra@gmail.com	mary@gmail.com	0	2022-08-07 10:33:38.350	alejandra@gmail.com	
-11	2	alejandra@gmail.com	alejandro@gmail.com	0	2022-08-07 10:35:39.313	alejandra@gmail.com	
-12	3	alejandra@gmail.com	luiseduardo1218@gmail.com	1	2022-08-07 10:37:22.960	alejandra@gmail.com	
+VoteId	MasterVoteId	UserId	CandidateId	Message	Points	CreatedDate	CreatedBy	
+1	1	luiseduardo1218@gmail.com	mary@gmail.com		2	2022-08-07 09:42:12.983	luiseduardo1218@gmail.com
+2	1	luiseduardo1218@gmail.com	alejandra@gmail.com		1	2022-08-07 09:49:29.613	luiseduardo1218@gmail.com
+3	2	maria@gmail.com	mary@gmail.com		0	2022-08-07 10:17:03.250	maria@gmail.com
+4	2	maria@gmail.com	alejandra@gmail.com		0	2022-08-07 10:17:03.250	maria@gmail.com
+5	3	alejandra@gmail.com	mary@gmail.com		3	2022-08-07 10:18:49.200	alejandra@gmail.com
+6	3	alejandra@gmail.com	alejandro@gmail.com		2	2022-08-07 10:18:49.200	alejandra@gmail.com
+7	1	maria@gmail.com	mary@gmail.com		3	2022-08-07 10:28:52.163	maria@gmail.com
+8	1	maria@gmail.com	alejandra@gmail.com		2	2022-08-07 10:28:52.163	maria@gmail.com
+9	2	alejandra@gmail.com	mary@gmail.com		0	2022-08-07 10:33:38.350	alejandra@gmail.com
+10	2	alejandra@gmail.com	alejandro@gmail.com		0	2022-08-07 10:35:39.313	alejandra@gmail.com
+11	3	alejandra@gmail.com	luiseduardo1218@gmail.com		1	2022-08-07 10:37:22.960	alejandra@gmail.com
 
 
 
