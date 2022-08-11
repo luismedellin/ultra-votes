@@ -12,6 +12,7 @@
         public string AreaId { get; set; }
         public bool IsFinalist { get; set; }
         public byte Points { get; set; }
+        public string Message { get; set; }
         public bool Voted { get; set; }
     }
 }

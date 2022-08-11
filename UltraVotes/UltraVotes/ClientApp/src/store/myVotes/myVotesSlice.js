@@ -14,7 +14,7 @@ export const myVotesSlice = createSlice({
         },
         onSetCurrentVote: (state, { payload }) => {
             state.currentVote = payload;
-        },
+        }
     }
 });
 

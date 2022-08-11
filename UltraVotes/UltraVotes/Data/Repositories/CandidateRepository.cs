@@ -17,14 +17,14 @@ namespace UltraVotes.Data.Repositories
             const string query = @$"DECLARE @True BIT = 1,
 		                                    @False BIT = 0
 
-                                    SELECT	c.CandidateId, c.MasterVoteId, c.UserId, Name, LastName, DepartmentId, AreaId, Avatar, IsFinalist, 
+                                    SELECT	c.CandidateId, c.MasterVoteId, c.UserId, Name, LastName, DepartmentId, AreaId, Avatar, IsFinalist, v.Message,
 		                                    ISNULL(v.Points, 0) Points, 
 		                                    CASE WHEN v.Points IS NOT NULL THEN @True ELSE @False END Voted
                                     FROM	votes.Candidate c
                                     LEFT JOIN (
-		                                    SELECT MasterVoteId, CandidateId, Points
+		                                    SELECT MasterVoteId, CandidateId, Points, Message
 		                                    FROM votes.Vote
-		                                    where MasterVoteId = 1
+		                                    where MasterVoteId = @voteId
 		                                    and UserId = @userId
 	                                    )v 
 	                                    ON c.MasterVoteId = v.MasterVoteId AND c.UserId = v.CandidateId

@@ -1,10 +1,19 @@
 import { useState } from 'react'
 import { useFormik } from 'formik';
+import { useMyVotesStore } from '../../hooks';
+
+import { useNavigate, useParams } from 'react-router-dom';
 
 export const Vote = ({vote, candidate}) => {
 
+    const navigate = useNavigate();
+
     const limit = 180;
     const [characters, setCharacters] = useState(0)
+
+    console.log({vote})
+
+    const { startSavingVote } = useMyVotesStore();
 
     const formik = useFormik({
         initialValues: {
@@ -12,7 +21,19 @@ export const Vote = ({vote, candidate}) => {
             message: candidate.message
         },
         onSubmit: values => {
-          console.log(values);
+          const savedVote = {
+            ...values,
+            masterVoteId: vote.masterVoteId,
+            candidateId: candidate.userId,
+            userId: 'luiseduardo1218@gmail.com',
+            createdBy: 'FORM'
+          };
+
+          startSavingVote(savedVote);
+          console.log(savedVote);
+          setTimeout(() => {
+            window.location.reload();
+          }, 1000);
         },
       });
 

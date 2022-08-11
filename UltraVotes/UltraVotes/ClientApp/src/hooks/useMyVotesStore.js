@@ -35,6 +35,18 @@ export const useMyVotesStore = () => {
         }
     }
 
+    const startSavingVote = async( vote ) => {
+        
+        try {
+
+            const { data } = await ultraVotesApi.post('votes', vote );
+            
+
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
     return {
         myVotes,
         isLoading,
@@ -42,5 +54,6 @@ export const useMyVotesStore = () => {
         
         startLoadingMyVotes,
         getVote,
+        startSavingVote,
     }
 }
