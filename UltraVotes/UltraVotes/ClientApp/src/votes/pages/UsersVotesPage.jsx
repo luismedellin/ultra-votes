@@ -2,13 +2,15 @@ import { useState, useMemo, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useTable, useGlobalFilter } from 'react-table';
 
-import { VotesMenu } from '../';
+import { VotesMenu, UserCandidates } from '../';
 import { useMasterVoteStore } from "../../hooks";
 import { GlobalFiltering } from '../../ui';
 
 export const UsersVotesPage = () => {
 
   const { id } = useParams();
+
+  const [masterVote, setMasterVote] = useState(null);
   const [data, setData] = useState([]);
 
   const { getDefaultMasterVote } = useMasterVoteStore();
@@ -16,11 +18,17 @@ export const UsersVotesPage = () => {
   useEffect(() => {
     const load = async() => {
        const myMasterVote = await getDefaultMasterVote(id);
-       setData(myMasterVote.users);
+       setMasterVote(myMasterVote);
     }
 
     load();
- }, [id]);
+  }, []);
+
+  useEffect(() => {
+    if(masterVote?.users){
+      setData(masterVote.users);
+    }
+  }, [masterVote]);
 
   const columns = useMemo(
     () => [
@@ -59,6 +67,10 @@ export const UsersVotesPage = () => {
 
   const { globalFilter } = state;
 
+  const onUpdateUsers = ()=>{
+    console.log('Update users');
+  }
+
   if (!data){
     return <p>loading...</p>
   }
@@ -66,15 +78,25 @@ export const UsersVotesPage = () => {
   return (
     <>
       <main className="container">
-        <div className="d-flex justify-content-md-center">
+        <div className="admin-votes">
           <VotesMenu />
-          <section className="card col-8">
+          <section className="card">
                 <div className="card-body">
                   <h2>Usuarios de la votación:</h2>
 
-                  <GlobalFiltering 
-                    filter={globalFilter} 
-                    setFilter={setGlobalFilter} />
+                  <div className="mb-2">
+                    <button 
+                        className="btn btn-outline-primary"
+                        onClick={ onUpdateUsers }
+                        >Actualizar usuarios</button>
+                  </div>
+                  <hr />
+                  <div className="mb-2">
+                    <GlobalFiltering 
+                      filter={globalFilter} 
+                      placeholder="Buscar un usuario"
+                      setFilter={setGlobalFilter} />
+                  </div>
 
                   <div className='p-2'>
 
@@ -127,6 +149,12 @@ export const UsersVotesPage = () => {
 
                 </div>
           </section>
+                  
+          {
+            masterVote?.categoryId === 1 && <UserCandidates />
+          }
+          
+
         </div>
       </main>
 

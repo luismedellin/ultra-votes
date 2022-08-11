@@ -70,10 +70,12 @@ export const Vote = ({vote, candidate}) => {
                                 disabled={candidate.voted}
                                 maxLength={limit}
                             ></textarea>
-
-                            <div className="text-end mt-1 fw-light">
-                                <span>{characters} / {limit}</span>
-                            </div>
+                            {
+                                !candidate.voted && 
+                                <div className="text-end mt-1 fw-light">
+                                    <span>{characters} / {limit}</span>
+                                </div>
+                            }
                         </div>
                         
                         {
@@ -90,10 +92,12 @@ export const Vote = ({vote, candidate}) => {
                                     onChange={formik.handleChange}
                                     value={formik.values.points}
                                     />
-
-                                <div className="text-end mt-1 fw-light">
-                                    <span>Puntos disponibles {vote.availablePoints} / {vote.points}</span>
-                                </div>
+                                {
+                                    !candidate.voted && 
+                                    <div className="text-end mt-1 fw-light">
+                                        <span>Puntos disponibles {vote.availablePoints} / {vote.points}</span>
+                                    </div>
+                                }
                             </div>
                         }
                         {

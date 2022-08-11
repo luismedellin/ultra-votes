@@ -4,7 +4,8 @@ export const masterVoteSlice = createSlice({
     name: 'masterVote',
     initialState: {
         votes: [],
-        activeVote: null
+        activeVote: null,
+        candidates: []
     },
     reducers: {
         onLoadMasterVotes: (state, { payload }) => {
@@ -32,10 +33,19 @@ export const masterVoteSlice = createSlice({
 
                 return vote;
             });
+        },
+        onUpdatingCandidates: (state, { payload }) => {
+            state.candidates = payload;
         }
     }
 });
 
 
 // Action creators are generated for each case reducer function
-export const { onLoadMasterVotes, onSavingMasterVotes, onSetActiveMasterVote, onUpdateMasterVote } = masterVoteSlice.actions;
+export const { 
+    onLoadMasterVotes, 
+    onSavingMasterVotes, 
+    onSetActiveMasterVote, 
+    onUpdateMasterVote, 
+    onUpdatingCandidates 
+} = masterVoteSlice.actions;

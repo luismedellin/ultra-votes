@@ -13,9 +13,9 @@ namespace UltraVotes.Core.Services
             this.unitOfWork = unitOfWork;
         }
 
-        public Task<List<UserModel>> GetAll()
+        public Task<List<CandidateVM>> GetFinalCandidates(int masterVoteId)
         {
-            return unitOfWork.Users.GetAll();
+            return unitOfWork.Candidates.GetFinalCandidates(masterVoteId);
         }
 
         public Task<List<CandidateVM>> GetByVoteId(int voteId, string userId)

@@ -142,3 +142,19 @@ table.candidates tbody tr:hover {
     color: white;
     cursor: pointer;
 }
+
+
+.admin-votes {
+    width: 100%;
+    display: flex;
+    nav{
+        min-width: 10rem; 
+    }
+    section{
+        width: 35rem; 
+    }
+    aside {
+        width: 25rem;
+        border:1px solid black;
+    }
+}

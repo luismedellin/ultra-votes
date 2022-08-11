@@ -14,6 +14,13 @@ namespace UltraVotes.Controllers
             this.candidateService = candidateService;
         }
 
+        [HttpGet("{masterVoteId}")]
+        public async Task<IActionResult> Get(int masterVoteId)
+        {
+            var candidates = await candidateService.GetFinalCandidates(masterVoteId);
+            return Ok(candidates);
+        }
+
         [HttpGet("{voteId}/{userId}")]
         public async Task<IActionResult> Get(int voteId, string userId)
         {

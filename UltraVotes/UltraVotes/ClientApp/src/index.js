@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { UltraVotesApp } from './UltraVotesApp';
 
-import './styles.css'
+import './styles.scss'
 import { BrowserRouter } from 'react-router-dom';
 
 import { PublicClientApplication } from "@azure/msal-browser";

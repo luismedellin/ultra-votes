@@ -12,6 +12,16 @@ namespace UltraVotes.Data.Repositories
             _context = context;
         }
 
+        public async Task<List<CandidateVM>> GetFinalCandidates(int masterVoteId)
+        {
+            const string query = @$"SELECT	CandidateId, MasterVoteId, UserId, Name, LastName, DepartmentId, AreaId, Avatar, IsFinalist
+                                    FROM	votes.Candidate
+                                    WHERE	MasterVoteId = @masterVoteId";
+
+            using var connection = _context.CreateConnection();
+            return (await connection.QueryAsync<CandidateVM>(query, new { masterVoteId })).ToList();
+        }
+
         public async Task<List<CandidateVM>> GetByVoteId(int voteId, string userId)
         {
             const string query = @$"DECLARE @True BIT = 1,

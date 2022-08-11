@@ -114,9 +114,8 @@ export const VotePage = () => {
     }
 
     const onOpenVote = ({original: candidate}) => {
-        setAddCandidateModal(true);
-        setCandidate(candidate);
-
+      setAddCandidateModal(true);
+      setCandidate(candidate);
     }
 
     if(!vote){
