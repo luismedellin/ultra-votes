@@ -1,3 +1,4 @@
+export * from './components/Candidate';
 export * from './components/UserCandidates';
 export * from './components/VotesMenu';
 export * from './pages/UsersVotesPage';

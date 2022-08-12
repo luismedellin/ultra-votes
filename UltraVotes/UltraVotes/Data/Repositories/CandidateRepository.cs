@@ -1,6 +1,7 @@
 ﻿using Dapper;
 using System.Data;
 using UltraVotes.Core.ViewModels;
+using UltraVotes.Data.Models;
 
 namespace UltraVotes.Data.Repositories
 {
@@ -15,7 +16,7 @@ namespace UltraVotes.Data.Repositories
 
         public async Task<List<CandidateVM>> GetFinalCandidates(int masterVoteId)
         {
-            const string query = @$"SELECT	CandidateId, MasterVoteId, UserId, Name, LastName, DepartmentId, AreaId, Avatar, IsFinalist
+            const string query = @$"SELECT	CandidateId, MasterVoteId, UserId, Name, LastName, DepartmentId, AreaId, Avatar, Description, IsFinalist
                                     FROM	votes.Candidate
                                     WHERE	MasterVoteId = @masterVoteId";
 
@@ -27,7 +28,7 @@ namespace UltraVotes.Data.Repositories
             const string query = @$"DECLARE @True BIT = 1,
 		                                    @False BIT = 0
 
-                                    SELECT	c.CandidateId, c.MasterVoteId, c.UserId, Name, LastName, DepartmentId, AreaId, Avatar, IsFinalist, v.Message,
+                                    SELECT	c.CandidateId, c.MasterVoteId, c.UserId, Name, LastName, DepartmentId, AreaId, Avatar, Description, IsFinalist, v.Message,
 		                                    ISNULL(v.Points, 0) Points, 
 		                                    CASE WHEN v.Points IS NOT NULL THEN @True ELSE @False END Voted
                                     FROM	votes.Candidate c
@@ -42,6 +43,28 @@ namespace UltraVotes.Data.Repositories
 											c.UserId <> @UserId";
 
             return (await dbConnection.QueryAsync<CandidateVM>(query, new { voteId, userId })).ToList();
+        }
+
+        public async Task Save(CandidateModel candidate)
+        {
+            dbConnection.Open();
+            using var transaction = CreateTransaction();
+            const string sql = @"INSERT INTO votes.Candidate (MasterVoteId, UserId, Name, LastName, DepartmentId, AreaId, Avatar, Description, IsFinalist)  OUTPUT INSERTED.CandidateId
+                                    VALUES (@MasterVoteId, @UserId, @Name, @LastName, @DepartmentId, @AreaId, @Avatar, @Description, @IsFinalist);";
+            try
+            {
+                candidate.CandidateId = await (dbConnection.ExecuteScalarAsync<int>(sql, candidate, transaction));
+                transaction.Commit();
+            }
+            catch (Exception e)
+            {
+                transaction.Rollback();
+                var errorMessage = $@"Error guardando el candidato {candidate.UserId} a la votación {candidate.MasterVoteId}";
+            }
+            finally
+            {
+                dbConnection.Close();
+            }
         }
 
         public async Task Delete(int candidateId)

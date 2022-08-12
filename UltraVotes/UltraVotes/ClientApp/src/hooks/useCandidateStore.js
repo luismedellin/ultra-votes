@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { ultraVotesApi } from '../api';
 
-import { onUpdatingCandidates, onDeletingCandidate } from '../store';
+import { onUpdatingCandidates, onSavingCandidate, onDeletingCandidate } from '../store';
 
 export const useCandidateStore = () => {
     const dispatch = useDispatch();
@@ -12,6 +12,15 @@ export const useCandidateStore = () => {
         try {
             const {data} = await ultraVotesApi.get(`candidates/${masterVoteId}`);
             dispatch( onUpdatingCandidates(data) );
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    const onAddingCandidate = async( candidate ) => {
+        try {
+            const { data } = await ultraVotesApi.post(`candidates/`, candidate);
+            dispatch( onSavingCandidate(data) );
         } catch (error) {
             console.log(error);
         }
@@ -30,6 +39,7 @@ export const useCandidateStore = () => {
         candidates,
 
         getCandidates,
+        onAddingCandidate,
         onDeleteCandidate
     }
 }

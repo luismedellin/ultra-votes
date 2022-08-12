@@ -37,6 +37,9 @@ export const masterVoteSlice = createSlice({
         onUpdatingCandidates: (state, { payload }) => {
             state.candidates = payload;
         },
+        onSavingCandidate: (state, { payload }) => {
+            state.candidates.push(payload);
+        },
         onDeletingCandidate: (state, { payload }) => {
             state.candidates = state.candidates.filter((candidate)=> candidate.candidateId !== payload);
         }
@@ -46,10 +49,11 @@ export const masterVoteSlice = createSlice({
 
 // Action creators are generated for each case reducer function
 export const { 
-    onLoadMasterVotes, 
-    onSavingMasterVotes, 
-    onSetActiveMasterVote, 
-    onUpdateMasterVote, 
+    onLoadMasterVotes,
+    onSavingMasterVotes,
+    onSetActiveMasterVote,
+    onUpdateMasterVote,
+    onSavingCandidate,
     onUpdatingCandidates,
     onDeletingCandidate
 } = masterVoteSlice.actions;

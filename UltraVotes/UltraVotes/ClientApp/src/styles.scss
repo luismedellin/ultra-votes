@@ -137,7 +137,7 @@ header,footer,nav,article,aside { box-sizing: border-box;/* padding: 1em; */}
   }
 
 
-table.candidates tbody tr:hover {
+table.select-item-row tbody tr:hover {
     background: #FF8200;
     color: white;
     cursor: pointer;
@@ -155,6 +155,5 @@ table.candidates tbody tr:hover {
     }
     aside {
         width: 25rem;
-        border:1px solid black;
     }
 }

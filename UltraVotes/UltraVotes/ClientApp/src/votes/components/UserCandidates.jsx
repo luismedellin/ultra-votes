@@ -14,7 +14,7 @@ export const UserCandidates = React.memo(() => {
     const deleteCandidate = (candidate) => {
         console.log('Hola mundo')
         Swal.fire({
-            title: `Deseas eliminar a <strong>${candidate.fullName}</strong> de la votación?`,
+            title: `Deseas eliminar a <strong>${candidate.name}</strong> de la votación?`,
             showCancelButton: true,
             confirmButtonText: 'Si',
             cancelButtonText: 'No',

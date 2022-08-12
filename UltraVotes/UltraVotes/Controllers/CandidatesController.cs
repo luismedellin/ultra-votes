@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using UltraVotes.Core.DTOs;
 using UltraVotes.Core.Services;
 
 namespace UltraVotes.Controllers
@@ -26,6 +27,20 @@ namespace UltraVotes.Controllers
         {
             var candidates = await candidateService.GetByVoteId(voteId, userId);
             return Ok(candidates);
+        }
+
+        [HttpPost()]
+        public async Task<IActionResult> Post(CandidateDto candidate)
+        {
+            try
+            {
+                var savedCandidate = await candidateService.Save(candidate);
+                return Ok(savedCandidate);
+            }
+            catch (Exception e)
+            {
+                return StatusCode(500, e.Message);
+            }
         }
 
         [HttpDelete("{masterVoteId}")]

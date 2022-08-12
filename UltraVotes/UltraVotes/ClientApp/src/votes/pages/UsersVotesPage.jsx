@@ -2,8 +2,9 @@ import { useState, useMemo, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useTable, useGlobalFilter } from 'react-table';
 
-import { VotesMenu, UserCandidates } from '../';
+import { VotesMenu, UserCandidates, Candidate } from '../';
 import { useMasterVoteStore } from "../../hooks";
+import { DetailVoteModal } from '../../my-votes';
 import { GlobalFiltering } from '../../ui';
 
 export const UsersVotesPage = () => {
@@ -12,6 +13,8 @@ export const UsersVotesPage = () => {
 
   const [masterVote, setMasterVote] = useState(null);
   const [data, setData] = useState([]);
+  const [addCandidateModal, setAddCandidateModal] = useState(false);
+  const [candidate, setCandidate] = useState(null);
 
   const { getDefaultMasterVote } = useMasterVoteStore();
 
@@ -71,6 +74,27 @@ export const UsersVotesPage = () => {
     console.log('Update users');
   }
 
+  const getCandidate = (user) => {
+    return {
+      ...user,
+      description: '',
+      avatar: null,
+      isFinalist: true
+    }
+  }
+
+  const onOpenCandidate = ({original: user}) => {
+    const candidate = getCandidate(user);
+    setCandidate(candidate);
+    setAddCandidateModal(true);
+  }
+
+  const onCloseModalViewDetail = () => {
+    // openModal();
+    
+    setAddCandidateModal(false);
+  }
+
   if (!data){
     return <p>loading...</p>
   }
@@ -80,7 +104,7 @@ export const UsersVotesPage = () => {
       <main className="container">
         <div className="admin-votes">
           <VotesMenu />
-          <section className="card">
+          <section className="card me-2">
                 <div className="card-body">
                   <h2>Usuarios de la votación:</h2>
 
@@ -101,7 +125,7 @@ export const UsersVotesPage = () => {
                   <div className='p-2'>
 
                 <table {...getTableProps()} 
-                  className="table">
+                  className="table table-striped border select-item-row">
                 <thead>
                   {headerGroups.map(headerGroup => (
                     <tr {...headerGroup.getHeaderGroupProps()}>
@@ -124,7 +148,7 @@ export const UsersVotesPage = () => {
                   {rows.map(row => {
                     prepareRow(row)
                     return (
-                      <tr {...row.getRowProps()}>
+                      <tr {...row.getRowProps()} onClick={() => onOpenCandidate(row)}>
                         {row.cells.map(cell => {
                           return (
                             <td
@@ -151,9 +175,18 @@ export const UsersVotesPage = () => {
           </section>
                   
           {
-            masterVote?.categoryId === 1 && <UserCandidates />
+            masterVote?.categoryId === 1 && (
+              <>
+                <UserCandidates />
+                <DetailVoteModal 
+                  isModalOpen={addCandidateModal} 
+                  closeModal={onCloseModalViewDetail}
+                  title={candidate?.fullName}>
+                    <Candidate candidate={{...candidate, masterVoteId: +id}} />
+                </DetailVoteModal>
+              </>
+            )
           }
-          
 
         </div>
       </main>
