@@ -2,11 +2,7 @@ import { useState } from 'react'
 import { useFormik } from 'formik';
 import { useMyVotesStore } from '../../hooks';
 
-import { useNavigate, useParams } from 'react-router-dom';
-
 export const Vote = ({vote, candidate}) => {
-
-    const navigate = useNavigate();
 
     const limit = 180;
     const [characters, setCharacters] = useState(0)

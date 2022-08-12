@@ -357,9 +357,12 @@ Description NVARCHAR(256) NOT NULL,
 IsFinalist BIT NOT NULL,
 )
 
+DROP TABLE votes.CandidateBanner
+GO
 CREATE TABLE votes.CandidateBanner(
 CandidateBannerId	INT PRIMARY KEY IDENTITY (1, 1) NOT NULL,
 CandidateId	INT NOT NULL FOREIGN KEY REFERENCES votes.Candidate(CandidateId),
+FileName NVARCHAR(256),
 ImgType tinyint,
 ImgPath NVARCHAR(256),
 Width smallint,

@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import { useTable, useGlobalFilter } from 'react-table';
 
 import { VotesMenu, UserCandidates, Candidate } from '../';
-import { useCandidateStore, useMasterVoteStore } from "../../hooks";
+import { useMasterVoteStore, useCandidateStore } from "../../hooks";
 import { DetailVoteModal } from '../../my-votes';
 import { GlobalFiltering } from '../../ui';
 
@@ -13,11 +13,10 @@ export const UsersVotesPage = () => {
 
   const [masterVote, setMasterVote] = useState(null);
   const [data, setData] = useState([]);
-  const [addCandidateModal, setAddCandidateModal] = useState(false);
-  const [candidate, setCandidate] = useState(null);
-
+  
   const { getDefaultMasterVote } = useMasterVoteStore();
-  const { selectCandidate } = useCandidateStore();
+  const { selectCandidate } =  useCandidateStore();
+  
 
   useEffect(() => {
     const load = async() => {
@@ -76,7 +75,7 @@ export const UsersVotesPage = () => {
   }
 
   const onOpenCandidate = ({original: user}) => {
-    const candidate = {
+    const chooseCandidate = {
       ...user,
       candidateId: 0,
       masterVoteId: +id,
@@ -85,15 +84,7 @@ export const UsersVotesPage = () => {
       isFinalist: true
     };
     
-    selectCandidate(candidate);
-    setCandidate(candidate);
-    setAddCandidateModal(true);
-  }
-
-  const onCloseModalViewDetail = () => {
-    // openModal();
-    
-    setAddCandidateModal(false);
+    selectCandidate(chooseCandidate);
   }
 
   if (!data){
@@ -179,12 +170,7 @@ export const UsersVotesPage = () => {
             masterVote?.categoryId === 1 && (
               <>
                 <UserCandidates />
-                <DetailVoteModal 
-                  isModalOpen={addCandidateModal} 
-                  closeModal={onCloseModalViewDetail}
-                  title={candidate?.fullName}>
-                    <Candidate />
-                </DetailVoteModal>
+                <Candidate />
               </>
             )
           }
