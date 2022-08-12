@@ -9,6 +9,7 @@ namespace UltraVotes.Core.Services
         Task<List<CandidateVM>> GetFinalCandidates(int masterVoteId);
         Task<List<CandidateVM>> GetByVoteId(int voteId, string userId);
         Task<CandidateVM> Save(CandidateDto candidateDto);
+        Task<CandidateVM> Update(CandidateDto candidateDto);
         Task Delete(int candidateId);
     }
 }

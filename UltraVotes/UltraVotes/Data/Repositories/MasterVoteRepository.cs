@@ -116,7 +116,7 @@ namespace UltraVotes.Data.Repositories
             catch (Exception e)
             {
                 transaction.Rollback();
-                var errorMessage = $@"Error guardando una nueva votación";
+                var errorMessage = $@"Error actualizado la votación {masterVote.MasterVoteId}";
             }
             finally
             {

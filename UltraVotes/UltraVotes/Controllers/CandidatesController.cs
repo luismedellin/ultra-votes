@@ -43,6 +43,20 @@ namespace UltraVotes.Controllers
             }
         }
 
+        [HttpPut()]
+        public async Task<IActionResult> Update(CandidateDto candidate)
+        {
+            try
+            {
+                var savedCandidate = await candidateService.Save(candidate);
+                return Ok(savedCandidate);
+            }
+            catch (Exception e)
+            {
+                return StatusCode(500, e.Message);
+            }
+        }
+
         [HttpDelete("{masterVoteId}")]
         public async Task<IActionResult> DeleteCandidate(int masterVoteId)
         {

@@ -67,6 +67,31 @@ namespace UltraVotes.Data.Repositories
             }
         }
 
+
+        public async Task Update(CandidateModel candidate)
+        {
+            dbConnection.Open();
+            using var transaction = CreateTransaction();
+            const string sql = @"UPDATE	votes.Candidate
+                                SET		Avatar = @Avatar,
+		                                Description = @Description
+                                WHERE	CandidateId = @CandidateId;";
+            try
+            {
+                await (dbConnection.ExecuteScalarAsync<int>(sql, candidate, transaction));
+                transaction.Commit();
+            }
+            catch (Exception e)
+            {
+                transaction.Rollback();
+                var errorMessage = $@"Error actualizado el candidate {candidate.CandidateId}";
+            }
+            finally
+            {
+                dbConnection.Close();
+            }
+        }
+
         public async Task Delete(int candidateId)
         {
             dbConnection.Open();

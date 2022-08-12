@@ -57,6 +57,17 @@ namespace UltraVotes.Core.Services
             return mapper.Map<CandidateVM>(candidate);
         }
 
+        public async Task<CandidateVM> Update(CandidateDto candidateDto)
+        {
+            var candidate = mapper.Map<CandidateModel>(candidateDto);
+
+            //save image
+
+            await unitOfWork.Candidates.Update(candidate);
+
+            return mapper.Map<CandidateVM>(candidate);
+        }
+
         public Task Delete(int candidateId)
         {
             return unitOfWork.Candidates.Delete(candidateId);

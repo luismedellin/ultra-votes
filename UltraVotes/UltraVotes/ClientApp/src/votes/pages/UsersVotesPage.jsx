@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import { useTable, useGlobalFilter } from 'react-table';
 
 import { VotesMenu, UserCandidates, Candidate } from '../';
-import { useMasterVoteStore } from "../../hooks";
+import { useCandidateStore, useMasterVoteStore } from "../../hooks";
 import { DetailVoteModal } from '../../my-votes';
 import { GlobalFiltering } from '../../ui';
 
@@ -17,6 +17,7 @@ export const UsersVotesPage = () => {
   const [candidate, setCandidate] = useState(null);
 
   const { getDefaultMasterVote } = useMasterVoteStore();
+  const { selectCandidate } = useCandidateStore();
 
   useEffect(() => {
     const load = async() => {
@@ -74,17 +75,17 @@ export const UsersVotesPage = () => {
     console.log('Update users');
   }
 
-  const getCandidate = (user) => {
-    return {
-      ...user,
-      description: '',
-      avatar: null,
-      isFinalist: true
-    }
-  }
-
   const onOpenCandidate = ({original: user}) => {
-    const candidate = getCandidate(user);
+    const candidate = {
+      ...user,
+      candidateId: 0,
+      masterVoteId: +id,
+      description: '',
+      avatar: '',
+      isFinalist: true
+    };
+    
+    selectCandidate(candidate);
     setCandidate(candidate);
     setAddCandidateModal(true);
   }
@@ -182,7 +183,7 @@ export const UsersVotesPage = () => {
                   isModalOpen={addCandidateModal} 
                   closeModal={onCloseModalViewDetail}
                   title={candidate?.fullName}>
-                    <Candidate candidate={{...candidate, masterVoteId: +id}} />
+                    <Candidate />
                 </DetailVoteModal>
               </>
             )

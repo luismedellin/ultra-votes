@@ -1,18 +1,12 @@
 import { useCandidateStore } from "../../hooks";
 
-export const Candidate = ({candidate}) => {
+export const Candidate = () => {
 
-    const { onAddingCandidate } =  useCandidateStore();
-    
+    const { currentCandidate:candidate, onSavingCandidate } =  useCandidateStore();
+
     const onSaveCandidate = () => {
-
-        const currentCandidate = {
-            ...candidate,
-            candidateId: 0,
-            avatar: ''
-        }
-        
-        onAddingCandidate(currentCandidate);
+        onSavingCandidate(candidate);
+        console.log(candidate.candidateId)
     }
 
     return (

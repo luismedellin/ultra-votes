@@ -12,7 +12,6 @@ export const UserCandidates = React.memo(() => {
     }, [])
 
     const deleteCandidate = (candidate) => {
-        console.log('Hola mundo')
         Swal.fire({
             title: `Deseas eliminar a <strong>${candidate.name}</strong> de la votación?`,
             showCancelButton: true,
@@ -52,7 +51,8 @@ export const UserCandidates = React.memo(() => {
                             </div>
                             <div style={{width: "5rem"}}>
                                 <div className="d-flex justify-content-end align-items-center ps-3">
-                                    <button className="btn btn-primary btn-sm me-2 ">
+                                    <button 
+                                        className="btn btn-primary btn-sm me-2 ">
                                         <i className="fa fa-solid fa-user-pen" aria-hidden="true"></i>
                                     </button>
                                     <button 

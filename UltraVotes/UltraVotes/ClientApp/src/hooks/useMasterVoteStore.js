@@ -1,6 +1,12 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { masterVoteApi } from '../api';
-import { onLoadMasterVotes, onSavingMasterVotes, onSetActiveMasterVote, onUpdateMasterVote } from '../store';
+import 
+{ 
+    onLoadMasterVotes,
+    onAddingCandidate,
+    onUpdatingCandidate,
+    onSetActiveMasterVote
+} from '../store';
 
 export const useMasterVoteStore = () => {
     const dispatch = useDispatch();
@@ -21,13 +27,13 @@ export const useMasterVoteStore = () => {
         
         try {
             if(masterVote.masterVoteId) {
-                await masterVoteApi.put('MasterVote',masterVote );
-                dispatch( onUpdateMasterVote(masterVote) );
+                const { data } = await masterVoteApi.put('MasterVote',masterVote );
+                dispatch( onUpdatingCandidate(data) );
                 return;
             }
 
             const { data } = await masterVoteApi.post('MasterVote', masterVote );
-            dispatch( onSavingMasterVotes(data) );
+            dispatch( onAddingCandidate(data) );
 
         } catch (error) {
             console.log(error);
