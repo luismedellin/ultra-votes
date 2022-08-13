@@ -100,6 +100,9 @@ export const UsersVotesPage = () => {
   }
 
   const onOpenCandidate = ({original: user}) => {
+
+    if(masterVote.categoryId === 2)return;
+
     const chooseCandidate = getCandidate(user);
     console.log(chooseCandidate);
     
