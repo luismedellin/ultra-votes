@@ -36,7 +36,7 @@ export const masterVoteSlice = createSlice({
             });
         },
         onSelectingCandidate: (state, { payload }) => {
-            state.currentCandidate = payload;
+            state.currentCandidate = {...payload};
         },
         onUpdatingCandidates: (state, { payload }) => {
             state.candidates = payload;

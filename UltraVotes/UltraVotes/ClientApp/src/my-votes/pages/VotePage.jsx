@@ -48,7 +48,6 @@ export const VotePage = () => {
 
      useEffect(() => {
         setVote(currentVote);
-        // debugger;
         if(currentVote?.candidatesToVote){
             console.log(currentVote.candidatesToVote)
             setData(currentVote.candidatesToVote);

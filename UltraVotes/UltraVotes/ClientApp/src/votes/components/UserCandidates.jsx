@@ -1,15 +1,19 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { useParams } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import { useCandidateStore } from '../../hooks';
 
-export const UserCandidates = React.memo(() => {
+export const UserCandidates = React.memo(({openModal}) => {
     const { id } = useParams();
-    const { candidates, getCandidates, onDeleteCandidate } =  useCandidateStore();
+    const { candidates, getCandidates, onDeleteCandidate, selectCandidate } =  useCandidateStore();
 
     useEffect(() => {
       getCandidates(id);
     }, [])
+
+    const chooseCandidate = (candidate) => {
+        selectCandidate(candidate);
+    }
 
     const deleteCandidate = (candidate) => {
         Swal.fire({
@@ -52,8 +56,12 @@ export const UserCandidates = React.memo(() => {
                             <div style={{width: "5rem"}}>
                                 <div className="d-flex justify-content-end align-items-center ps-3">
                                     <button 
-                                        className="btn btn-primary btn-sm me-2 ">
-                                        <i className="fa fa-solid fa-user-pen" aria-hidden="true"></i>
+                                        className="btn btn-primary btn-sm me-2 "
+                                        onClick={ () => openModal(candidate) }
+                                        >
+                                        <i className="fa fa-solid fa-user-pen" aria-hidden="true"
+                                        
+                                        ></i>
                                     </button>
                                     <button 
                                         className="btn btn-danger btn-sm"

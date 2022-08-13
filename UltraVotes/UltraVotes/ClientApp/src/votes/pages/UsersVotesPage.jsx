@@ -13,6 +13,8 @@ export const UsersVotesPage = () => {
 
   const [masterVote, setMasterVote] = useState(null);
   const [data, setData] = useState([]);
+  const [title, setTitle] = useState(null);
+  const [addCandidateModal, setAddCandidateModal] = useState(false);
   
   const { getDefaultMasterVote } = useMasterVoteStore();
   const { selectCandidate } =  useCandidateStore();
@@ -84,7 +86,17 @@ export const UsersVotesPage = () => {
       isFinalist: true
     };
     
-    selectCandidate(chooseCandidate);
+    onOpenModal(chooseCandidate);
+  }
+
+  const onOpenModal = (candidate) => {
+    selectCandidate(candidate);
+    setTitle(candidate.fullName)
+    setAddCandidateModal(true);
+  }
+
+  const onCloseModalViewDetail = () => {
+    setAddCandidateModal(false);
   }
 
   if (!data){
@@ -167,16 +179,18 @@ export const UsersVotesPage = () => {
           </section>
                   
           {
-            masterVote?.categoryId === 1 && (
-              <>
-                <UserCandidates />
-                <Candidate />
-              </>
-            )
+            masterVote?.categoryId === 1 && <UserCandidates openModal={onOpenModal} />
           }
 
         </div>
       </main>
+
+      <DetailVoteModal 
+        isModalOpen={addCandidateModal} 
+        closeModal={onCloseModalViewDetail}
+        title={title}>
+          <Candidate />
+      </DetailVoteModal>
 
     </>
   )
