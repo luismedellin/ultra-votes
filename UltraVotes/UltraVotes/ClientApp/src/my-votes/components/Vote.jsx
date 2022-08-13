@@ -29,7 +29,7 @@ export const Vote = ({vote, candidate}) => {
           console.log(savedVote);
           setTimeout(() => {
             window.location.reload();
-          }, 1000);
+          }, 10);
         },
       });
 

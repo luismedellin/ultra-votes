@@ -17,7 +17,7 @@ export const UsersVotesPage = () => {
   const [addCandidateModal, setAddCandidateModal] = useState(false);
   
   const { getDefaultMasterVote } = useMasterVoteStore();
-  const { selectCandidate } =  useCandidateStore();
+  const { candidates, selectCandidate } =  useCandidateStore();
   
 
   useEffect(() => {
@@ -52,7 +52,15 @@ export const UsersVotesPage = () => {
       {
         Header: 'Área',
         accessor: 'areaId',
-      }
+      },
+      {
+        accessor: 'IsCandidated',
+        Header: '',
+        Cell: ({ row: { original } }) => (
+            
+            original.isCandidated && <i className="fas fa-trophy text-warning fs-6 text-center"></i>
+        )
+       }
     ],
     []
   )
@@ -76,8 +84,12 @@ export const UsersVotesPage = () => {
     console.log('Update users');
   }
 
-  const onOpenCandidate = ({original: user}) => {
-    const chooseCandidate = {
+  const getCandidate = (user) => {
+    if(user.isCandidated) {
+      return candidates.find((candidate)=> candidate.userId === user.userId);
+    }
+
+    return {
       ...user,
       candidateId: 0,
       masterVoteId: +id,
@@ -85,6 +97,11 @@ export const UsersVotesPage = () => {
       avatar: '',
       isFinalist: true
     };
+  }
+
+  const onOpenCandidate = ({original: user}) => {
+    const chooseCandidate = getCandidate(user);
+    console.log(chooseCandidate);
     
     onOpenModal(chooseCandidate);
   }

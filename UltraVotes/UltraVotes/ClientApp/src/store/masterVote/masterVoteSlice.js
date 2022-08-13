@@ -44,6 +44,14 @@ export const masterVoteSlice = createSlice({
         onAddingCandidate: (state, { payload }) => {
             state.currentCandidate = payload;
             state.candidates.push(payload);
+
+            state.activeVote.users = state.activeVote.users.map(user => {
+                if ( user.userId === payload.userId ) {
+                    user.isCandidated = true;
+                }
+
+                return user;
+            });
         },
         onUpdatingCandidate: (state, { payload }) => {
             state.currentCandidate = payload;
@@ -57,6 +65,14 @@ export const masterVoteSlice = createSlice({
         },
         onDeletingCandidate: (state, { payload }) => {
             state.candidates = state.candidates.filter((candidate)=> candidate.candidateId !== payload);
+
+            state.activeVote.users = state.activeVote.users.map(user => {
+                if ( user.userId === payload.userId ) {
+                    user.isCandidated = false;
+                }
+
+                return user;
+            });
         }
     }
 });
