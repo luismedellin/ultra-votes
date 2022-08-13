@@ -5,7 +5,7 @@ import {
     onSelectingCandidate, 
     onUpdatingCandidates, 
     onAddingCandidate, 
-    onUpdateMasterVote,
+    onUpdatingCandidate,
     onDeletingCandidate 
 } from '../store';
 
@@ -31,7 +31,7 @@ export const useCandidateStore = () => {
         try {
             if(candidate.candidateId) {
                 await ultraVotesApi.put(`candidates/`, candidate);
-                dispatch( onUpdateMasterVote(candidate) );
+                dispatch( onUpdatingCandidate(candidate) );
                 return;
             }
 

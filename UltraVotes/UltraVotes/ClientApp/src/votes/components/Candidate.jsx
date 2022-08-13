@@ -3,7 +3,7 @@ import { useFormik } from 'formik';
 
 import { useCandidateStore } from "../../hooks";
 
-export const Candidate = () => {
+export const Candidate = ({onCloseModalViewDetail}) => {
     const { currentCandidate: candidate, onSavingCandidate } =  useCandidateStore();
     
     const [avatarPreview, setAvatarPreview] = useState(null);
@@ -22,6 +22,8 @@ export const Candidate = () => {
             // console.log(values);
             // console.log(savedCandidate);
             onSavingCandidate(savedCandidate);
+
+            onCloseModalViewDetail();
         },
       });
       

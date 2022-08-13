@@ -48,7 +48,7 @@ namespace UltraVotes.Controllers
         {
             try
             {
-                var savedCandidate = await candidateService.Save(candidate);
+                var savedCandidate = await candidateService.Update(candidate);
                 return Ok(savedCandidate);
             }
             catch (Exception e)
