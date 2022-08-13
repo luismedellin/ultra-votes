@@ -2,11 +2,7 @@ import { useState } from 'react'
 import { useFormik } from 'formik';
 import { useMyVotesStore } from '../../hooks';
 
-import { useNavigate, useParams } from 'react-router-dom';
-
 export const Vote = ({vote, candidate}) => {
-
-    const navigate = useNavigate();
 
     const limit = 180;
     const [characters, setCharacters] = useState(0)
@@ -33,7 +29,7 @@ export const Vote = ({vote, candidate}) => {
           console.log(savedVote);
           setTimeout(() => {
             window.location.reload();
-          }, 1000);
+          }, 10);
         },
       });
 
@@ -70,10 +66,12 @@ export const Vote = ({vote, candidate}) => {
                                 disabled={candidate.voted}
                                 maxLength={limit}
                             ></textarea>
-
-                            <div className="text-end mt-1 fw-light">
-                                <span>{characters} / {limit}</span>
-                            </div>
+                            {
+                                !candidate.voted && 
+                                <div className="text-end mt-1 fw-light">
+                                    <span>{characters} / {limit}</span>
+                                </div>
+                            }
                         </div>
                         
                         {
@@ -90,10 +88,12 @@ export const Vote = ({vote, candidate}) => {
                                     onChange={formik.handleChange}
                                     value={formik.values.points}
                                     />
-
-                                <div className="text-end mt-1 fw-light">
-                                    <span>Puntos disponibles {vote.availablePoints} / {vote.points}</span>
-                                </div>
+                                {
+                                    !candidate.voted && 
+                                    <div className="text-end mt-1 fw-light">
+                                        <span>Puntos disponibles {vote.availablePoints} / {vote.points}</span>
+                                    </div>
+                                }
                             </div>
                         }
                         {

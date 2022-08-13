@@ -9,6 +9,8 @@
         public string LastName { get; set; }
         public string DepartmentId { get; set; }
         public string AreaId { get; set; }
+        public string Avatar { get; set; }
+        public string Description { get; set; }
         public bool IsFinalist { get; set; }
     }
 }

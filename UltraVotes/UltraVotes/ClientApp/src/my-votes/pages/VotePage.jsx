@@ -48,7 +48,6 @@ export const VotePage = () => {
 
      useEffect(() => {
         setVote(currentVote);
-        // debugger;
         if(currentVote?.candidatesToVote){
             console.log(currentVote.candidatesToVote)
             setData(currentVote.candidatesToVote);
@@ -114,9 +113,8 @@ export const VotePage = () => {
     }
 
     const onOpenVote = ({original: candidate}) => {
-        setAddCandidateModal(true);
-        setCandidate(candidate);
-
+      setAddCandidateModal(true);
+      setCandidate(candidate);
     }
 
     if(!vote){
@@ -177,7 +175,7 @@ export const VotePage = () => {
             <div>
 
                 <table {...getTableProps()} 
-                  className="table table-striped border candidates">
+                  className="table table-striped border select-item-row">
                 <thead>
                   {headerGroups.map(headerGroup => (
                     <tr {...headerGroup.getHeaderGroupProps()}>
@@ -221,7 +219,7 @@ export const VotePage = () => {
 
         <DetailVoteModal isModalOpen={addCandidateModal} closeModal={onCloseModalViewDetail} title={vote.title}>
             <Vote vote={{...vote}} candidate={{...candidate}} />
-        </DetailVoteModal>;
+        </DetailVoteModal>
 
         </main>
         </>

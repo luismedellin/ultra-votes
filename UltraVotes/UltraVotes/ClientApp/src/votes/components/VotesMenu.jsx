@@ -34,7 +34,8 @@ export const VotesMenu = () => {
 
     return (
         <>
-            <nav className="card" style={ {width: "18rem"}}>
+            <nav className="pe-2">
+                <div className="card">
                 <div className="card-header">
                     Menú Votaciones
                 </div>
@@ -55,6 +56,7 @@ export const VotesMenu = () => {
                         ))
                     }
                 </ul>
+                </div>
             </nav>
         </>
     )

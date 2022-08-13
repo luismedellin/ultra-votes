@@ -17,7 +17,9 @@ namespace UltraVotes.Controllers
         [HttpGet("/api/MasterVote/Users/{masterVoteId}")]
         public async Task<IActionResult> Get(int masterVoteId)
         {
-            var users = await userService.GetAll();
+            if (masterVoteId == 0) return BadRequest("Invalid parameter");
+
+            var users = await userService.GetAll(masterVoteId);
 
             return Ok(users);
         }

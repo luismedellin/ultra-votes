@@ -137,8 +137,23 @@ header,footer,nav,article,aside { box-sizing: border-box;/* padding: 1em; */}
   }
 
 
-table.candidates tbody tr:hover {
+table.select-item-row tbody tr:hover {
     background: #FF8200;
     color: white;
     cursor: pointer;
+}
+
+
+.admin-votes {
+    width: 100%;
+    display: flex;
+    nav{
+        min-width: 10rem; 
+    }
+    section{
+        width: 35rem; 
+    }
+    aside {
+        width: 25rem;
+    }
 }

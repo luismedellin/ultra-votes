@@ -343,18 +343,32 @@ END
 20220808
 
 --DROP TABLE votes.Candidate
+GO
 CREATE TABLE votes.Candidate(
 CandidateId	INT PRIMARY KEY IDENTITY (1, 1) NOT NULL,
-MasterVoteId INT FOREIGN KEY REFERENCES votes.MasterVote (MasterVoteId),
+MasterVoteId INT  NOT NULL FOREIGN KEY REFERENCES votes.MasterVote (MasterVoteId),
 UserId NVARCHAR(256) NOT NULL,
 Name  NVARCHAR(60) NOT NULL,
 LastName  NVARCHAR(60) NOT NULL,
 DepartmentId NVARCHAR (50) NULL,
 AreaId NVARCHAR (50) NULL,
 Avatar NVARCHAR(256) NOT NULL,
+Description NVARCHAR(256) NOT NULL,
 IsFinalist BIT NOT NULL,
 )
 
+DROP TABLE votes.CandidateBanner
+GO
+CREATE TABLE votes.CandidateBanner(
+CandidateBannerId	INT PRIMARY KEY IDENTITY (1, 1) NOT NULL,
+CandidateId	INT NOT NULL FOREIGN KEY REFERENCES votes.Candidate(CandidateId),
+FileName NVARCHAR(256),
+ImgType tinyint,
+ImgPath NVARCHAR(256),
+Width smallint,
+Height smallint,
+SortOrder tinyint
+)
 
 
 INSERT INTO votes.Candidate (MasterVoteId,
@@ -364,6 +378,7 @@ LastName,
 DepartmentId,
 AreaId,
 Avatar,
+Description,
 IsFinalist)
 SELECT	mv.MasterVoteId,
 		UserId,
@@ -372,9 +387,11 @@ SELECT	mv.MasterVoteId,
 		DepartmentId,
 		AreaId,
 		Avatar, 
+		'' Description,
 		0
 FROM votes.Users u,
 votes.MasterVote mv
+
 
 1	1	alejandra@gmail.com	Alejandra	Giraldo	ti	dev		0
 3	1	luiseduardo1218@gmail.com	Luis	Velandia	ti	develop		0

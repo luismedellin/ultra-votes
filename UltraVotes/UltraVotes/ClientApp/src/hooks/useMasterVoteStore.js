@@ -1,6 +1,12 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { masterVoteApi } from '../api';
-import { onLoadMasterVotes, onSavingMasterVotes, onSetActiveMasterVote, onUpdateMasterVote } from '../store';
+import { ultraVotesApi } from '../api';
+import 
+{ 
+    onLoadMasterVotes,
+    onAddingCandidate,
+    onUpdatingCandidate,
+    onSetActiveMasterVote
+} from '../store';
 
 export const useMasterVoteStore = () => {
     const dispatch = useDispatch();
@@ -9,7 +15,7 @@ export const useMasterVoteStore = () => {
 
     const startLoadingMasterVotes = async() => {
         try {
-            const { data } = await masterVoteApi.get('MasterVote/getall');
+            const { data } = await ultraVotesApi.get('MasterVote/getall');
             dispatch( onLoadMasterVotes(data) );
         } catch (error) {
           console.log('Error cargando las votaciones');
@@ -21,13 +27,13 @@ export const useMasterVoteStore = () => {
         
         try {
             if(masterVote.masterVoteId) {
-                await masterVoteApi.put('MasterVote',masterVote );
-                dispatch( onUpdateMasterVote(masterVote) );
+                const { data } = await ultraVotesApi.put('MasterVote',masterVote );
+                dispatch( onUpdatingCandidate(data) );
                 return;
             }
 
-            const { data } = await masterVoteApi.post('MasterVote', masterVote );
-            dispatch( onSavingMasterVotes(data) );
+            const { data } = await ultraVotesApi.post('MasterVote', masterVote );
+            dispatch( onAddingCandidate(data) );
 
         } catch (error) {
             console.log(error);
@@ -39,8 +45,8 @@ export const useMasterVoteStore = () => {
         try {
 
             if(!activeVote) {
-                const { data: masterVote } = await masterVoteApi.get(`MasterVote/getMasterVote/${masterVoteId}`);
-                const { data: users } = await masterVoteApi.get(`MasterVote/users/${masterVoteId}`);
+                const { data: masterVote } = await ultraVotesApi.get(`MasterVote/getMasterVote/${masterVoteId}`);
+                const { data: users } = await ultraVotesApi.get(`MasterVote/users/${masterVoteId}`);
                 masterVote['users'] = users;
 
                 dispatch( onSetActiveMasterVote(masterVote) );
