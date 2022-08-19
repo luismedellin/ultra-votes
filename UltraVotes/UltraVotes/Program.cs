@@ -2,6 +2,7 @@ using FluentValidation.AspNetCore;
 using UltraVotes.Core.Services;
 using UltraVotes.Data;
 using UltraVotes.Data.Repositories;
+using Microsoft.Extensions.Azure;
 using Microsoft.Identity.Web;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -20,6 +21,7 @@ builder.Services.AddTransient<IUserRepository, UserRepository>();
 builder.Services.AddTransient<IVoteRepository, VoteRepository>();
 
 builder.Services.AddTransient<ICandidateService, CandidateService>();
+builder.Services.AddTransient<IImageService, ImageService>();
 builder.Services.AddTransient<IMasterVoteService, MasterVoteService>();
 builder.Services.AddTransient<IMasterDataService, MasterDataService>();
 builder.Services.AddTransient<IUserService, UserService>();
@@ -38,6 +40,10 @@ builder.Services.AddFluentValidation(conf =>
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 builder.Services.AddMicrosoftIdentityWebApiAuthentication(builder.Configuration);
+builder.Services.AddAzureClients(clientBuilder =>
+{
+    clientBuilder.AddBlobServiceClient(builder.Configuration.GetSection("Storage"));
+});
 
 var app = builder.Build();
 

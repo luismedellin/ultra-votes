@@ -6,7 +6,7 @@ import { useCandidateStore } from "../../hooks";
 export const Candidate = ({onCloseModalViewDetail}) => {
     const { currentCandidate: candidate, onSavingCandidate } =  useCandidateStore();
     
-    const [avatarPreview, setAvatarPreview] = useState(null);
+    const [avatarPreview, setAvatarPreview] = useState(candidate.avatar);
     const fileInput = useRef(null);
 
     const formik = useFormik({

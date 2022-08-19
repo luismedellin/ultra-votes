@@ -22,9 +22,14 @@ namespace UltraVotes.Core.Services
             this.mapper = mapper;
         }
 
-        public Task<List<CandidateVM>> GetFinalCandidates(int masterVoteId)
+        public async Task<List<CandidateVM>> GetFinalCandidates(int masterVoteId)
         {
-            return unitOfWork.Candidates.GetFinalCandidates(masterVoteId);
+            return await unitOfWork.Candidates.GetFinalCandidates(masterVoteId);
+        }
+
+        public async Task<CandidateVM> GetCandidatesById(int candidateId)
+        {
+            return await unitOfWork.Candidates.GetCandidatesById(candidateId);
         }
 
         public Task<List<CandidateVM>> GetByVoteId(int voteId, string userId)

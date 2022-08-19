@@ -23,6 +23,15 @@ namespace UltraVotes.Data.Repositories
             return (await dbConnection.QueryAsync<CandidateVM>(query, new { masterVoteId })).ToList();
         }
 
+        public async Task<CandidateVM> GetCandidatesById(int candidateId)
+        {
+            const string query = @$"SELECT	CandidateId, MasterVoteId, UserId, Name, LastName, DepartmentId, AreaId, Avatar, Description, IsFinalist
+                                    FROM	votes.Candidate
+                                    WHERE	CandidateId = @candidateId";
+
+            return (await dbConnection.QueryAsync<CandidateVM>(query, new { candidateId })).FirstOrDefault();
+        }
+
         public async Task<List<CandidateVM>> GetByVoteId(int voteId, string userId)
         {
             const string query = @$"DECLARE @True BIT = 1,
