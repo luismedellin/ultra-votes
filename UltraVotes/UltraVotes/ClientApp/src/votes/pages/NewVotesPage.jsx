@@ -1,8 +1,6 @@
-import { useState } from "react";
-import {useFormik} from "formik";
+import { useFormik } from "formik";
 
 import { useMasterDataStore, useMasterVoteStore } from "../../hooks";
-import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import Select from 'react-select'
 import DatePicker, { registerLocale } from 'react-datepicker';
@@ -20,9 +18,9 @@ const schema = yup.object().shape({
             .required('Ingrese un título')
             .min(2, 'Ingrese al menos 2 caracteres'),
     subtitle: yup.string(),
-    category: yup.number()
+    categoryId: yup.number()
                 .min(1, 'Seleccione una categoría'),
-    restriction: yup.number().required(),
+    restrictionId: yup.number().required(),
     points: yup.number()
             .required('Seleccione un número >= 0')
             .min(0, 'Seleccione un número >= 0'),
@@ -30,21 +28,19 @@ const schema = yup.object().shape({
             .required('Ingrese un rango entre 0 y 5')
             .min(0, 'Ingrese un rango entre 0 y 5')
             .max(5, 'Ingrese un rango entre 0 y 5'),
-    // fromDate: yup.date().required(),
-    // toDate: yup.date().required(),
+    fromDate: yup.date().required('Seleccione una fecha'),
+    toDate: yup.date().required('Seleccione una fecha'),
   })
   .required();
 
 const defaultValues = {
     category: { value: 0, label: "-- Seleccione una categoría" },
-    restriction: { value: "1", label: "Ninguna" },
-    points: 0,
-    candidates:0,
-    fromDate: null,
-    toDate: null
+    restriction: { value: "1", label: "Ninguna" }
 };
 
 export const NewVotesPage = () => {
+    const navigate = useNavigate();
+    
     const { data } = useMasterDataStore();
     const { startSavingMasterVotes } = useMasterVoteStore();
 
@@ -52,46 +48,22 @@ export const NewVotesPage = () => {
         initialValues: {
             title: '',
             subtitle: '',
-            category: 0,
-            restriction: 1,
+            categoryId: 0,
+            restrictionId: 1,
             points: 0,
-            candidates: 0
+            candidates: 0,
+            fromDate: '',
+            toDate: ''
         },
         validationSchema: schema,
-        onSubmit: values => {
+        onSubmit: async (values) => {
             console.log(values);
+            await startSavingMasterVotes( values );
+            navigate(-1);
         },
     });
 
-    const navigate = useNavigate();
-
     // console.log(parseISO('2012-07-18 15:30:30'))
-
-     const [formValues, setFormValues] = useState({
-         fromDate: defaultValues.fromDate,
-         toDate: defaultValues.toDate,
-     });
-
-    const onDateChanged = ( event, changing, field ) => {
-        setFormValues({
-            ...formValues,
-            [changing]: event
-        })
-
-        field.onChange(event);
-    }
-
-    // const onInputChange = ({target}, name)=> {
-    //     setValue(name, target.value);
-    //     // setFormValues({...formValues, [name]: target.value})
-    // }
-
-    const onSubmit = async(data) => {
-        console.log(data);
-        // await startSavingMasterVotes( data );
-        // navigate(-1);
-    }
-
 
   return (
     <>
@@ -105,6 +77,10 @@ export const NewVotesPage = () => {
                         <legend className="fw-light">
                             Ingrese la siguiente información para crear una nueva votación.
                         </legend>
+                        
+                        <div>
+                            {JSON.stringify(formik.errors)}
+                        </div>
                         
                         <div>
                         <div className="mb-3">
@@ -138,27 +114,27 @@ export const NewVotesPage = () => {
 
                         <div className="row mb-3">
                             <div className="col-6">
-                                <label htmlFor="category" className="form-label">Categoría: *</label>
+                                <label htmlFor="categoryId" className="form-label">Categoría: *</label>
                                 <Select
                                     classNamePrefix="form-select"
                                     options={ data.categories }
                                     defaultValue={ defaultValues.category }
-                                    onChange={ selectedOption => formik.setFieldValue("category", selectedOption.value) }
+                                    onChange={ selectedOption => formik.setFieldValue("categoryId", selectedOption.value) }
                                 />
                                 {
-                                    formik.errors.category && formik.touched.category ? (
-                                        <span className="text-danger">{formik.errors.category}</span>
+                                    formik.errors.categoryId && formik.touched.categoryId ? (
+                                        <span className="text-danger">{formik.errors.categoryId}</span>
                                     ) : null
                                 }
                             </div>
                             
                             <div className="col-6">
-                                    <label htmlFor="restriction" className="form-label">Restricción por votación: *</label>
+                                    <label htmlFor="restrictionId" className="form-label">Restricción por votación: *</label>
                                     <Select
                                         classNamePrefix="form-select"
                                         options={ data.restrictions }
                                         defaultValue={ defaultValues.restriction }
-                                        onChange={ selectedOption => formik.setFieldValue("restriction", selectedOption.value) }
+                                        onChange={ selectedOption => formik.setFieldValue("restrictionId", selectedOption.value) }
                                     />
                             </div>
                             
@@ -220,25 +196,43 @@ export const NewVotesPage = () => {
                                 {/*        />*/}
                                 {/*        )}*/}
                                 {/*/>*/}
+                                <DatePicker
+                                    id="fromDate"
+                                    name="fromDate"
+                                    selected={ formik.values.fromDate }
+                                    // onChange={ (event) => formik.setFieldValue("fromDate", event) }
+                                    onChange={ date => formik.setFieldValue("fromDate", date) }
+                                    className="form-control"
+                                    dateFormat="Pp"
+                                    showTimeSelect
+                                    locale="es"
+                                    timeCaption="Hora"
+                                />
+                                {
+                                    formik.errors.fromDate && formik.touched.fromDate ? (
+                                        <span className="text-danger">{formik.errors.fromDate}</span>
+                                    ) : null
+                                }
                                 {/*{ errors.fromDate && <span className="text-danger">Seleccione una fecha</span> }*/}
                             </div>
                             <div className="col">
                                 <label htmlFor="toDate" className="form-label">Hasta:</label>
-                                {/*<Controller*/}
-                                {/*    control={control}*/}
-                                {/*    name='toDate'*/}
-                                {/*    render={({ field }) => (*/}
-                                {/*        <DatePicker */}
-                                {/*            selected={ formValues.toDate }*/}
-                                {/*            onChange={ (event) => onDateChanged(event, 'toDate', field) }*/}
-                                {/*            className="form-control"*/}
-                                {/*            dateFormat="Pp"*/}
-                                {/*            showTimeSelect*/}
-                                {/*            locale="es"*/}
-                                {/*            timeCaption="Hora"*/}
-                                {/*        />*/}
-                                {/*        )}*/}
-                                {/*    />*/}
+                                <DatePicker
+                                    id="toDate"
+                                    name="toDate"
+                                    selected={ formik.values.toDate }
+                                    onChange={ date => formik.setFieldValue("toDate", date) }
+                                    className="form-control"
+                                    dateFormat="Pp"
+                                    showTimeSelect
+                                    locale="es"
+                                    timeCaption="Hora"
+                                />
+                                {
+                                    formik.errors.toDate && formik.touched.toDate ? (
+                                        <span className="text-danger">{formik.errors.toDate}</span>
+                                    ) : null
+                                }
                             </div>
                         </div>
                         
