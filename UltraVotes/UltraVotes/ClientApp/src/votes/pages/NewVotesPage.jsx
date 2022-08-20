@@ -16,11 +16,14 @@ import { addHours, differenceInSeconds, parseISO  } from 'date-fns';
 registerLocale( 'es', es );
 
 const schema = yup.object().shape({
-    name: yup.string().required(),
+    tittle: yup.string().required().min(2),
+    subtitle: yup.string(),
     candidates: yup.number().min(0).max(5),
     category: yup.number().min(1),
     restriction: yup.number().required(),
     points: yup.number().required().min(0),
+    fromDate: yup.date().required(),
+    toDate: yup.date().required(),
   })
   .required();
 
@@ -86,34 +89,47 @@ export const NewVotesPage = () => {
     // }
 
     const onSubmit = async(data) => {
-        await startSavingMasterVotes( data );
-        navigate(-1);
+        console.log(data);
+        // await startSavingMasterVotes( data );
+        // navigate(-1);
     }
 
 
   return (
     <>
         <main className="container">
-            <div className="row justify-content-md-center pt-3">
-            <section className="card col-8">
-                <div className="card-body">
+            <div className="row justify-content-md-center pt-1 mx-auto">
+            <section className="card col-9">
+                <div className="card-body pt-1">
                 <h2>Registro de nueva votación</h2>
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <fieldset>
-                        <legend>
+                        <legend className="fw-light">
                             Ingrese la siguiente información para crear una nueva votación.
                         </legend>
                         
+                        <div>
                         <div className="mb-3">
-                            <label htmlFor="name" className="form-label">Nombre: *</label>
+                            <label htmlFor="title" className="form-label">Titulo: *</label>
                             <input 
                                 placeholder="Ingrese el nombre de la votación" 
                                 className="form-control"
-                                name="name"
-                                {...register("name")}
+                                name="title"
+                                {...register("title")}
                                 // onChange={event => onInputChange(event, 'name') }
                             />
-                            { errors.name && <span className="text-danger">Ingrese el nombre de la votación</span> }
+                            { errors.title && <span className="text-danger">Ingrese el nombre de la votación</span> }
+                        </div>
+
+                        <div className="mb-3">
+                            <label htmlFor="subtitle" className="form-label">Subtitulo: </label>
+                            <input
+                                placeholder="Ingrese un subtitulo a la votación"
+                                className="form-control"
+                                name="subtitle"
+                                {...register("subtitle")}
+                                // onChange={event => onInputChange(event, 'subtitle') }
+                            />
                         </div>
 
                         <div className="row mb-3">
@@ -194,7 +210,7 @@ export const NewVotesPage = () => {
                                     render={({ field }) => (
                                         <DatePicker 
                                             selected={ formValues.fromDate }
-                                            {...register('category')}
+                                            {...register('fromDate')}
                                             onChange={ (event) => onDateChanged(event, 'fromDate', field) }
                                             className="form-control"
                                             dateFormat="Pp"
@@ -203,7 +219,8 @@ export const NewVotesPage = () => {
                                             timeCaption="Hora"
                                         />
                                         )}
-                                    />
+                                />
+                                { errors.fromDate && <span className="text-danger">Seleccione una fecha</span> }
                             </div>
                             <div className="col">
                                 <label htmlFor="toDate" className="form-label">Hasta:</label>
@@ -232,6 +249,8 @@ export const NewVotesPage = () => {
                         >
                         {isSubmitting && (<span className="spinner-border spinner-border-sm mr-2"></span>)}
                         Guardar</button>
+
+                        </div>
                     </fieldset>
                 </form>
                 </div>

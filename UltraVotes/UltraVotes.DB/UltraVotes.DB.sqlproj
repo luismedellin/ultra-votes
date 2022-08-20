@@ -75,5 +75,6 @@
     <Build Include="votes\Stored Procedures\GetVotesByUser.sql" />
     <Build Include="votes\Tables\Candidate.sql" />
     <Build Include="votes\Tables\CandidateBanner.sql" />
+    <Build Include="gitignore.sql" />
   </ItemGroup>
 </Project>
