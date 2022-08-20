@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { Controller, useForm } from "react-hook-form";
+import {useFormik} from "formik";
+
 import { useMasterDataStore, useMasterVoteStore } from "../../hooks";
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
@@ -12,26 +13,33 @@ import es from 'date-fns/locale/es';
 
 import { addHours, differenceInSeconds, parseISO  } from 'date-fns';
 
-
 registerLocale( 'es', es );
 
 const schema = yup.object().shape({
-    tittle: yup.string().required().min(2),
+    title: yup.string()
+            .required('Ingrese un título')
+            .min(2, 'Ingrese al menos 2 caracteres'),
     subtitle: yup.string(),
-    candidates: yup.number().min(0).max(5),
-    category: yup.number().min(1),
+    category: yup.number()
+                .min(1, 'Seleccione una categoría'),
     restriction: yup.number().required(),
-    points: yup.number().required().min(0),
-    fromDate: yup.date().required(),
-    toDate: yup.date().required(),
+    points: yup.number()
+            .required('Seleccione un número >= 0')
+            .min(0, 'Seleccione un número >= 0'),
+    candidates: yup.number()
+            .required('Ingrese un rango entre 0 y 5')
+            .min(0, 'Ingrese un rango entre 0 y 5')
+            .max(5, 'Ingrese un rango entre 0 y 5'),
+    // fromDate: yup.date().required(),
+    // toDate: yup.date().required(),
   })
   .required();
 
 const defaultValues = {
-    category: 0,
-    // category: '',
+    category: { value: 0, label: "-- Seleccione una categoría" },
     restriction: { value: "1", label: "Ninguna" },
     points: 0,
+    candidates:0,
     fromDate: null,
     toDate: null
 };
@@ -40,18 +48,19 @@ export const NewVotesPage = () => {
     const { data } = useMasterDataStore();
     const { startSavingMasterVotes } = useMasterVoteStore();
 
-    const { 
-        register,
-        control,
-        handleSubmit,
-        setValue,
-        formState: { errors, isSubmitting },
-        clearErrors  
-    } = useForm({
-        defaultValues: {
-            points: 0
+    const formik = useFormik({
+        initialValues: {
+            title: '',
+            subtitle: '',
+            category: 0,
+            restriction: 1,
+            points: 0,
+            candidates: 0
         },
-        resolver: yupResolver(schema),
+        validationSchema: schema,
+        onSubmit: values => {
+            console.log(values);
+        },
     });
 
     const navigate = useNavigate();
@@ -62,17 +71,6 @@ export const NewVotesPage = () => {
          fromDate: defaultValues.fromDate,
          toDate: defaultValues.toDate,
      });
-
-    const onSelectChanged = ({value, label}, {name}) => {
-        setValue(name, value);
-        // setFormValues({
-        //     ...formValues,
-        //     [name]: value,
-        //     'category': label
-        // })
-        // console.log(errors);
-        clearErrors(name);
-    }
 
     const onDateChanged = ( event, changing, field ) => {
         setFormValues({
@@ -102,7 +100,7 @@ export const NewVotesPage = () => {
             <section className="card col-9">
                 <div className="card-body pt-1">
                 <h2>Registro de nueva votación</h2>
-                <form onSubmit={handleSubmit(onSubmit)}>
+                <form onSubmit={formik.handleSubmit}>
                     <fieldset>
                         <legend className="fw-light">
                             Ingrese la siguiente información para crear una nueva votación.
@@ -114,11 +112,16 @@ export const NewVotesPage = () => {
                             <input 
                                 placeholder="Ingrese el nombre de la votación" 
                                 className="form-control"
+                                id="title"
                                 name="title"
-                                {...register("title")}
-                                // onChange={event => onInputChange(event, 'name') }
+                                onChange={formik.handleChange}
+                                value={formik.values.title}
                             />
-                            { errors.title && <span className="text-danger">Ingrese el nombre de la votación</span> }
+                            {
+                                formik.errors.title && formik.touched.title ? (
+                                    <span className="text-danger">{formik.errors.title}</span>
+                                ) : null
+                            }
                         </div>
 
                         <div className="mb-3">
@@ -126,52 +129,36 @@ export const NewVotesPage = () => {
                             <input
                                 placeholder="Ingrese un subtitulo a la votación"
                                 className="form-control"
+                                id="subtitle"
                                 name="subtitle"
-                                {...register("subtitle")}
-                                // onChange={event => onInputChange(event, 'subtitle') }
+                                onChange={formik.handleChange}
+                                value={formik.values.subtitle}
                             />
                         </div>
 
                         <div className="row mb-3">
                             <div className="col-6">
                                 <label htmlFor="category" className="form-label">Categoría: *</label>
-                                <Controller
-                                    control={control}
-                                    defaultValue={defaultValues.category}
-                                    name="category"
-                                    render={({ onChange, value, name, ref }) => (
-                                        <Select
-                                            inputRef={ref}
-                                            classNamePrefix="form-select"
-                                            options={data.categories}
-                                            {...register('category')}
-                                            defaultValue={{ value: 0, label: "-- Seleccione una categoría" }}
-                                            // value={data.categories.find(c => c.value === value)}
-                                            onChange={ onSelectChanged }l
-                                        />
-
-                                    )}
+                                <Select
+                                    classNamePrefix="form-select"
+                                    options={ data.categories }
+                                    defaultValue={ defaultValues.category }
+                                    onChange={ selectedOption => formik.setFieldValue("category", selectedOption.value) }
                                 />
-                                { errors.category && <span className="text-danger">Seleccione una categoría</span> }
+                                {
+                                    formik.errors.category && formik.touched.category ? (
+                                        <span className="text-danger">{formik.errors.category}</span>
+                                    ) : null
+                                }
                             </div>
                             
                             <div className="col-6">
                                     <label htmlFor="restriction" className="form-label">Restricción por votación: *</label>
-                                    <Controller
-                                        control={control}
-                                        defaultValue={defaultValues.restriction}
-                                        name="restriction"
-                                        render={({ onChange, value, name, ref }) => (
-                                            <Select
-                                                inputRef={ref}
-                                                classNamePrefix="form-select"
-                                                options={data.restrictions}
-                                                {...register('restriction')}
-                                                defaultValue={defaultValues.restriction}
-                                                onChange={ onSelectChanged }
-                                            />
-
-                                        )}
+                                    <Select
+                                        classNamePrefix="form-select"
+                                        options={ data.restrictions }
+                                        defaultValue={ defaultValues.restriction }
+                                        onChange={ selectedOption => formik.setFieldValue("restriction", selectedOption.value) }
                                     />
                             </div>
                             
@@ -183,10 +170,16 @@ export const NewVotesPage = () => {
                                     <input
                                         type="number"
                                         className="form-control col-2"
-                                        {...register("points")}
-                                        // onChange={event => onInputChange(event, 'points') }
+                                        id="points"
+                                        name="points"
+                                        onChange={formik.handleChange}
+                                        value={formik.values.points}
                                     />
-                                    { errors.points && <span className="text-danger">Seleccione un número >= 0</span> }
+                                    {
+                                        formik.errors.points && formik.touched.points ? (
+                                            <span className="text-danger">{formik.errors.points}</span>
+                                        ) : null
+                                    }
                             </div>
 
                             <div className="col-6">
@@ -194,60 +187,67 @@ export const NewVotesPage = () => {
                                     <input
                                         type="number"
                                         className="form-control col-2"
-                                        {...register("candidates")}
+                                        id="candidates"
+                                        name="candidates"
+                                        onChange={formik.handleChange}
+                                        value={formik.values.candidates}
                                         // onChange={event => onInputChange(event, 'points') }
                                     />
-                                    { errors.candidates && <span className="text-danger">Seleccione un rango entre 0 y 5</span> }
+                                    {
+                                        formik.errors.candidates && formik.touched.candidates ? (
+                                            <span className="text-danger">{formik.errors.candidates}</span>
+                                        ) : null
+                                    }
                             </div>
                         </div>
 
                         <div className="row mb-3">
                             <div className="col">
                                 <label htmlFor="fromDate" className="form-label">Desde:</label>
-                                <Controller
-                                    control={control}
-                                    name='fromDate'
-                                    render={({ field }) => (
-                                        <DatePicker 
-                                            selected={ formValues.fromDate }
-                                            {...register('fromDate')}
-                                            onChange={ (event) => onDateChanged(event, 'fromDate', field) }
-                                            className="form-control"
-                                            dateFormat="Pp"
-                                            showTimeSelect
-                                            locale="es"
-                                            timeCaption="Hora"
-                                        />
-                                        )}
-                                />
-                                { errors.fromDate && <span className="text-danger">Seleccione una fecha</span> }
+                                {/*<Controller*/}
+                                {/*    control={control}*/}
+                                {/*    name='fromDate'*/}
+                                {/*    render={({ field }) => (*/}
+                                {/*        <DatePicker */}
+                                {/*            selected={ formValues.fromDate }*/}
+                                {/*            {...register('fromDate')}*/}
+                                {/*            onChange={ (event) => onDateChanged(event, 'fromDate', field) }*/}
+                                {/*            className="form-control"*/}
+                                {/*            dateFormat="Pp"*/}
+                                {/*            showTimeSelect*/}
+                                {/*            locale="es"*/}
+                                {/*            timeCaption="Hora"*/}
+                                {/*        />*/}
+                                {/*        )}*/}
+                                {/*/>*/}
+                                {/*{ errors.fromDate && <span className="text-danger">Seleccione una fecha</span> }*/}
                             </div>
                             <div className="col">
                                 <label htmlFor="toDate" className="form-label">Hasta:</label>
-                                <Controller
-                                    control={control}
-                                    name='toDate'
-                                    render={({ field }) => (
-                                        <DatePicker 
-                                            selected={ formValues.toDate }
-                                            onChange={ (event) => onDateChanged(event, 'toDate', field) }
-                                            className="form-control"
-                                            dateFormat="Pp"
-                                            showTimeSelect
-                                            locale="es"
-                                            timeCaption="Hora"
-                                        />
-                                        )}
-                                    />
+                                {/*<Controller*/}
+                                {/*    control={control}*/}
+                                {/*    name='toDate'*/}
+                                {/*    render={({ field }) => (*/}
+                                {/*        <DatePicker */}
+                                {/*            selected={ formValues.toDate }*/}
+                                {/*            onChange={ (event) => onDateChanged(event, 'toDate', field) }*/}
+                                {/*            className="form-control"*/}
+                                {/*            dateFormat="Pp"*/}
+                                {/*            showTimeSelect*/}
+                                {/*            locale="es"*/}
+                                {/*            timeCaption="Hora"*/}
+                                {/*        />*/}
+                                {/*        )}*/}
+                                {/*    />*/}
                             </div>
                         </div>
                         
                         <button 
                             type="submit"
                             className="btn btn-primary mr-1"
-                            disabled={isSubmitting}
+                            // disabled={isSubmitting}
                         >
-                        {isSubmitting && (<span className="spinner-border spinner-border-sm mr-2"></span>)}
+                        {/*{isSubmitting && (<span className="spinner-border spinner-border-sm mr-2"></span>)}*/}
                         Guardar</button>
 
                         </div>
