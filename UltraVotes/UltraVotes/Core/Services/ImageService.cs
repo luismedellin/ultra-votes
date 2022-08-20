@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
-using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Configuration;
 using UltraVotes.Core.DTOs;
 using UltraVotes.Core.ViewModels;
 
@@ -76,7 +70,6 @@ namespace UltraVotes.Core.Services
             }
             catch (Exception ex)
             {
-
                 throw;
             }
         }
@@ -110,7 +103,6 @@ namespace UltraVotes.Core.Services
                 await using var memoryFile = new MemoryStream();
                 await file.CopyToAsync(memoryFile);
                 memoryFile.Position = 0;
-                //await containerClient.UploadBlobAsync(newFileName, memoryFile);
                 await blob.UploadAsync(memoryFile, true);
             }
             catch (Exception ex)
