@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
+using AutoMapper;
 using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
 using Microsoft.AspNetCore.Http;
@@ -25,6 +26,7 @@ namespace UltraVotes.Core.Services
 
     public class ImageService : IImageService
     {
+        private readonly IMapper mapper;
         private readonly BlobServiceClient _blobServiceClient;
         private readonly ICandidateService _candidateService;
 
@@ -32,10 +34,12 @@ namespace UltraVotes.Core.Services
         private readonly string containerName;
 
         public ImageService(
-            IConfiguration configuration, 
+            IConfiguration configuration,
+            IMapper mapper,
             BlobServiceClient blobServiceClient,
             ICandidateService candidateService)
         {
+            this.mapper = mapper;
             _blobServiceClient = blobServiceClient;
             _candidateService = candidateService;
 
@@ -45,8 +49,13 @@ namespace UltraVotes.Core.Services
 
         public async Task<string> SaveImage(int candidateId, IFormFile file)
         {
-            var newFileName = await GetFileName(candidateId, file);
-            await SaveInBlob(newFileName.FileName, file);
+            var candidate = await _candidateService.GetCandidatesById(candidateId);
+            if (candidate is null) throw new Exception("Invalid candidate");
+
+            var newFileName = await GetFileName(candidate, file);
+            await SaveInBlob(newFileName, file);
+            await UpdateCandidateAvatar(candidate, newFileName);
+
             return newFileName.Path;
         }
 
@@ -73,10 +82,8 @@ namespace UltraVotes.Core.Services
         }
 
 
-        private async Task<CandidateFile> GetFileName(int candidateId, IFormFile file)
+        private async Task<CandidateFile> GetFileName(CandidateVM candidate, IFormFile file)
         {
-            var candidate = await _candidateService.GetCandidatesById(candidateId);
-
             var path = $"votacion-{candidate.MasterVoteId}/";
             var fileExists = await FileExists(candidate, file.FileName);
 
@@ -93,22 +100,31 @@ namespace UltraVotes.Core.Services
             return candidates.Any(c => c.Avatar.EndsWith(fileName) && c.UserId != candidate.UserId);
         }
 
-        private async Task SaveInBlob(string newFileName, IFormFile file)
+        private async Task SaveInBlob(CandidateFile candidateFile, IFormFile file)
         {
             try
             {
                 var containerClient = _blobServiceClient.GetBlobContainerClient(containerName);
+                var blob = containerClient.GetBlobClient(candidateFile.FileName);
 
-                using var memoryFile = new MemoryStream();
-                file.CopyTo(memoryFile);
+                await using var memoryFile = new MemoryStream();
+                await file.CopyToAsync(memoryFile);
                 memoryFile.Position = 0;
-                await containerClient.UploadBlobAsync(newFileName, memoryFile);
+                //await containerClient.UploadBlobAsync(newFileName, memoryFile);
+                await blob.UploadAsync(memoryFile, true);
             }
             catch (Exception ex)
             {
 
                 throw;
             }
+        }
+
+        private async Task UpdateCandidateAvatar(CandidateVM candidate, CandidateFile newFileName)
+        {
+            candidate.Avatar = newFileName.Path;
+            var candidateDto = mapper.Map<CandidateDto>(candidate);
+            await _candidateService.Update(candidateDto);
         }
     }
 }

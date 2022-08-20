@@ -16,6 +16,9 @@ namespace UltraVotes.Core.Mappings
 
             CreateMap<CandidateModel, CandidateVM>()
                 .ReverseMap();
+
+            CreateMap<CandidateVM, CandidateDto>()
+                .ReverseMap();
         }
     }
 }

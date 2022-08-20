@@ -59,7 +59,7 @@ namespace UltraVotes.Data.Repositories
             dbConnection.Open();
             using var transaction = CreateTransaction();
             const string sql = @"INSERT INTO votes.Candidate (MasterVoteId, UserId, Name, LastName, DepartmentId, AreaId, Avatar, Description, IsFinalist)  OUTPUT INSERTED.CandidateId
-                                    VALUES (@MasterVoteId, @UserId, @Name, @LastName, @DepartmentId, @AreaId, @Avatar, @Description, @IsFinalist);";
+                                    VALUES (@MasterVoteId, @UserId, @Name, @LastName, @DepartmentId, @AreaId, '', @Description, @IsFinalist);";
             try
             {
                 candidate.CandidateId = await (dbConnection.ExecuteScalarAsync<int>(sql, candidate, transaction));
