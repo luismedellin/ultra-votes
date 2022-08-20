@@ -28,7 +28,8 @@ namespace UltraVotes.Data.Repositories
                             INNER JOIN votes.Candidate c ON c.MasterVoteId = mv.MasterVoteId
                             WHERE	mv.CategoryId = 1 AND
                         			mv.MasterVoteId =  CASE WHEN @masterVoteId = 0 THEN mv.MasterVoteId ELSE @masterVoteId END
-                        )c ON u.UserId = c.UserId";
+                        )c ON u.UserId = c.UserId
+                        ORDER BY u.Name";
             using var connection = _context.CreateConnection();
             return (await connection.QueryAsync<UserVM>(query, new { masterVoteId })).ToList();
         }

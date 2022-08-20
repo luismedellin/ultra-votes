@@ -46,7 +46,11 @@ export const UserCandidates = React.memo(({openModal}) => {
                     candidates.map(candidate => (
                         <div key={candidate.candidateId} className="card d-flex flex-row mb-3 p-2">
                             <div style={{width: "5rem"}}>
-                                <i className="fa fa-user" aria-hidden="true"></i>
+                                {
+                                    candidate.avatar
+                                        ? <img src={candidate.avatar} width="60px" alt="avatar" />
+                                        : <i className="fas fa-user-circle fa-4x"></i>
+                                }
                             </div>
                             <div style={{width: "15rem"}}>
                                 <div>{candidate.fullName}</div>

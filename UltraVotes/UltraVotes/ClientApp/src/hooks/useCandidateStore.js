@@ -31,14 +31,31 @@ export const useCandidateStore = () => {
         try {
             if(candidate.candidateId) {
                 await ultraVotesApi.put(`candidates/`, candidate);
+                await saveImage(candidate, candidate.avatarPhoto);
                 dispatch( onUpdatingCandidate(candidate) );
                 return;
             }
 
             const { data } = await ultraVotesApi.post(`candidates/`, candidate);
+            await saveImage(data, candidate.avatarPhoto);
             dispatch( onAddingCandidate(data) );
         } catch (error) {
             console.log(error);
+        }
+    }
+    
+    const saveImage = async (candidate, photo) => {
+        if (photo) {
+            let formData = new FormData();
+            formData.append("files", photo);
+            
+            const { data } = await ultraVotesApi.post(`image/${candidate.candidateId}/`, formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            });
+            
+            candidate.avatar = data;
         }
     }
 

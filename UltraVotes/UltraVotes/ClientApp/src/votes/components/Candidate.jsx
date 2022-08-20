@@ -6,7 +6,7 @@ import { useCandidateStore } from "../../hooks";
 export const Candidate = ({onCloseModalViewDetail}) => {
     const { currentCandidate: candidate, onSavingCandidate } =  useCandidateStore();
     
-    const [avatarPreview, setAvatarPreview] = useState(null);
+    const [avatarPreview, setAvatarPreview] = useState(candidate.avatar);
     const fileInput = useRef(null);
 
     const formik = useFormik({
@@ -27,13 +27,15 @@ export const Candidate = ({onCloseModalViewDetail}) => {
         },
       });
       
-      const uploadPhoto = (e) => { 
+      const uploadPhoto = (e) => {
+        formik.setFieldValue('avatarPhoto', e.currentTarget.files[0]);
         formik.setFieldValue("avatar", e.currentTarget.files[0].name);
         const fileReader = new FileReader();
         fileReader.onload = () => {
             if (fileReader.readyState === 2) {
                 
                 formik.setFieldValue('file', fileReader);
+                
                 setAvatarPreview(fileReader.result);
             }
         };
